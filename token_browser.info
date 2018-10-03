@@ -1,0 +1,4 @@
+name = Token Browser
+description = Improved Token Browser
+core = 7.x
+dependencies[] = token

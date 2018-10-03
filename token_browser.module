@@ -1,0 +1,53 @@
+<?php
+/**
+ * @file
+ * Token Browser Module
+ */
+
+/**
+ * Implements hook_library().
+ */
+function token_browser_library() {
+  $libraries['react'] = array(
+    'title' => 'React',
+    'version' => '16.x',
+    'js' => array(
+      'https://unpkg.com/react@16/umd/react.development.js' => array(),
+      'https://unpkg.com/react-dom@16/umd/react-dom.development.js' => array(),
+    ),
+  );
+
+  $libraries['browser'] = array(
+    'title' => 'Token Browser',
+    'js' => array(
+      drupal_get_path('module', 'token_browser') . '/dist/token-browser.js' => array(),
+    ),
+    'dependencies' => array(
+      array('system', 'ui.dialog'),
+    ),
+  );
+
+  return $libraries;
+}
+
+/**
+ * Implements hook_menu().
+ */
+function token_browser_menu() {
+  $items['token/browser/page'] = array(
+    'title' => 'Token Browser Test Page',
+    'page callback' => 'token_browser_page',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+    'file' => 'includes/token_browser.callback.inc',
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_init().
+ */
+function token_browser_init() {
+  drupal_add_library('token_browser', 'react');
+}
