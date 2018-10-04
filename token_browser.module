@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * Token Browser Module
@@ -42,12 +43,49 @@ function token_browser_menu() {
     'file' => 'includes/token_browser.callback.inc',
   );
 
+  $items['token/browser/tree'] = array(
+    'title' => 'Token Browser Tree',
+    'page callback' => 'token_browser_tree',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+    'file' => 'includes/token_browser.callback.inc',
+  );
+
+  $items['token/browser/token'] = array(
+    'title' => 'Token Browser Endpoint',
+    'page callback' => 'token_browser_endpoint',
+    'delivery callback' => 'drupal_json_output',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+    'file' => 'includes/token_browser.callback.inc',
+  );
+
+  $items['token/browser/types'] = array(
+    'title' => 'Token Browser Types Endpoint',
+    'page callback' => 'token_browser_types_endpoint',
+    'delivery callback' => 'drupal_json_output',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+    'file' => 'includes/token_browser.callback.inc',
+  );
+
   return $items;
 }
 
 /**
- * Implements hook_init().
+ * Implements hook_theme().
  */
-function token_browser_init() {
-  drupal_add_library('token_browser', 'react');
+function token_browser_theme() {
+  $themes['tree_grid'] = array(
+    'variables' => array(
+      'header' => array(),
+      'rows' => array(),
+      'attributes' => array(),
+      'empty' => '',
+      'caption' => '',
+    ),
+    'file' => 'includes/token_browser.theme.inc',
+  );
+
+  return $themes;
 }
