@@ -20,7 +20,7 @@ function token_browser_tree() {
   $rows = token_browser_type_info();
 
   $element = array(
-    '#theme' => 'table',
+    '#theme' => 'tree_grid',
     '#header' => array(
       t('Name'),
       t('Description'),
@@ -29,7 +29,6 @@ function token_browser_tree() {
     '#rows' => $rows,
     '#attached' => array(
       'library' => array(
-        array('token_browser', 'react'),
         array('token_browser', 'browser'),
       ),
     ),

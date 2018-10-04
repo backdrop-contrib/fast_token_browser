@@ -8,7 +8,7 @@
 /**
  * Tree Grid theme.
  */
-function token_browser_tree_grid($variables) {
+function theme_tree_grid($variables) {
   $header = $variables['header'];
   $rows = $variables['rows'];
   $attributes = $variables['attributes'];
@@ -36,7 +36,7 @@ function token_browser_tree_grid($variables) {
 
       $output .= '<tr' . drupal_attributes($row_attributes) . ">\n";
 
-      foreach ($row as $ $cell) {
+      foreach ($row as $cell) {
         $output .= '<td role="gridcell">' . $cell . "</td>\n";
       }
 
