@@ -23,6 +23,7 @@ function token_browser_tree() {
     '#theme' => 'tree_grid',
     '#header' => array(
       t('Name'),
+      t('Token'),
       t('Description'),
     ),
     '#rows' => $rows,
@@ -40,7 +41,9 @@ function token_browser_tree() {
  * Token browser json endpoint callback.
  */
 function token_browser_endpoint($type) {
-  return token_browser_build_level($type, array($type));
+  $ancestors = isset($_GET['ancestors']) ? drupal_json_decode($_GET['ancestors']) : array();
+
+  return token_browser_build_level($type, $ancestors);
 }
 
 /**
@@ -62,6 +65,7 @@ function token_browser_type_info() {
           'data-type' => $type,
         ),
       ),
+      'token' => '',
       'description' => isset($type_info['description']) ? $type_info['description'] : '',
     );
   }
@@ -78,7 +82,7 @@ function token_browser_type_info() {
  *   The ancestors of the given type. This allows the complete token to be
  *   constructed.
  */
-function token_browser_build_level($type, array $ancestors) {
+function token_browser_build_level($type, array $ancestors = array()) {
   $level = array();
   $info = token_get_info();
 
@@ -108,7 +112,7 @@ function token_browser_build_level($type, array $ancestors) {
     $level[$child]['description'] = $child_info['description'];
     $level[$child]['token'] = $child;
     $level[$child]['type'] = $child_info['type'];
-    $level[$child]['raw token'] = $raw_token;
+    $level[$child]['raw'] = $raw_token;
     $level[$child]['ancestors'] = $ancestors;
   }
 
