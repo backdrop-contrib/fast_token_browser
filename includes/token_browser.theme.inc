@@ -14,6 +14,7 @@ function theme_tree_grid($variables) {
   $attributes = $variables['attributes'];
 
   $attributes['role'] = 'treetable';
+  $attributes['class'][] = 'tree-grid';
 
   $output = '<table' . drupal_attributes($attributes) .">\n";
   $output .= "<thead>\n<tr>\n";
@@ -37,7 +38,18 @@ function theme_tree_grid($variables) {
       $output .= '<tr' . drupal_attributes($row_attributes) . ">\n";
 
       foreach ($row as $cell) {
-        $output .= '<td role="gridcell">' . $cell . "</td>\n";
+        $cell_attributes = array();
+
+        if (is_array($cell)) {
+          $cell_attributes = $cell['attributes'];
+          $cell_data = $cell['data'];
+        }
+        else {
+          $cell_data = $cell;
+        }
+
+        $cell_attributes['role'] = 'gridcell';
+        $output .= '<td' . drupal_attributes($cell_attributes) . '>' . $cell_data . "</td>\n";
       }
 
       $output .= "</tr>\n";

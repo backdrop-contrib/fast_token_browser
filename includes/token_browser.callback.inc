@@ -24,12 +24,11 @@ function token_browser_tree() {
     '#header' => array(
       t('Name'),
       t('Description'),
-      t('Type'),
     ),
     '#rows' => $rows,
     '#attached' => array(
       'library' => array(
-        array('token_browser', 'browser'),
+        array('token_browser', 'tree-grid'),
       ),
     ),
   );
@@ -57,9 +56,13 @@ function token_browser_type_info() {
 
   foreach ($info['types'] as $type => $type_info) {
     $data[$type] = array(
-      'name' => $type_info['name'],
+      'name' => array(
+        'data' => $type_info['name'],
+        'attributes' => array(
+          'data-type' => $type,
+        ),
+      ),
       'description' => isset($type_info['description']) ? $type_info['description'] : '',
-      'type' => $type,
     );
   }
 

@@ -18,7 +18,14 @@ function token_browser_library() {
     ),
   );
 
-  $libraries['browser'] = array(
+  $libraries['tree-grid'] = array(
+    'title' => 'Tree Grid',
+    'js' => array(
+      drupal_get_path('module', 'token_browser') . '/dist/tree-grid.js' => array(),
+    ),
+  );
+
+  $libraries['token-browser'] = array(
     'title' => 'Token Browser',
     'js' => array(
       drupal_get_path('module', 'token_browser') . '/dist/token-browser.js' => array(),
@@ -81,8 +88,6 @@ function token_browser_theme() {
       'header' => array(),
       'rows' => array(),
       'attributes' => array(),
-      'empty' => '',
-      'caption' => '',
     ),
     'file' => 'includes/token_browser.theme.inc',
   );
