@@ -43,11 +43,9 @@
 
       if (expand[next_level]) {
         if (expanded) {
-          // $next.fadeOut();
           $next.velocity({opacity: 0, display: 'none'});
         }
         else {
-          // $next.fadeIn();
           $next.velocity({opacity: 1, display: 'table-row'});
         }
       }
