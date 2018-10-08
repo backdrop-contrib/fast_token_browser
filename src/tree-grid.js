@@ -2,29 +2,97 @@
 
   'use strict';
 
+  var $html;
   var settings = {};
+
+  function getLevel($row) {
+    return Number($row.attr('aria-level'));
+  }
+
+  function isExpanded($row) {
+    return $row.attr('aria-expanded') === 'true';
+  }
+
+  function getAncestors($cell) {
+    var ancestors = $cell.data('ancestors');
+
+    return ancestors ? ancestors : [];
+  }
+
+  function getSize($cell) {
+    var size = $cell.data('size');
+
+    return size ? Number(size) : 0;
+  }
+
+  function toggle($current, level) {
+    var expand = [];
+    var expanded = isExpanded($current);
+
+    expand[level + 1] = true;
+
+    $current.nextAll().each(function (index, next) {
+      var $next = $(next);
+      var next_level = getLevel($next);
+
+      if (next_level <= level) {
+        return false;
+      }
+
+      if (expand[next_level]) {
+        if (expanded) {
+          $next.fadeOut();
+        }
+        else {
+          $next.fadeIn();
+        }
+      }
+    });
+  }
+
+  function buildRow(element, level) {
+    var $button = $('<button>Expand</button>').on('click', expand);
+
+    var $tr = $('<tr>', {
+      'role': 'row',
+      'aria-level': level,
+      'aria-expanded': 'false'
+    })
+    .hide()
+    .append(
+      $('<td>', {'role': 'gridcell'}).text(element.name).data({
+        'token': element.token,
+        'type': element.type,
+        'ancestors': element.ancestors
+      }).prepend($button),
+      $('<td>', {'role': 'gridcell'}).text(element.raw),
+      $('<td>', {'role': 'gridcell'}).text(element.description)
+    );
+
+    if (!element.type) {
+      $button.remove();
+    }
+
+    return $tr;
+  }
 
   function expand(event) {
     var $target = $(event.target);
     var $cell = $target.parent();
     var $row = $cell.parent();
+    var level = getLevel($row);
+    var size = getSize($cell);
     var type = $cell.data('type');
-    var token = $cell.data('token');
-    var level = Number($row.attr('aria-level'));
-    var size = $cell.data('size') ? Number($cell.data('size')) : 0;
+    var token = $cell.data('token') ? $cell.data('token') : type;
 
     $target.off('click', expand);
 
-    if (!token) {
-      token = type;
-    }
-
-    if ($row.data('tree-fetched')) {
-      $row.nextAll().slice(0, size).fadeIn();
-      $('html, body').scrollTop($row.offset().top);
+    if ($row.data('fetched')) {
+      toggle($row, level);
+      $html.animate({scrollTop: $row.offset().top});
     }
     else {
-      var ancestors = $cell.data('ancestors') ? $cell.data('ancestors') : [];
+      var ancestors = getAncestors($cell);
 
       ancestors.push(token);
 
@@ -39,27 +107,7 @@
 
       $jsonXHR.done(function (data) {
         $.each(data, function (index, element) {
-          var $button = $('<button>Expand</button>').on('click', expand);
-
-          var $tr = $('<tr>', {
-            'role': 'row',
-            'aria-level': level + 1,
-            'aria-expanded': 'false'
-          })
-          .hide()
-          .append(
-            $('<td>', {'role': 'gridcell'}).text(element.name).data({
-              'token': element.token,
-              'type': element.type,
-              'ancestors': element.ancestors
-            }).prepend($button),
-            $('<td>', {'role': 'gridcell'}).text(element.raw),
-            $('<td>', {'role': 'gridcell'}).text(element.description)
-          );
-
-          if (!element.type) {
-            $button.remove();
-          }
+          var $tr = buildRow(element, level + 1);
 
           $row.after($tr);
           $tr.fadeIn();
@@ -67,14 +115,14 @@
           ++size;
         });
 
-        $('html, body').scrollTop($row.offset().top);
+        $html.animate({scrollTop: $row.offset().top});
         $row.attr('aria-setsize', size);
       });
 
-      $row.data('tree-fetched', true);
+      $row.data('fetched', true);
     }
 
-    $row.attr('aria-expanded', true);
+    $row.attr('aria-expanded', 'true');
     $target.html('Collapse');
     $target.on('click', collapse);
   }
@@ -83,19 +131,18 @@
     var $target = $(event.target);
     var $cell = $target.parent();
     var $row = $cell.parent();
-    var level = Number($row.attr('aria-level'));
-    var size = Number($row.attr('aria-setsize));
-    var $children = $row.nextAll().slice(0, size);
+    var level = getLevel($row);
 
     $target.off('click', collapse);
-    $children.fadeOut();
-    $row.attr('aria-expanded', false);
+    toggle($row, level);
+    $row.attr('aria-expanded', 'false');
     $target.html('Expand');
     $target.on('click', expand);
   }
 
   Drupal.behaviors.treeGrid = {
     attach: function (context, drupalSettings) {
+      $html = $('html, body');
       settings = drupalSettings;
 
       var $treegrid = $('.tree-grid', context);
