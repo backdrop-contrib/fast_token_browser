@@ -112,7 +112,11 @@ function token_browser_build_level($type, array $ancestors = array()) {
     $level[$child]['name'] = $child_info['name'];
     $level[$child]['description'] = $child_info['description'];
     $level[$child]['token'] = $child;
-    $level[$child]['type'] = $child_info['type'];
+
+    if (isset($info['types'][$child_info['type']])) {
+      $level[$child]['type'] = $child_info['type'];
+    }
+
     $level[$child]['raw'] = $raw_token;
     $level[$child]['ancestors'] = $ancestors;
   }
