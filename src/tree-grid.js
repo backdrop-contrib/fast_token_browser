@@ -39,12 +39,16 @@
         return false;
       }
 
+      expand[next_level + 1] = expand[next_level] && isExpanded($next);
+
       if (expand[next_level]) {
         if (expanded) {
-          $next.fadeOut();
+          // $next.fadeOut();
+          $next.velocity({opacity: 0, display: 'none'});
         }
         else {
-          $next.fadeIn();
+          // $next.fadeIn();
+          $next.velocity({opacity: 1, display: 'table-row'});
         }
       }
     });
@@ -89,7 +93,6 @@
 
     if ($row.data('fetched')) {
       toggle($row, level);
-      $html.animate({scrollTop: $row.offset().top});
     }
     else {
       var ancestors = getAncestors($cell);
@@ -115,7 +118,6 @@
           ++size;
         });
 
-        $html.animate({scrollTop: $row.offset().top});
         $row.attr('aria-setsize', size);
       });
 

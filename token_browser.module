@@ -18,6 +18,14 @@ function token_browser_library() {
     ),
   );
 
+  $libraries['velocity'] = array(
+    'title' => 'Velocity.js',
+    'version' => '2.x',
+    'js' => array(
+      drupal_get_path('module', 'token_browser') . '/dist/velocity.min.js' => array(),
+    ),
+  );
+
   $libraries['tree-grid'] = array(
     'title' => 'Tree Grid',
     'js' => array(

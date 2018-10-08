@@ -30,6 +30,7 @@ function token_browser_tree() {
     '#attached' => array(
       'library' => array(
         array('token_browser', 'tree-grid'),
+        array('token_browser', 'velocity'),
       ),
     ),
   );
