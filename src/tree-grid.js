@@ -2,8 +2,6 @@
 
   'use strict';
 
-  var $HTML;
-
   var SETTINGS = {};
 
   function getLevel($row) {
@@ -27,21 +25,11 @@
   }
 
   function showRow($row, $elements) {
-    $elements.velocity({
-      opacity: 1, display: 'table-row'
-    },
-    {
-      complete: function () { $HTML.animate({ scrollTop: $row.offset().top }); }
-    });
+    $elements.velocity({ opacity: 1, display: 'table-row' });
   }
 
   function hideRow($row, $elements) {
-    $elements.velocity({
-      opacity: 0, display: 'none'
-    },
-    {
-      complete: function () { $HTML.animate({ scrollTop: $row.offset().top }); }
-    });
+    $elements.velocity({ opacity: 0, display: 'none' });
   }
 
   function toggle($current, level) {
@@ -186,7 +174,6 @@
 
   Drupal.behaviors.treeGrid = {
     attach: function (context, drupalSettings) {
-      $HTML = $('html');
       SETTINGS = drupalSettings;
 
       var $treegrid = $('.tree-grid', context);
