@@ -9,15 +9,6 @@
  * Implements hook_library().
  */
 function token_browser_library() {
-  $libraries['react'] = array(
-    'title' => 'React',
-    'version' => '16.x',
-    'js' => array(
-      'https://unpkg.com/react@16/umd/react.development.js' => array(),
-      'https://unpkg.com/react-dom@16/umd/react-dom.development.js' => array(),
-    ),
-  );
-
   $libraries['velocity'] = array(
     'title' => 'Velocity.js',
     'version' => '2.x',
