@@ -39,21 +39,19 @@ function token_browser_tree() {
     ),
   );
 
-  $content = drupal_render($tree);
+  return $tree;
+}
+
+function token_browser_tree_output($page_callback_result) {
+  $content = drupal_render($page_callback_result);
 
   drupal_send_headers();
 
-  /*
-  $output = '<!DOCTYPE html>';
-  $output .= '<html>';
-  $output .= '<head>' . drupal_get_html_head() . drupal_get_css() . drupal_get_js('header') . '</head>';
-  $output .= '<body>' . $content . drupal_get_js('footer') . '</body>';
-  $output .= '</html>';
-  */
+  $html = drupal_get_css() . drupal_get_js('header') . $content . drupal_get_js('footer');
 
-  $output = drupal_get_css() . drupal_get_js('header') . drupal_get_js('footer') . $content;
+  print $html;
 
-  print $output;
+  drupal_page_footer();
 }
 
 /**

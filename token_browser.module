@@ -39,7 +39,7 @@ function token_browser_library() {
  */
 function token_browser_menu() {
   // Test page with a test form on it.
-  $items['token/browser/page'] = array(
+  $items['token/browser/test'] = array(
     'title' => 'Token Browser Test Page',
     'page callback' => 'token_browser_page',
     'access callback' => TRUE,
@@ -47,9 +47,10 @@ function token_browser_menu() {
     'file' => 'includes/token_browser.callback.inc',
   );
 
-  // AJAX callback for the assembled tree.
+  // AJAX endpoint for the assembled tree.
   $items['token/browser/tree'] = array(
     'page callback' => 'token_browser_tree',
+    'delivery callback' => 'token_browser_tree_output',
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,
     'file' => 'includes/token_browser.callback.inc',
