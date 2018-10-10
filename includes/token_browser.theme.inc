@@ -9,11 +9,12 @@
  * Token Browser Link theme.
  */
 function theme_token_browser_link($variables) {
-  $options = array(
-    'attributes' => array(
-      'class' => array('token-browser'),
-    ),
-  );
+  // Add the  libraries here as jQuery Dialog does not always reliably execute
+  // associated scripts.
+  drupal_add_library('token_browser', 'token-browser');
+  drupal_add_library('token_browser', 'tree-grid');
+
+  $options = array('attributes' => array('class' => array('token-browser')));
 
   return l($variables['text'], 'token/browser/tree', $options);
 }
@@ -62,7 +63,7 @@ function theme_tree_grid($variables) {
         }
 
         $cell_attributes['role'] = 'gridcell';
-        $output .= '<td' . drupal_attributes($cell_attributes) . '>' . $cell_data . "</td>\n";
+        $output .= '<td' . drupal_attributes($cell_attributes) . '>' . check_plain($cell_data) . "</td>\n";
       }
 
       $output .= "</tr>\n";

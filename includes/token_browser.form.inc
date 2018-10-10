@@ -21,11 +21,6 @@ function token_browser_test_form($form, &$form_state) {
 
   $form['token_browser_link'] = array(
     '#theme' => 'token_browser_link',
-    '#attached' => array(
-      'library' => array(
-        array('token_browser', 'token-browser'),
-      ),
-    ),
   );
 
   return $form;

@@ -82,22 +82,25 @@
     });
 
     var $name =  $('<td>', {
-      'role': 'gridcell'
+      'role': 'gridcell',
+      'class': 'token-name'
     });
 
     var $raw = $('<td>', {
-      'role': 'gridcell'
+      'role': 'gridcell',
+      'class': 'token-raw'
     });
 
     var $description = $('<td>', {
-      'role': 'gridcell'
+      'role': 'gridcell',
+      'class': 'token-description'
     });
 
-    var $button = $('<button>Expand</button>').on('click', expand);
+    var $button = $('<button>').text('Expand').on('click', expand);
 
     $name.text(element.name);
-    $raw.text(element.raw);
-    $description.text(element.description);
+    $raw.html('<a href="javascript:void(0);" title="Insert the token ' + element.raw + '.">' + element.raw + '</a>');
+    $description.html(element.description);
 
     $name.data({
       'token': element.token,
@@ -188,7 +191,7 @@
 
       var $treegrid = $('.tree-grid', context);
       var $button_cells = $treegrid.find('td:first-child');
-      var $button = $('<button>Expand</button>').on('click', expand);
+      var $button = $('<button>').text('Expand').on('click', expand);
 
       $button_cells.prepend($button);
     }

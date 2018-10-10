@@ -1,30 +1,29 @@
 (function ($, Drupal, window, document, undefined) {
 
-  Drupal.behaviors.tokenBrowserDialog = {
+  Drupal.behaviors.tokenBrowser = {
     attach: function (context, settings) {
-      $('a.token-browser', context).once('token-dialog').click(function (event) {
+      $('a.token-browser').once('token-dialog').click(function (event) {
         var $this = $(this);
-        var dialog = $('<div>').addClass('loading').css({ display: 'none' }).appendTo('body');
+        var $window = $(window);
+        var $dialog = $('<div>').addClass('loading').css({ display: 'none' }).appendTo('body');
         var url = $this.attr('href');
         var data = {};
 
         data['ajax_page_state[theme]'] = settings.ajaxPageState.theme;
         data['ajax_page_state[theme_token]'] = settings.ajaxPageState.theme_token;
 
-        dialog.dialog({
+        $dialog.dialog({
           title: Drupal.t('Token Browser'),
-          width: 700,
-          close: function (event, ui) {
-            dialog.remove();
-          }
+          classes: { 'ui-dialog': 'token-browser-dialog' },
+          dialogClass: 'token-browser-dialog',
+          width: $window.width() * 0.8,
+          close: function () { $dialog.remove(); }
         });
 
-        dialog.load(
+        $dialog.load(
           url,
           data,
-          function (responseText, textStatus, XMLHttpRequest) {
-            dialog.removeClass('loading');
-          }
+          function () { $dialog.removeClass('loading'); }
         );
 
         event.preventDefault();

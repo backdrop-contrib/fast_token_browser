@@ -21,10 +21,21 @@ function token_browser_type_info() {
         'data' => $type_info['name'],
         'attributes' => array(
           'data-type' => $type,
+          'class' => array('token-name'),
         ),
       ),
-      'token' => '',
-      'description' => isset($type_info['description']) ? $type_info['description'] : '',
+      'token' => array(
+        'data' => $type,
+        'attributes' => array(
+          'class' => array('token-raw'),
+        ),
+      ),
+      'description' => array(
+        'data' => isset($type_info['description']) ? $type_info['description'] : '',
+        'attributes' => array(
+          'class' => array('token-description'),
+        ),
+      ),
     );
   }
 
@@ -68,15 +79,15 @@ function token_browser_build_level($type, array $ancestors = array()) {
     }
 
     $raw_token = '[' . implode(':', $raw_token_parts) . ']';
-    $level[$child]['name'] = $child_info['name'];
-    $level[$child]['description'] = $child_info['description'];
-    $level[$child]['token'] = $child;
+    $level[$child]['name'] = check_plain($child_info['name']);
+    $level[$child]['description'] = filter_xss($child_info['description']);
+    $level[$child]['token'] = check_plain($child);
 
     if (isset($info['types'][$child_info['type']])) {
-      $level[$child]['type'] = $child_info['type'];
+      $level[$child]['type'] = urlencode($child_info['type']);
     }
 
-    $level[$child]['raw'] = $raw_token;
+    $level[$child]['raw'] = check_plain($raw_token);
     $level[$child]['ancestors'] = $ancestors;
   }
 

@@ -43,11 +43,15 @@ function token_browser_tree() {
 
   drupal_send_headers();
 
+  /*
   $output = '<!DOCTYPE html>';
   $output .= '<html>';
   $output .= '<head>' . drupal_get_html_head() . drupal_get_css() . drupal_get_js('header') . '</head>';
   $output .= '<body>' . $content . drupal_get_js('footer') . '</body>';
   $output .= '</html>';
+  */
+
+  $output = drupal_get_css() . drupal_get_js('header') . drupal_get_js('footer') . $content;
 
   print $output;
 }
