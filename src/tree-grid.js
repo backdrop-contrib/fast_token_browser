@@ -62,10 +62,11 @@
     }
   }
 
-  function row(element, level) {
+  function row(element, level, index) {
     var $tr = $('<tr>', {
       'role': 'row',
       'aria-level': level,
+      'aria-posinset': index,
       'aria-expanded': 'false'
     });
 
@@ -112,6 +113,7 @@
     var type = $cell.data('type');
     var token = $cell.data('token') ? $cell.data('token') : type;
     var ancestors = getAncestors($cell);
+    var position = 1;
 
     ancestors.push(token);
 
@@ -125,7 +127,7 @@
     $jsonXHR.done(function (data) {
       $.each(data, function (index, element) {
         size += 1;
-        $elements = $elements.add(row(element, level + 1));
+        $elements = $elements.add(row(element, level + 1, position++));
       });
 
       $row.after($elements);

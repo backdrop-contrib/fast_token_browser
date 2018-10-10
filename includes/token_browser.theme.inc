@@ -41,11 +41,13 @@ function theme_tree_grid($variables) {
 
   if (!empty($rows)) {
     $output .= "<tbody>\n";
+    $position = 1;
 
-    foreach ($rows as $number => $row) {
+    foreach ($rows as $key => $row) {
       $row_attributes = array(
         'role' => 'row',
         'aria-level' => '1',
+        'aria-posinset' => $position++,
         'aria-expanded' => 'false',
       );
 
