@@ -87,7 +87,7 @@
     var $button = $('<button>').text('Expand').on('click', expand);
 
     $name.text(element.name);
-    $raw.html('<a href="javascript:void(0);" title="Insert the token ' + element.raw + '.">' + element.raw + '</a>');
+    $raw.html('<a href="javascript:void(0);" title="Insert the token ' + Drupal.checkPlain(element.raw) + '.">' + Drupal.checkPlain(element.raw) + '</a>');
     $description.html(element.description);
 
     $name.data({
@@ -100,11 +100,7 @@
       $name.prepend($button);
     }
 
-    $tr.css({
-      opacity: 0,
-      display: 'none'
-    });
-
+    $tr.css({ opacity: 0, display: 'none' });
     $tr.append($name, $raw, $description);
 
     return $tr;

@@ -79,15 +79,15 @@ function token_browser_build_level($type, array $ancestors = array()) {
     }
 
     $raw_token = '[' . implode(':', $raw_token_parts) . ']';
-    $level[$child]['name'] = check_plain($child_info['name']);
+    $level[$child]['name'] = $child_info['name'];
     $level[$child]['description'] = filter_xss($child_info['description']);
-    $level[$child]['token'] = check_plain($child);
+    $level[$child]['token'] = $child;
 
     if (isset($info['types'][$child_info['type']])) {
-      $level[$child]['type'] = urlencode($child_info['type']);
+      $level[$child]['type'] = $child_info['type'];
     }
 
-    $level[$child]['raw'] = check_plain($raw_token);
+    $level[$child]['raw'] = $raw_token;
     $level[$child]['ancestors'] = $ancestors;
   }
 
