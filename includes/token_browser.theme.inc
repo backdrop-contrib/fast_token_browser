@@ -19,17 +19,6 @@ function theme_token_browser_link($variables) {
 }
 
 /**
- * Tree Grid Page theme.
- */
-function theme_tree_grid_page($variables) {
-  $output = '<!DOCTYPE html><html>';
-  $output .= '<head>' . $variables['css'] . $variables['js'] . '</head>';
-  $output .= '<body>' . drupal_render($variables['content']) . '</body></html>';
-
-  return $output;
-}
-
-/**
  * Tree Grid theme.
  */
 function theme_tree_grid($variables) {
