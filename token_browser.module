@@ -17,25 +17,16 @@ function token_browser_library() {
     ),
   );
 
-  $libraries['tree-grid'] = array(
-    'title' => 'Tree Grid',
-    'css' => array(
-      drupal_get_path('module', 'token_browser') . '/css/tree-grid.css' => array(),
-    ),
-    'js' => array(
-      drupal_get_path('module', 'token_browser') . '/dist/tree-grid.js' => array(),
-    ),
-    'dependencies' => array(
-      array('token_browser', 'velocity'),
-    ),
-  );
-
   $libraries['token-browser'] = array(
     'title' => 'Token Browser',
+    'css' => array(
+      drupal_get_path('module', 'token_browser') . '/css/token-browser.css' => array(),
+    ),
     'js' => array(
       drupal_get_path('module', 'token_browser') . '/dist/token-browser.js' => array(),
     ),
     'dependencies' => array(
+      array('token_browser', 'velocity'),
       array('system', 'ui.dialog'),
     ),
   );
