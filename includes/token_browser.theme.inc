@@ -63,7 +63,7 @@ function theme_tree_grid($variables) {
         }
 
         $cell_attributes['role'] = 'gridcell';
-        $output .= '<td' . drupal_attributes($cell_attributes) . '>' . check_plain($cell_data) . "</td>\n";
+        $output .= '<td' . drupal_attributes($cell_attributes) . '>' . filter_xss($cell_data) . "</td>\n";
       }
 
       $output .= "</tr>\n";
