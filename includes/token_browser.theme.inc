@@ -6,6 +6,30 @@
  */
 
 /**
+ * Token Browser Link theme.
+ */
+function theme_token_browser_link($variables) {
+  $options = array(
+    'attributes' => array(
+      'class' => array('token-browser'),
+    ),
+  );
+
+  return l($variables['text'], 'token/browser/tree', $options);
+}
+
+/**
+ * Tree Grid Page theme.
+ */
+function theme_tree_grid_page($variables) {
+  $output = '<!DOCTYPE html><html>';
+  $output .= '<head>' . $variables['css'] . $variables['js'] . '</head>';
+  $output .= '<body>' . drupal_render($variables['content']) . '</body></html>';
+
+  return $output;
+}
+
+/**
  * Tree Grid theme.
  */
 function theme_tree_grid($variables) {

@@ -50,6 +50,7 @@ function token_browser_library() {
  * Implements hook_menu().
  */
 function token_browser_menu() {
+  // Test page with a test form on it.
   $items['token/browser/page'] = array(
     'title' => 'Token Browser Test Page',
     'page callback' => 'token_browser_page',
@@ -58,16 +59,17 @@ function token_browser_menu() {
     'file' => 'includes/token_browser.callback.inc',
   );
 
+  // AJAX callback for the assembled tree.
   $items['token/browser/tree'] = array(
-    'title' => 'Token Browser Tree',
     'page callback' => 'token_browser_tree',
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,
     'file' => 'includes/token_browser.callback.inc',
+    'theme callback' => 'ajax_base_page_theme',
   );
 
+  // AJAX endpoint for retrieving a token.
   $items['token/browser/token'] = array(
-    'title' => 'Token Browser Endpoint',
     'page callback' => 'token_browser_endpoint',
     'delivery callback' => 'drupal_json_output',
     'access callback' => TRUE,
@@ -75,8 +77,8 @@ function token_browser_menu() {
     'file' => 'includes/token_browser.callback.inc',
   );
 
+  // AJAX endpoint for retreiving token types.
   $items['token/browser/types'] = array(
-    'title' => 'Token Browser Types Endpoint',
     'page callback' => 'token_browser_types_endpoint',
     'delivery callback' => 'drupal_json_output',
     'access callback' => TRUE,
@@ -91,6 +93,22 @@ function token_browser_menu() {
  * Implements hook_theme().
  */
 function token_browser_theme() {
+  $themes['token_browser_link'] = array(
+    'variables' => array(
+      'text' => 'Token Browser',
+    ),
+    'file' => 'includes/token_browser.theme.inc',
+  );
+
+  $themes['tree_grid_page'] = array(
+    'variables' => array(
+      'js' => NULL,
+      'css' => NULL,
+      'content' => NULL,
+    ),
+    'file' => 'includes/token_browser.theme.inc',
+  );
+
   $themes['tree_grid'] = array(
     'variables' => array(
       'header' => array(),

@@ -16,10 +16,13 @@ function token_browser_page() {
   return drupal_render($form);
 }
 
+/**
+ * Token browser tree callback.
+ */
 function token_browser_tree() {
   $rows = token_browser_type_info();
 
-  $element = array(
+  $tree = array(
     '#theme' => 'tree_grid',
     '#header' => array(
       t('Name'),
@@ -35,7 +38,14 @@ function token_browser_tree() {
     ),
   );
 
-  return drupal_render($element);
+  $page = array(
+    '#theme' => 'tree_grid_page',
+    '#css' => drupal_get_css(),
+    '#js' => drupal_get_js(),
+    '#content' => $tree,
+  );
+
+  print drupal_render($page);
 }
 
 /**
