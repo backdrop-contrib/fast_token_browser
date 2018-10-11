@@ -6,40 +6,67 @@
  */
 
 /**
- * Build an array of all available token types.
+ * Genereate a render array of token types.
  *
  * @return array
  *   The constructed array of types keyed by type.
  */
-function token_browser_type_info() {
-  $data = array();
+function token_browser_tree_view() {
   $info = token_get_info();
+  $rows = array();
+  $posinset = 1;
 
   foreach ($info['types'] as $type => $type_info) {
-    $data[$type] = array(
-      'name' => array(
-        'data' => $type_info['name'],
-        'attributes' => array(
+    $rows[] = array(
+      'data' => array(
+        array(
+          'data' => '<button>Expand</button>' . $type_info['name'],
           'data-type' => $type,
+          'role' => 'gridcell',
           'class' => array('token-name'),
         ),
-      ),
-      'token' => array(
-        'data' => $type,
-        'attributes' => array(
+        array(
+          'data' => $type,
+          'role' => 'gridcell',
           'class' => array('token-raw'),
         ),
-      ),
-      'description' => array(
-        'data' => isset($type_info['description']) ? $type_info['description'] : '',
-        'attributes' => array(
+        array(
+          'data' => isset($type_info['description']) ? $type_info['description'] : '',
+          'role' => 'gridcell',
           'class' => array('token-description'),
         ),
       ),
+      'role' => 'row',
+      'aria-level' => '1',
+      'aria-posinset' => $posinset++,
+      'aria-expanded' => 'false',
+      'aria-busy' => 'false',
     );
   }
 
-  return $data;
+  $build = array(
+    '#theme' => 'table',
+    '#header' => array(
+      t('Name'),
+      t('Token'),
+      t('Description'),
+    ),
+    '#rows' => $rows,
+    '#attributes' => array(
+      'role' => 'treetable',
+      'aria-label' => 'Token Browser',
+      'class' => array(
+        'tree-grid',
+      ),
+    ),
+    '#attached' => array(
+      'library' => array(
+        array('token_browser', 'token-browser'),
+      ),
+    ),
+  );
+
+  return $build;
 }
 
 /**

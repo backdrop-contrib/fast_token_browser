@@ -66,15 +66,6 @@ function token_browser_menu() {
     'file' => 'includes/token_browser.callback.inc',
   );
 
-  // AJAX endpoint for retreiving token types.
-  $items['token/browser/types'] = array(
-    'page callback' => 'token_browser_types_endpoint',
-    'delivery callback' => 'drupal_json_output',
-    'access callback' => TRUE,
-    'type' => MENU_CALLBACK,
-    'file' => 'includes/token_browser.callback.inc',
-  );
-
   return $items;
 }
 
@@ -84,16 +75,7 @@ function token_browser_menu() {
 function token_browser_theme() {
   $themes['token_browser_link'] = array(
     'variables' => array(
-      'text' => 'Token Browser',
-    ),
-    'file' => 'includes/token_browser.theme.inc',
-  );
-
-  $themes['tree_grid'] = array(
-    'variables' => array(
-      'header' => array(),
-      'rows' => array(),
-      'attributes' => array(),
+      'text' => 'Browse available tokens.',
     ),
     'file' => 'includes/token_browser.theme.inc',
   );

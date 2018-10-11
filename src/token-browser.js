@@ -26,15 +26,15 @@
     return size ? Number(size) : 0;
   }
 
-  function showRow($row, $elements) {
-    $elements.velocity({ opacity: 1, display: 'table-row' });
+  function showRow($elements, callback) {
+    $elements.velocity({ opacity: 1, display: 'table-row' }, { complete: callback });
   }
 
-  function hideRow($row, $elements) {
-    $elements.velocity({ opacity: 0, display: 'none' });
+  function hideRow($elements, callback) {
+    $elements.velocity({ opacity: 0, display: 'none' }, { complete: callback });
   }
 
-  function toggle($current, level) {
+  function toggle($current, level, callback) {
     var $elements = $();
     var expand = [];
     var expanded = isExpanded($current);
@@ -57,10 +57,10 @@
     });
 
     if (expanded) {
-      hideRow($current, $elements);
+      hideRow($elements, callback);
     }
     else {
-      showRow($current, $elements);
+      showRow($elements, callback);
     }
   }
 
@@ -90,7 +90,7 @@
     var $button = $('<button>').text('Expand').on('click', expand);
 
     var $link = $('<a>', {
-      'href': 'javascript:void(0);',
+      'href': 'javascript:void(0)',
       'title': 'Insert the token ' + Drupal.checkPlain(element.raw),
       'class': 'token-key'
     });
@@ -100,20 +100,26 @@
     $raw.html($link);
     $description.html(element.description);
 
-    $link.click(function (event) {
-      var $previous = $('.selected-token');
-
-      $SELECTED = $link;
-
-      $previous.removeClass('selected-token');
-      $SELECTED.addClass('selected-token');
-      event.preventDefault();
-    });
-
     $name.data({
       'token': element.token,
       'type': element.type,
       'ancestors': element.ancestors
+    });
+
+    $link.click(function () {
+      if ($SELECTED) {
+        $SELECTED.removeClass('selected-token');
+      }
+
+      if ($link.is($SELECTED)) {
+        $SELECTED = null;
+      }
+      else {
+        $SELECTED = $link;
+        $SELECTED.addClass('selected-token');
+      }
+
+      event.preventDefault();
     });
 
     if (element.type) {
@@ -126,7 +132,7 @@
     return $tr;
   }
 
-  function fetch($row, $cell, level) {
+  function fetch($row, $cell, level, callback) {
     var $elements = $();
     var size = getSize($cell);
     var type = $cell.data('type');
@@ -152,7 +158,7 @@
       $row.after($elements);
       $row.attr('aria-setsize', size);
       $row.data('fetched', true);
-      showRow($row, $elements);
+      showRow($elements, callback);
     });
   }
 
@@ -165,15 +171,22 @@
     $target.off('click', expand);
 
     if ($row.data('fetched')) {
-      toggle($row, level);
+      toggle($row, level, function () {
+        $row.attr('aria-expanded', 'true');
+        $target.html('Collapse');
+        $target.on('click', collapse);
+      });
     }
     else {
-      fetch($row, $cell, level);
+      $target.text('Loading...');
+      $row.attr('aria-busy', 'true');
+      fetch($row, $cell, level, function () {
+        $row.attr('aria-expanded', 'true');
+        $row.attr('aria-busy', 'false');
+        $target.html('Collapse');
+        $target.on('click', collapse);
+      });
     }
-
-    $row.attr('aria-expanded', 'true');
-    $target.html('Collapse');
-    $target.on('click', collapse);
   }
 
   function collapse(event) {
@@ -183,21 +196,21 @@
     var level = getLevel($row);
 
     $target.off('click', collapse);
-    toggle($row, level);
-    $row.attr('aria-expanded', 'false');
-    $target.html('Expand');
-    $target.on('click', expand);
+    toggle($row, level, function () {
+      $row.attr('aria-expanded', 'false');
+      $target.html('Expand');
+      $target.on('click', expand);
+    });
   }
 
   Drupal.behaviors.tokenBrowserTreegrid = {
     attach: function (context, settings) {
+      var $treegrid = $('.tree-grid', context);
+      var $buttons = $treegrid.find('button');
+
       SETTINGS = settings;
 
-      var $treegrid = $('.tree-grid', context);
-      var $button_cells = $treegrid.find('td:first-child');
-      var $button = $('<button>').text('Expand').on('click', expand);
-
-      $button_cells.prepend($button);
+      $buttons.on('click', expand);
     }
   };
 
@@ -221,7 +234,7 @@
       $('a.token-browser').once('token-browser').click(function (event) {
         var $this = $(this);
         var $window = $(window);
-        var $dialog = $('<div>').addClass('loading').css({ display: 'none' }).appendTo('body');
+        var $dialog = $('<div>').addClass('loading').hide().appendTo('body');
         var url = $this.attr('href');
         var data = {};
 
