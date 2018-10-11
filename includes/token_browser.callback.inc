@@ -22,7 +22,17 @@ function token_browser_page() {
 function token_browser_tree() {
   module_load_include('inc', 'token_browser', 'includes/token_browser');
 
-  $tree = token_browser_tree_view();
+  $definition = array(
+    'types' => array(
+      'filter' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+      'flags' => FILTER_FLAG_NO_ENCODE_QUOTES,
+    ),
+  );
+
+
+  $input = filter_input_array(INPUT_GET, $definition);
+  $types = isset($input['types']) ? drupal_json_decode($input['types']) : array();
+  $tree = token_browser_tree_view($types);
 
   return $tree;
 }
@@ -52,8 +62,8 @@ function token_browser_endpoint($type) {
     ),
   );
 
-  $type = filter_var($type, FILTER_SANITIZE_FULL_SPECIAL_CHARS, FILTER_FLAG_NO_ENCODE_QUOTES);
   $input = filter_input_array(INPUT_GET, $definition);
+  $type = filter_var($type, FILTER_SANITIZE_FULL_SPECIAL_CHARS, FILTER_FLAG_NO_ENCODE_QUOTES);
   $ancestors = isset($input['ancestors']) ? drupal_json_decode($input['ancestors']) : array();
 
   return token_browser_build_level($type, $ancestors);

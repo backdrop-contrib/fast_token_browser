@@ -11,12 +11,20 @@
  * @return array
  *   The constructed array of types keyed by type.
  */
-function token_browser_tree_view() {
+function token_browser_tree_view(array $types = array()) {
   $info = token_get_info();
   $rows = array();
   $posinset = 1;
 
+  if (empty($types)) {
+    $types = array_keys($info['types']);
+  }
+
   foreach ($info['types'] as $type => $type_info) {
+    if (!in_array($type, $types)) {
+      continue;
+    }
+
     $rows[] = array(
       'data' => array(
         array(
