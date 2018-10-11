@@ -11,7 +11,7 @@
 function token_browser_library() {
   $libraries['velocity'] = array(
     'title' => 'Velocity.js',
-    'version' => '2.x',
+    'version' => '2.0.5',
     'js' => array(
       drupal_get_path('module', 'token_browser') . '/dist/velocity.min.js' => array(),
     ),
