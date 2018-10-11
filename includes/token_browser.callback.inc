@@ -13,7 +13,7 @@ function token_browser_page() {
 
   $form = drupal_get_form('token_browser_test_form');
 
-  return drupal_render($form);
+  return $form;
 }
 
 /**
