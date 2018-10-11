@@ -27,6 +27,7 @@ function theme_tree_grid($variables) {
   $attributes = $variables['attributes'];
 
   $attributes['role'] = 'treetable';
+  $attributes['aria-label'] = 'Token Browser';
   $attributes['class'][] = 'tree-grid';
 
   $output = '<table' . drupal_attributes($attributes) .">\n";
