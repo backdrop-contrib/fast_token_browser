@@ -13,14 +13,9 @@ function token_browser_test_form($form, &$form_state) {
     '#title' => t('Token'),
   );
 
-  $form['token_tree_link'] = array(
-    '#theme' => 'token_tree_link',
-    '#token_types' => 'all',
-    '#show_restricted' => TRUE,
-  );
-
   $form['token_browser_link'] = array(
     '#theme' => 'token_browser_link',
+    '#dialog' => TRUE,
   );
 
   return $form;

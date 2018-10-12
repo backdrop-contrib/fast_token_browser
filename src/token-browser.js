@@ -96,7 +96,7 @@
     });
 
     $name.text(element.name);
-    $link.text(element.raw);
+    $link.html(element.raw);
     $raw.html($link);
     $description.html(element.description);
 

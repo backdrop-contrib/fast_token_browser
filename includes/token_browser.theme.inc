@@ -9,11 +9,23 @@
  * Token Browser Link theme.
  */
 function theme_token_browser_link($variables) {
-  // Add library here as jQuery Dialog does not always reliably execute
-  // associated scripts.
-  drupal_add_library('token_browser', 'token-browser');
+  $options = array(
+    'attributes' => array(
+      'target' => '_blank',
+    ),
+  );
 
-  $options = array('attributes' => array('class' => array('token-browser')));
+  if (!empty($variables['token_types'])) {
+    $options['query'] = array(
+      'token_types' => drupal_json_encode($variables['token_types']),
+    );
+  }
+
+  if (!empty($variables['dialog'])) {
+    drupal_add_library('token_browser', 'token-browser');
+
+    $options['attributes']['class'][] = 'token-browser';
+  }
 
   return l($variables['text'], 'token/browser/tree', $options);
 }

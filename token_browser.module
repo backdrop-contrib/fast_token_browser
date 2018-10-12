@@ -41,7 +41,7 @@ function token_browser_menu() {
   // Test page with a test form on it.
   $items['token/browser/test'] = array(
     'title' => 'Token Browser Test Page',
-    'page callback' => 'token_browser_page',
+    'page callback' => 'token_browser_test',
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,
     'file' => 'includes/token_browser.callback.inc',
@@ -75,10 +75,22 @@ function token_browser_menu() {
 function token_browser_theme() {
   $themes['token_browser_link'] = array(
     'variables' => array(
-      'text' => 'Browse available tokens.',
+      'text' => t('Browse available tokens.'),
+      'token_types' => array(),
+      'dialog' => FALSE,
     ),
     'file' => 'includes/token_browser.theme.inc',
   );
 
   return $themes;
+}
+
+function token_browser_menu_alter(&$items) {
+  // $items['token/tree'] = $items['token/browser/tree'];
+}
+
+function token_browser_form_alter(&$form, &$form_state, $form_id) {
+}
+
+function token_browser_theme_registry_alter(&$theme_registry) {
 }

@@ -21,7 +21,7 @@ function token_browser_tree_view(array $types = array()) {
   }
 
   foreach ($info['types'] as $type => $type_info) {
-    if (!in_array($type, $types)) {
+    if (!in_array($type, $types) || substr($type, 0, 4) === 'list') {
       continue;
     }
 
@@ -115,7 +115,7 @@ function token_browser_build_level($type, array $ancestors = array()) {
 
     $raw_token = '[' . implode(':', $raw_token_parts) . ']';
     $level[$child]['name'] = $child_info['name'];
-    $level[$child]['description'] = filter_xss($child_info['description']);
+    $level[$child]['description'] = $child_info['description'];
     $level[$child]['token'] = $child;
 
     if (isset($info['types'][$child_info['type']])) {

@@ -8,12 +8,10 @@
 /**
  * Token browser test page callback.
  */
-function token_browser_page() {
+function token_browser_test() {
   module_load_include('inc', 'token_browser', 'includes/token_browser.form');
 
-  $form = drupal_get_form('token_browser_test_form');
-
-  return $form;
+  return drupal_get_form('token_browser_test_form');;
 }
 
 /**
@@ -22,19 +20,9 @@ function token_browser_page() {
 function token_browser_tree() {
   module_load_include('inc', 'token_browser', 'includes/token_browser');
 
-  $definition = array(
-    'types' => array(
-      'filter' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
-      'flags' => FILTER_FLAG_NO_ENCODE_QUOTES,
-    ),
-  );
+  $types = isset($_GET['token_types']) ? drupal_json_decode($_GET['token_types']) : array();
 
-
-  $input = filter_input_array(INPUT_GET, $definition);
-  $types = isset($input['types']) ? drupal_json_decode($input['types']) : array();
-  $tree = token_browser_tree_view($types);
-
-  return $tree;
+  return token_browser_tree_view($types);
 }
 
 function token_browser_tree_output($page_callback_result) {
@@ -55,16 +43,7 @@ function token_browser_tree_output($page_callback_result) {
 function token_browser_endpoint($type) {
   module_load_include('inc', 'token_browser', 'includes/token_browser');
 
-  $definition = array(
-    'ancestors' => array(
-      'filter' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
-      'flags' => FILTER_FLAG_NO_ENCODE_QUOTES,
-    ),
-  );
-
-  $input = filter_input_array(INPUT_GET, $definition);
-  $type = filter_var($type, FILTER_SANITIZE_FULL_SPECIAL_CHARS, FILTER_FLAG_NO_ENCODE_QUOTES);
-  $ancestors = isset($input['ancestors']) ? drupal_json_decode($input['ancestors']) : array();
+  $ancestors = isset($_GET['ancestors']) ? drupal_json_decode($_GET['ancestors']) : array();
 
   return token_browser_build_level($type, $ancestors);
 }
