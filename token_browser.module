@@ -77,10 +77,16 @@ function token_browser_theme() {
   return $themes;
 }
 
+/**
+ * Implements hook_menu_alter().
+ */
 function token_browser_menu_alter(&$items) {
   $items['token/tree'] = $items['token/browser/tree'];
 }
 
+/**
+ * Implements hook_theme_registory_alter().
+ */
 function token_browser_theme_registry_alter(&$theme_registry) {
   $theme_registry['token_tree_link'] = $theme_registry['token_tree'] = $theme_registry['token_browser_link'];
 }
