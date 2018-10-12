@@ -15,6 +15,8 @@ function token_browser_test_form($form, &$form_state) {
 
   $form['token_browser_link'] = array(
     '#theme' => 'token_browser_link',
+    '#text' => t('Browse available tokens.'),
+    '#token_types' => array('node'),
     '#dialog' => TRUE,
   );
 

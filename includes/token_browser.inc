@@ -7,17 +7,23 @@
 
 /**
  * Genereate a render array of token types.
- *
+ * @param array $types
+ *   An array of token types to display in the tree.
+ * @param bool $global_types
+ *   Whether or not to include global types in the tree.
  * @return array
  *   The constructed array of types keyed by type.
  */
-function token_browser_tree_view(array $types = array()) {
+function token_browser_tree_view(array $types = array(), $global_types = TRUE) {
   $info = token_get_info();
   $rows = array();
   $posinset = 1;
 
   if (empty($types)) {
     $types = array_keys($info['types']);
+  }
+  elseif ($global_types) {
+    $types = array_merge($types, token_get_global_token_types());
   }
 
   foreach ($info['types'] as $type => $type_info) {
@@ -80,7 +86,7 @@ function token_browser_tree_view(array $types = array()) {
 /**
  * Build a level of the token heirarchy.
  *
- * @param $type
+ * @param string $type
  *   The type to build a level for.
  * @param array $ancestors
  *   The ancestors of the given type. This allows the complete token to be
@@ -88,7 +94,7 @@ function token_browser_tree_view(array $types = array()) {
  * @return array
  *   The constructed level of tokens as an array keyed by token.
  */
-function token_browser_build_level($type, array $ancestors = array()) {
+function token_browser_build_level(string $type, array $ancestors = array()) {
   $level = array();
   $info = token_get_info();
 

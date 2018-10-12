@@ -18,6 +18,7 @@ function theme_token_browser_link($variables) {
   if (!empty($variables['token_types'])) {
     $options['query'] = array(
       'token_types' => drupal_json_encode($variables['token_types']),
+      'global_types' => drupal_json_encode($variables['global_types']),
     );
   }
 
