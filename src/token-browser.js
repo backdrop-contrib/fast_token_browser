@@ -27,15 +27,25 @@
   }
 
   function showRow($elements, callback) {
-    $elements.velocity({ opacity: 1, display: 'table-row' }, { complete: callback });
+    if ($elements.length) {
+      $elements.velocity({ display: 'table-row' }, { duration: 0, complete: callback });
+    }
+    else {
+      callback();
+    }
   }
 
   function hideRow($elements, callback) {
-    $elements.velocity({ opacity: 0, display: 'none' }, { complete: callback });
+    if ($elements.length) {
+      $elements.velocity({ display: 'none' }, { duration: 0, complete: callback });
+    }
+    else {
+      callback();
+    }
   }
 
   function toggle($current, level, callback) {
-    var $elements = $();
+    var elements = [];
     var expand = [];
     var expanded = isExpanded($current);
 
@@ -52,15 +62,15 @@
       expand[next_level + 1] = expand[next_level] && isExpanded($next);
 
       if (expand[next_level]) {
-        $elements = $elements.add($next);
+        elements.push(next);
       }
     });
 
     if (expanded) {
-      hideRow($elements, callback);
+      hideRow($(elements), callback);
     }
     else {
-      showRow($elements, callback);
+      showRow($(elements), callback);
     }
   }
 
@@ -119,21 +129,22 @@
         $SELECTED.addClass('selected-token');
       }
 
-      event.preventDefault();
+      return false;
     });
 
     if (element.type) {
       $name.prepend($button);
     }
 
-    $tr.css({ opacity: 0, display: 'none' });
+    $tr.css({ display: 'none' });
     $tr.append($name, $raw, $description);
 
-    return $tr;
+    return $tr[0];
   }
 
   function fetch($row, $cell, level, callback) {
-    var $elements = $();
+    var $elements;
+    var elements = [];
     var size = getSize($cell);
     var type = $cell.data('type');
     var token = $cell.data('token') ? $cell.data('token') : type;
@@ -151,9 +162,12 @@
 
     $jsonXHR.done(function (data) {
       $.each(data, function (index, element) {
+        var tr = row(element, level + 1, position++);
         size += 1;
-        $elements = $elements.add(row(element, level + 1, position++));
+        elements.push(tr);
       });
+
+      $elements = $(elements);
 
       $row.after($elements);
       $row.attr('aria-setsize', size);
@@ -231,31 +245,40 @@
 
   Drupal.behaviors.tokenBrowser = {
     attach: function (context, settings) {
+      var $window = $(window);
+      var data = {};
+
+      data['ajax_page_state[theme]'] = settings.ajaxPageState.theme;
+      data['ajax_page_state[theme_token]'] = settings.ajaxPageState.theme_token;
+
       $('a.token-browser').once('token-browser').click(function (event) {
         var $this = $(this);
-        var $window = $(window);
-        var $dialog = $('<div>').addClass('loading').hide().appendTo('body');
+        var $dialog = $('<div>').hide();
         var url = $this.attr('href');
-        var data = {};
 
-        data['ajax_page_state[theme]'] = settings.ajaxPageState.theme;
-        data['ajax_page_state[theme_token]'] = settings.ajaxPageState.theme_token;
+        if ($this.hasClass('token-browser-open')) {
+          return false;
+        }
+        else {
+          $this.addClass('token-browser-open');
+        }
+
+        $dialog.addClass('loading').appendTo('body');
 
         $dialog.dialog({
           title: Drupal.t('Token Browser'),
           classes: { 'ui-dialog': 'token-browser-dialog' },
           dialogClass: 'token-browser-dialog',
           width: $window.width() * 0.8,
-          close: function () { $dialog.remove(); }
+          close: function () {
+            $dialog.remove();
+            $this.removeClass('token-browser-open');
+          }
         });
 
-        $dialog.load(
-          url,
-          data,
-          function () { $dialog.removeClass('loading'); }
-        );
+        $dialog.load(url, data, function () { $dialog.removeClass('loading'); });
 
-        event.preventDefault();
+        return false;
       });
     }
   };
