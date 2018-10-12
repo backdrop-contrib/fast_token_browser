@@ -26,27 +26,9 @@
     return size ? Number(size) : 0;
   }
 
-  function showRow($elements, callback) {
-    if ($elements.length) {
-      $elements.velocity({ display: 'table-row' }, { duration: 0, complete: callback });
-    }
-    else {
-      callback();
-    }
-  }
-
-  function hideRow($elements, callback) {
-    if ($elements.length) {
-      $elements.velocity({ display: 'none' }, { duration: 0, complete: callback });
-    }
-    else {
-      callback();
-    }
-  }
-
-  function toggle($current, level, callback) {
-    var elements = [];
+  function toggle($current, callback) {
     var expand = [];
+    var level = getLevel($current);
     var expanded = isExpanded($current);
 
     expand[level + 1] = true;
@@ -62,16 +44,16 @@
       expand[next_level + 1] = expand[next_level] && isExpanded($next);
 
       if (expand[next_level]) {
-        elements.push(next);
+        if (expanded) {
+          next.style.display = 'none';
+        }
+        else {
+          next.style.display = 'table-row';
+        }
       }
     });
 
-    if (expanded) {
-      hideRow($(elements), callback);
-    }
-    else {
-      showRow($(elements), callback);
-    }
+    callback();
   }
 
   function row(element, level, index) {
@@ -136,15 +118,13 @@
       $name.prepend($button);
     }
 
-    $tr.css({ display: 'none' });
     $tr.append($name, $raw, $description);
 
     return $tr[0];
   }
 
-  function fetch($row, $cell, level, callback) {
-    var $elements;
-    var elements = [];
+  function fetch($row, $cell, callback) {
+    var level = getLevel($row);
     var size = getSize($cell);
     var type = $cell.data('type');
     var token = $cell.data('token') ? $cell.data('token') : type;
@@ -162,17 +142,13 @@
 
     $jsonXHR.done(function (data) {
       $.each(data, function (index, element) {
-        var tr = row(element, level + 1, position++);
+        $row.after(row(element, level + 1, position++));
         size += 1;
-        elements.push(tr);
       });
 
-      $elements = $(elements);
-
-      $row.after($elements);
       $row.attr('aria-setsize', size);
       $row.data('fetched', true);
-      showRow($elements, callback);
+      callback();
     });
   }
 
@@ -185,7 +161,7 @@
     $target.off('click', expand);
 
     if ($row.data('fetched')) {
-      toggle($row, level, function () {
+      toggle($row, function () {
         $row.attr('aria-expanded', 'true');
         $target.html('Collapse');
         $target.on('click', collapse);
@@ -194,7 +170,7 @@
     else {
       $target.text('Loading...');
       $row.attr('aria-busy', 'true');
-      fetch($row, $cell, level, function () {
+      fetch($row, $cell, function () {
         $row.attr('aria-expanded', 'true');
         $row.attr('aria-busy', 'false');
         $target.html('Collapse');
@@ -210,7 +186,7 @@
     var level = getLevel($row);
 
     $target.off('click', collapse);
-    toggle($row, level, function () {
+    toggle($row, function () {
       $row.attr('aria-expanded', 'false');
       $target.html('Expand');
       $target.on('click', expand);
