@@ -79,7 +79,7 @@
       'class': 'token-description'
     });
 
-    var $button = $('<button>').text('Expand').on('click', expand);
+    var $button = $('<button>').text('Expand').bind('click', expand);
 
     var $link = $('<a>', {
       'href': 'javascript:void(0)',
@@ -87,7 +87,7 @@
       'class': 'token-key'
     });
 
-    $name.text(element.name);
+    $name.html(element.name);
     $link.html(element.raw);
     $raw.html($link);
     $description.html(element.description);
@@ -133,38 +133,35 @@
 
     ancestors.push(token);
 
-    var $jsonXHR = $.ajax({
-      dataType: 'json',
-      contentType: 'application/json',
-      url: SETTINGS.basePath + 'token/browser/token/' + type,
-      data: { 'ancestors': JSON.stringify(ancestors) }
-    });
+    $.get(
+      SETTINGS.basePath + 'token/browser/token/' + type,
+      { 'ancestors': JSON.stringify(ancestors) },
+      function (data) {
+        $.each(data, function (index, element) {
+          $row.after(row(element, level + 1, position++));
+          size += 1;
+        });
 
-    $jsonXHR.done(function (data) {
-      $.each(data, function (index, element) {
-        $row.after(row(element, level + 1, position++));
-        size += 1;
-      });
-
-      $row.attr('aria-setsize', size);
-      $row.data('fetched', true);
-      callback();
-    });
+        $row.attr('aria-setsize', size);
+        $row.data('fetched', true);
+        callback();
+      },
+      'json'
+    );
   }
 
   function expand(event) {
     var $target = $(event.target);
     var $cell = $target.parent();
     var $row = $cell.parent();
-    var level = getLevel($row);
 
-    $target.off('click', expand);
+    $target.unbind('click', expand);
 
     if ($row.data('fetched')) {
       toggle($row, function () {
         $row.attr('aria-expanded', 'true');
         $target.html('Collapse');
-        $target.on('click', collapse);
+        $target.bind('click', collapse);
       });
     }
     else {
@@ -174,7 +171,7 @@
         $row.attr('aria-expanded', 'true');
         $row.attr('aria-busy', 'false');
         $target.html('Collapse');
-        $target.on('click', collapse);
+        $target.bind('click', collapse);
       });
     }
   }
@@ -183,13 +180,12 @@
     var $target = $(event.target);
     var $cell = $target.parent();
     var $row = $cell.parent();
-    var level = getLevel($row);
 
-    $target.off('click', collapse);
+    $target.unbind('click', collapse);
     toggle($row, function () {
       $row.attr('aria-expanded', 'false');
       $target.html('Expand');
-      $target.on('click', expand);
+      $target.bind('click', expand);
     });
   }
 
@@ -200,7 +196,7 @@
 
       SETTINGS = settings;
 
-      $buttons.on('click', expand);
+      $buttons.bind('click', expand);
     }
   };
 
