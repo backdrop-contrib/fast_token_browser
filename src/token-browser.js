@@ -103,7 +103,7 @@
         $SELECTED.removeClass('selected-token');
       }
 
-      if ($link.is($SELECTED)) {
+      if ($SELECTED && $link[0] === $SELECTED[0]) {
         $SELECTED = null;
       }
       else {
