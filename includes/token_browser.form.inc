@@ -20,5 +20,10 @@ function token_browser_test_form($form, &$form_state) {
     '#dialog' => TRUE,
   );
 
+  $form['token_tree-link'] = array(
+    '#theme' => 'token_tree',
+    '#dialog' => TRUE,
+  );
+
   return $form;
 }

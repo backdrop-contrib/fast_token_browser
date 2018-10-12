@@ -10,9 +10,7 @@
  */
 function theme_token_browser_link($variables) {
   $options = array(
-    'attributes' => array(
-      'target' => '_blank',
-    ),
+    'attributes' => array(),
   );
 
   if (!empty($variables['token_types'])) {
@@ -26,6 +24,9 @@ function theme_token_browser_link($variables) {
     drupal_add_library('token_browser', 'token-browser');
 
     $options['attributes']['class'][] = 'token-browser';
+  }
+  else {
+    $options['attributes']['target'] = '_blank';
   }
 
   return l($variables['text'], 'token/browser/tree', $options);
