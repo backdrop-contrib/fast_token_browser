@@ -9,14 +9,6 @@
  * Implements hook_library().
  */
 function token_browser_library() {
-  $libraries['velocity'] = array(
-    'title' => 'Velocity.js',
-    'version' => '2.0.5',
-    'js' => array(
-      drupal_get_path('module', 'token_browser') . '/dist/velocity.min.js' => array(),
-    ),
-  );
-
   $libraries['token-browser'] = array(
     'title' => 'Token Browser',
     'css' => array(
@@ -87,13 +79,11 @@ function token_browser_theme() {
 }
 
 function token_browser_menu_alter(&$items) {
-  // $items['token/tree'] = $items['token/browser/tree'];
-}
-
-function token_browser_form_alter(&$form, &$form_state, $form_id) {
+  $items['token/tree'] = $items['token/browser/tree'];
 }
 
 function token_browser_theme_registry_alter(&$theme_registry) {
+  $theme_registry['token_tree_link'] = $theme_registry['token_tree'] = $theme_registry['token_browser_link'];
 }
 
 /**
