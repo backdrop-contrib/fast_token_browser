@@ -29,15 +29,6 @@ function token_browser_library() {
  * Implements hook_menu().
  */
 function token_browser_menu() {
-  // Test page with a test form on it.
-  $items['token/browser/test'] = array(
-    'title' => 'Token Browser Test Page',
-    'page callback' => 'token_browser_test',
-    'access callback' => TRUE,
-    'type' => MENU_CALLBACK,
-    'file' => 'includes/token_browser.callback.inc',
-  );
-
   // AJAX endpoint for the assembled tree.
   $items['token/browser/tree'] = array(
     'page callback' => 'token_browser_tree',
