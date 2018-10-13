@@ -61,7 +61,8 @@
       'role': 'row',
       'aria-level': level,
       'aria-posinset': index,
-      'aria-expanded': 'false'
+      'aria-expanded': 'false',
+      'aria-busy': 'false'
     });
 
     var $name =  $('<td>', {
@@ -83,7 +84,7 @@
 
     var $link = $('<a>', {
       'href': 'javascript:void(0)',
-      'title': 'Insert the token ' + Drupal.checkPlain(element.raw),
+      'title': 'Insert the token ' + element.raw,
       'class': 'token-key'
     });
 
@@ -101,6 +102,7 @@
     $link.click(function () {
       if ($SELECTED) {
         $SELECTED.removeClass('selected-token');
+        $SELECTED.removeAttr('aira-selected');
       }
 
       if ($SELECTED && $link[0] === $SELECTED[0]) {
@@ -109,6 +111,7 @@
       else {
         $SELECTED = $link;
         $SELECTED.addClass('selected-token');
+        $SELECTED.attr('aria-selected');
       }
 
       return false;
@@ -124,12 +127,9 @@
   }
 
   function fetch($row, $cell, callback) {
-    var level = getLevel($row);
-    var size = getSize($cell);
     var type = $cell.data('type');
     var token = $cell.data('token') ? $cell.data('token') : type;
     var ancestors = getAncestors($cell);
-    var position = 1;
 
     ancestors.push(token);
 
@@ -137,11 +137,17 @@
       SETTINGS.basePath + 'token/browser/token/' + type,
       { 'ancestors': JSON.stringify(ancestors) },
       function (data) {
+        var children = [];
+        var level = getLevel($row);
+        var size = getSize($cell);
+        var position = 1;
+
         $.each(data, function (index, element) {
-          $row.after(row(element, level + 1, position++));
+          children.push(row(element, level + 1, position++));
           size += 1;
         });
 
+        $row.after(children);
         $row.attr('aria-setsize', size);
         $row.data('fetched', true);
         callback();
