@@ -145,6 +145,8 @@ function token_browser_tree_view(array $types = array(), $global_types = TRUE) {
     );
   }
 
+  $cid = 'token-browser:' . hash('sha256', serialize(array('token_types' => $types, 'global_types' => $global_types)));
+
   $build = array(
     '#theme' => 'table',
     '#header' => array(
@@ -165,6 +167,10 @@ function token_browser_tree_view(array $types = array(), $global_types = TRUE) {
         array('token_browser', 'token-browser'),
       ),
     ),
+    '#cache' => array(
+      'cid' => $cid,
+      'bin' => 'cache_token',
+    ),
   );
 
   return $build;
@@ -182,6 +188,8 @@ function token_browser_tree_view(array $types = array(), $global_types = TRUE) {
  *   The constructed level of tokens as an array keyed by token.
  */
 function token_browser_build_level($type, array $ancestors = array()) {
+  global $language;
+
   $level = array();
   $info = token_get_info();
 
@@ -191,6 +199,16 @@ function token_browser_build_level($type, array $ancestors = array()) {
 
   if ($entity_token = token_get_entity_mapping('entity', $type)) {
     $type = $entity_token;
+  }
+
+  $cid = 'token-browser-level:' . hash('sha256', serialize(array(
+    'type' => $type,
+    'ancestors' => $ancestors,
+    'language' => $language->language,
+  )));
+
+  if ($cache = cache_get($cid, 'cache_token')) {
+    return $cache->data;
   }
 
   foreach ($info['tokens'][$type] as $child => $child_info) {
@@ -218,6 +236,8 @@ function token_browser_build_level($type, array $ancestors = array()) {
     $level[$child]['raw'] = $raw_token;
     $level[$child]['ancestors'] = $ancestors;
   }
+
+  cache_set($cid, $level, 'cache_token');
 
   return $level;
 }
