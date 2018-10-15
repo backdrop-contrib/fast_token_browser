@@ -88,17 +88,6 @@
       'class': 'token-key'
     });
 
-    $name.html(element.name);
-    $link.html(element.raw);
-    $raw.html($link);
-    $description.html(element.description);
-
-    $name.data({
-      'token': element.token,
-      'type': element.type,
-      'ancestors': element.ancestors
-    });
-
     $link.click(function () {
       if ($SELECTED) {
         $SELECTED.removeClass('selected-token');
@@ -115,6 +104,17 @@
       }
 
       return false;
+    });
+
+    $name.text(element.name);
+    $link.text(element.raw);
+    $raw.append($link);
+    $description.html(element.description);
+
+    $name.data({
+      'token': element.token,
+      'type': element.type,
+      'ancestors': element.ancestors
     });
 
     if (element.type) {
@@ -137,17 +137,17 @@
       SETTINGS.basePath + 'token/browser/token/' + type,
       { 'ancestors': JSON.stringify(ancestors) },
       function (data) {
-        var children = [];
+        var buffer = document.createDocumentFragment();
         var level = getLevel($row);
         var size = getSize($cell);
         var position = 1;
 
         $.each(data, function (index, element) {
-          children.push(row(element, level + 1, position++));
+          buffer.appendChild(row(element, level + 1, position++));
           size += 1;
         });
 
-        $row.after(children);
+        $row.after(buffer);
         $row.attr('aria-setsize', size);
         $row.data('fetched', true);
         callback();
