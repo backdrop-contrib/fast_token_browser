@@ -214,6 +214,7 @@
         if ($SELECTED) {
           $target.val($target.val() + $SELECTED.text());
           $SELECTED.removeClass('selected-token');
+          $SELECTED.removeAttr('aria-selected');
 
           $SELECTED = null;
         }
