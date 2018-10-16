@@ -133,6 +133,7 @@ function token_browser_tree_view(array $types = array(), $global_types = TRUE) {
       'aria-posinset' => $posinset++,
       'aria-expanded' => 'false',
       'aria-busy' => 'false',
+      'class' => array('tree-grid-parent'),
       'no_striping' => TRUE,
     );
   }

@@ -125,7 +125,11 @@
     });
 
     if (element.type) {
+      $tr.addClass('tree-grid-parent');
       $name.prepend($button);
+    }
+    else {
+      $tr.addClass('tree-grid-leaf');
     }
 
     $tr.append($name, $raw, $description);
