@@ -8,6 +8,7 @@
 .tree-grid {
   background: #aaa;
   border-collapse: collapse;
+  line-height: 1.5;
   margin: 0;
   width: 100%;
 }
@@ -21,7 +22,6 @@
 }
 
 .tree-grid .token-description {
-  line-height: 1.5;
   width: 40%;
 }
 
@@ -41,7 +41,7 @@
   border-color: #aaa;
   border-style: solid;
   border-bottom-width: 1px;
-  line-height: 2;
+  height: 2em;
   padding: .25em .5em;
 }
 
