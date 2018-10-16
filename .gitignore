@@ -4,19 +4,6 @@
 #
 ################################################################################
 
-# Sass cache files
-*.scssc
-
-# CSS files
-*.css
-
-# Generated JavaScript
-/js/*.js
-/dist/*.js
-
-# Minified JavaScript
-*.min.js
-
 # OS generated files
 .DS_Store
 .DS_Store?
@@ -36,32 +23,14 @@ Thumbs.db
 *.tar
 *.zip
 
-# Generated logo and screenshot images
-/logo.png
-/screenshot.png
-
 ################################################################################
 #
 # DIRECTORY EXCLUSIONS
 #
 ################################################################################
 
-# Sass cache
-.sass-cache/
-
-# Eclipse project settings
-.buildpath/
-.project/
-.settings/
-
 # node-js modules
 /node_modules/
-
-# ruby gems
-/vendor/gem/
-
-# Generated images
-/images/
 
 ################################################################################
 #
@@ -69,5 +38,3 @@ Thumbs.db
 #
 ################################################################################
 
-!dist/velocity.min.js
-!css/*.css
