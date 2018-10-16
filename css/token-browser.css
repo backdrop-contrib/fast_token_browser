@@ -1,0 +1,148 @@
+@charset 'UTF-8';
+
+.token-browser-dialog .ui-dialog-content {
+  background: #aaa;
+  padding: 0;
+}
+
+.tree-grid {
+  background: #aaa;
+  border-collapse: collapse;
+  margin: 0;
+  width: 100%;
+}
+
+.tree-grid .token-name {
+  width: 25%;
+}
+
+.tree-grid .token-raw {
+  width: 30%;
+}
+
+.tree-grid .token-description {
+  line-height: 1.5;
+  width: 40%;
+}
+
+.tree-grid tr {
+  background: #aaa;
+  background-clip: padding-box;
+}
+
+.tree-grid th {
+  border: 0;
+}
+
+.tree-grid td {
+  background: #fff;
+  background-clip: padding-box;
+  border: 0;
+  border-color: #aaa;
+  border-style: solid;
+  border-bottom-width: 1px;
+  line-height: 2;
+  padding: .25em .5em;
+}
+
+.tree-grid [aria-level="2"] td:first-child {
+  border-left-width: 2em;
+}
+
+.tree-grid [aria-level="3"] td:first-child {
+  border-left-width: 4em;
+}
+
+.tree-grid [aria-level="4"] td:first-child {
+  border-left-width: 6em;
+}
+
+.tree-grid [aria-level="5"] td:first-child {
+  border-left-width: 8em;
+}
+
+.tree-grid [aria-level="6"] td:first-child {
+  border-left-width: 10em;
+}
+
+.tree-grid [aria-level="7"] td:first-child {
+  border-left-width: 12em;
+}
+
+.tree-grid [aria-level="8"] td:first-child {
+  border-left-width: 14em;
+}
+
+.tree-grid [aria-level="9"] td:first-child {
+  border-left-width: 16em;
+}
+
+.tree-grid [aria-level="10"] td:first-child {
+  border-left-width: 18em;
+}
+
+.tree-grid [aria-level="11"] td:first-child {
+  border-left-width: 20em;
+}
+
+.tree-grid [aria-level="12"] td:first-child {
+  border-left-width: 22em;
+}
+
+.tree-grid [aria-level="2"] td {
+  background: #f4f4f4;
+}
+
+.tree-grid [aria-level="3"] td {
+  background: #e8e8e8;
+}
+
+.tree-grid [aria-level="4"] td,
+.tree-grid [aria-level="5"] td,
+.tree-grid [aria-level="6"] td,
+.tree-grid [aria-level="7"] td,
+.tree-grid [aria-level="8"] td,
+.tree-grid [aria-level="9"] td,
+.tree-grid [aria-level="10"] td {
+  background: #e0e0e0;
+}
+
+.tree-grid button {
+  background-color: transparent;
+  background-image: url('chevron.svg');
+  background-origin: content-box;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 50%;
+  border: 0;
+  height: 2em;
+  line-height: 0;
+  margin: 0;
+  overflow: hidden;
+  padding: 0;
+  text-indent: -9999em;
+  transform: rotate(-90deg);
+  transition: .15s;
+  white-space: nowrap;
+  width: 2em;
+}
+
+.tree-grid button:focus {
+  background-image: url('chevron-focus.svg');
+}
+
+[aria-expanded="true"] button {
+  transform: rotate(0deg);
+}
+
+.tree-grid a:focus {
+  text-decoration: underline;
+}
+
+.token-key.selected-token {
+  font-weight: bold;
+}
+
+.token-key.selected-token:after {
+  content: ' (selected)';
+}
