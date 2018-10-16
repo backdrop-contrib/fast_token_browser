@@ -7,6 +7,7 @@
 
 .tree-grid {
   background: #aaa;
+  border: 0;
   border-collapse: collapse;
   line-height: 1.5;
   margin: 0;
@@ -28,6 +29,7 @@
 .tree-grid tr {
   background: #aaa;
   background-clip: padding-box;
+  border: 0;
 }
 
 .tree-grid th {
