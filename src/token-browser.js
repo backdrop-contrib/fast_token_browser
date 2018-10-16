@@ -135,7 +135,10 @@
 
     $.get(
       SETTINGS.basePath + 'token/browser/token/' + type,
-      { 'ancestors': JSON.stringify(ancestors) },
+      {
+        'ancestors': JSON.stringify(ancestors),
+        'token': SETTINGS.tokenBrowser.token
+      },
       function (data) {
         var buffer = document.createDocumentFragment();
         var level = getLevel($row);

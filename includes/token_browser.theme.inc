@@ -17,11 +17,13 @@ function theme_token_browser_link($variables) {
     $options['query'] = array(
       'token_types' => drupal_json_encode($variables['token_types']),
       'global_types' => drupal_json_encode($variables['global_types']),
+      'token' => drupal_get_token('token-browser'),
     );
   }
 
   if (!empty($variables['dialog'])) {
     drupal_add_library('token_browser', 'token-browser');
+    drupal_add_js(array('tokenBrowser' => array('token' => drupal_get_token('token-browser-endpoint'))), 'setting');
 
     $options['attributes']['class'][] = 'token-browser';
   }

@@ -9,6 +9,10 @@
  * Token browser tree page callback.
  */
 function token_browser_tree() {
+  if (!isset($_GET['token']) || !drupal_valid_token($_GET['token'], 'token-browser')) {
+    return MENU_ACCESS_DENIED;
+  }
+
   $types = isset($_GET['token_types']) ? drupal_json_decode($_GET['token_types']) : array();
   $globals = isset($_GET['global_types']) ? drupal_json_decode($_GET['global_types']) : TRUE;
 
@@ -40,6 +44,10 @@ function token_browser_tree_output($page_callback_result) {
  *   The token type.
  */
 function token_browser_endpoint($type) {
+  if (!isset($_GET['token']) || !drupal_valid_token($_GET['token'], 'token-browser-endpoint')) {
+    return MENU_ACCESS_DENIED;
+  }
+
   $ancestors = isset($_GET['ancestors']) ? drupal_json_decode($_GET['ancestors']) : array();
 
   return token_browser_build_level($type, $ancestors);
