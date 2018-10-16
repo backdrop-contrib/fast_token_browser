@@ -93,17 +93,19 @@
       'class': 'token-key'
     });
 
-    $link.click(function () {
+    $link.click(function (event) {
+      var $this = $(event.target);
+
       if ($SELECTED) {
         $SELECTED.removeClass('selected-token');
         $SELECTED.removeAttr('aira-selected');
       }
 
-      if ($SELECTED && $link[0] === $SELECTED[0]) {
+      if ($SELECTED && $this[0] === $SELECTED[0]) {
         $SELECTED = null;
       }
       else {
-        $SELECTED = $link;
+        $SELECTED = $this;
         $SELECTED.addClass('selected-token');
         $SELECTED.attr('aria-selected');
       }
