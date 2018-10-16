@@ -80,7 +80,12 @@
       'class': 'token-description'
     });
 
-    var $button = $('<button>').text('Expand').bind('click', expand);
+    var $button = $('<button>', {
+      'aria-label': 'Expand'
+    });
+
+    $button.text('Expand');
+    $button.bind('click', expand);
 
     var $link = $('<a>', {
       'href': 'javascript:void(0)',
@@ -169,17 +174,20 @@
     if ($row.data('fetched')) {
       toggle($row, function () {
         $row.attr('aria-expanded', 'true');
-        $target.html('Collapse');
+        $target.text('Collapse');
+        $target.attr('aria-label', 'Collapse');
         $target.bind('click', collapse);
       });
     }
     else {
       $target.text('Loading...');
+      $target.attr('aria-label', 'Loading...');
       $row.attr('aria-busy', 'true');
       fetch($row, $cell, function () {
         $row.attr('aria-expanded', 'true');
         $row.attr('aria-busy', 'false');
-        $target.html('Collapse');
+        $target.text('Collapse');
+        $target.attr('aria-label', 'Collapse');
         $target.bind('click', collapse);
       });
     }
@@ -193,7 +201,8 @@
     $target.unbind('click', collapse);
     toggle($row, function () {
       $row.attr('aria-expanded', 'false');
-      $target.html('Expand');
+      $target.text('Expand');
+      $target.attr('aria-label', 'Expand');
       $target.bind('click', expand);
     });
   }
