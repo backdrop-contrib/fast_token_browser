@@ -112,7 +112,7 @@ function token_browser_tree_view(array $types = array(), $global_types = TRUE) {
     $rows[] = array(
       'data' => array(
         array(
-          'data' => '<button>Expand</button>' . $type_info['name'],
+          'data' => '<button aria-label="Expand">Expand</button>' . $type_info['name'],
           'data-type' => $type,
           'role' => 'gridcell',
           'class' => array('token-name'),
