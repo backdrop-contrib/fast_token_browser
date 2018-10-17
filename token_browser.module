@@ -243,6 +243,12 @@ function token_browser_tree_view(array $types = array(), $global_types = TRUE) {
       'library' => array(
         array('token_browser', 'token-browser'),
       ),
+      'js' => array(
+        array(
+          'type' => 'setting',
+          'data' => array('tokenBrowser' => array('token' => drupal_get_token('token-browser-endpoint'))),
+        ),
+      ),
     ),
     '#cache' => array(
       'cid' => $cid,
