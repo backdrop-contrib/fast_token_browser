@@ -4,23 +4,21 @@
 
   var SETTINGS = {};
 
-  var $SELECTED = null;
-
   function select(event) {
     var $this = $(event.target);
 
-    if ($SELECTED) {
-      $SELECTED.removeClass('selected-token');
-      $SELECTED.removeAttr('aira-selected');
+    if (window.tokenBrowser.token) {
+      window.tokenBrowser.token.removeClass('selected-token');
+      window.tokenBrowser.token.removeAttr('aira-selected');
     }
 
-    if ($SELECTED && $this[0] === $SELECTED[0]) {
-      $SELECTED = null;
+    if (window.tokenBrowser.token && $this[0] === window.tokenBrowser.token[0]) {
+      window.tokenBrowser.token = null;
     }
     else {
-      $SELECTED = $this;
-      $SELECTED.addClass('selected-token');
-      $SELECTED.attr('aria-selected');
+      window.tokenBrowser.token = $this;
+      window.tokenBrowser.token.addClass('selected-token');
+      window.tokenBrowser.token.attr('aria-selected');
     }
 
     return false;
@@ -228,12 +226,12 @@
       $('textarea, input[type="text"]').once('token-browser-insert').click(function (event) {
         var $target = $(event.target);
 
-        if ($SELECTED) {
-          $target.val($target.val() + $SELECTED.text());
-          $SELECTED.removeClass('selected-token');
-          $SELECTED.removeAttr('aria-selected');
+        if (window.tokenBrowser.token) {
+          $target.val($target.val() + window.tokenBrowser.token.text());
+          window.tokenBrowser.token.removeClass('selected-token');
+          window.tokenBrowser.token.removeAttr('aria-selected');
 
-          $SELECTED = null;
+          window.tokenBrowser.token = null;
         }
       });
     }
