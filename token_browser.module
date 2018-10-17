@@ -11,6 +11,7 @@
 function token_browser_library() {
   $libraries['token-browser'] = array(
     'title' => 'Token Browser',
+    'version' => '1.0.0',
     'css' => array(
       drupal_get_path('module', 'token_browser') . '/css/token-browser.css' => array(),
     ),
@@ -33,19 +34,17 @@ function token_browser_menu() {
   $items['token/browser/tree'] = array(
     'page callback' => 'token_browser_tree',
     'delivery callback' => 'token_browser_tree_output',
-    'access callback' => TRUE,
+    'access callback' => 'token_browser_tree_access',
     'type' => MENU_CALLBACK,
-    'file' => 'includes/token_browser.callback.inc',
     'theme callback' => 'ajax_base_page_theme',
   );
 
   // AJAX endpoint for retrieving a token.
   $items['token/browser/token'] = array(
     'page callback' => 'token_browser_endpoint',
-    'delivery callback' => 'drupal_json_output',
-    'access callback' => TRUE,
+    'delivery callback' => 'token_browser_endpoint_output',
+    'access callback' => 'token_browser_endpoint_access',
     'type' => MENU_CALLBACK,
-    'file' => 'includes/token_browser.callback.inc',
   );
 
   return $items;
@@ -80,6 +79,84 @@ function token_browser_menu_alter(&$items) {
  */
 function token_browser_theme_registry_alter(&$theme_registry) {
   $theme_registry['token_tree_link'] = $theme_registry['token_tree'] = $theme_registry['token_browser_link'];
+}
+
+/**
+ * Token browser tree page callback.
+ */
+function token_browser_tree() {
+  $types = isset($_GET['token_types']) ? drupal_json_decode($_GET['token_types']) : array();
+  $globals = isset($_GET['global_types']) ? drupal_json_decode($_GET['global_types']) : TRUE;
+
+  return token_browser_tree_view($types, $globals);
+}
+
+/**
+ * Token browser tree access callback.
+ */
+function token_browser_tree_access() {
+  return isset($_GET['token']) && drupal_valid_token($_GET['token'], 'token-browser');
+}
+
+/**
+ * Token browser output delivery callback.
+ *
+ * @param array $page_callback_result
+ *   A Token Browser tree render array.
+ */
+function token_browser_tree_output($page_callback_result) {
+  if (is_int($page_callback_result)) {
+    drupal_deliver_html_page($page_callback_result);
+  }
+  elseif (isset($page_callback_result)) {
+    $content = drupal_render($page_callback_result);
+    $html = drupal_get_css() . drupal_get_js('header') . $content . drupal_get_js('footer');
+
+    drupal_page_header();
+
+    print $html;
+
+    drupal_page_footer();
+  }
+  else {
+    drupal_page_header();
+    drupal_page_footer();
+  }
+}
+
+/**
+ * Token browser JSON endpoint callback.
+ *
+ * @param string $type
+ *   The token type.
+ */
+function token_browser_endpoint($type) {
+  $ancestors = isset($_GET['ancestors']) ? drupal_json_decode($_GET['ancestors']) : array();
+
+  return token_browser_build_level($type, $ancestors);
+}
+
+/**
+ * Token browser JSON endpoint access callback.
+ */
+function token_browser_endpoint_access() {
+  return isset($_GET['token']) && drupal_valid_token($_GET['token'], 'token-browser-endpoint');
+}
+
+/**
+ * Token browser JSON endpoint output callback.
+ */
+function token_browser_endpoint_output($page_callback_result) {
+  if (is_int($page_callback_result)) {
+    drupal_deliver_html_page($page_callback_result);
+  }
+  elseif (isset($page_callback_result)) {
+    drupal_json_output($page_callback_result);
+  }
+  else {
+    drupal_page_header();
+    drupal_page_footer();
+  }
 }
 
 /**
