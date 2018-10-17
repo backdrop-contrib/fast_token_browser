@@ -93,6 +93,8 @@ function token_browser_theme_registry_alter(&$theme_registry) {
  *   The constructed array of types keyed by type.
  */
 function token_browser_tree_view(array $types = array(), $global_types = TRUE) {
+  global $language;
+
   $info = token_get_info();
   $rows = array();
   $posinset = 1;
@@ -138,7 +140,11 @@ function token_browser_tree_view(array $types = array(), $global_types = TRUE) {
     );
   }
 
-  $cid = 'token-browser:' . hash('sha256', serialize(array('token_types' => $types, 'global_types' => $global_types)));
+  $cid = 'token-browser:' . hash('sha256', serialize(array(
+    'token_types' => $types,
+    'global_types' => $global_types,
+    'language' => $language->language,
+  )));
 
   $build = array(
     '#theme' => 'table',
