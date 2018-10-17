@@ -42,7 +42,7 @@ function token_browser_menu() {
   // AJAX endpoint for retrieving a token.
   $items['token/browser/token/%'] = array(
     'page callback' => 'token_browser_endpoint',
-    'page arguments' => array(1),
+    'page arguments' => array(3),
     'delivery callback' => 'token_browser_endpoint_output',
     'access callback' => 'token_browser_endpoint_access',
     'type' => MENU_CALLBACK,
