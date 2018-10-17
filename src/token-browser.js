@@ -14,7 +14,7 @@
       $SELECTED.removeAttr('aira-selected');
     }
 
-    if ($SELECTED || $this[0] === $SELECTED[0]) {
+    if ($SELECTED && $this[0] === $SELECTED[0]) {
       $SELECTED = null;
     }
     else {
