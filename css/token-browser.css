@@ -43,8 +43,8 @@
   border-color: #aaa;
   border-style: solid;
   border-bottom-width: 1px;
-  height: 2em;
-  padding: .25em .5em;
+  height: 2.4em;
+  padding: 0 .5em;
 }
 
 .tree-grid-parent .token-name {
@@ -52,7 +52,7 @@
 }
 
 .tree-grid-leaf .token-name {
-  padding-left: 2.1em;
+  padding-left: 2.4em;
 }
 
 .tree-grid td:first-child {
@@ -132,7 +132,7 @@
   border: 0;
   height: 2em;
   line-height: 0;
-  margin: .1em;
+  margin: .2em;
   overflow: hidden;
   padding: 0;
   text-indent: -9999em;
@@ -143,7 +143,6 @@
 }
 
 .tree-grid button:focus {
-  background-image: url('chevron-focus.svg');
   background-color: #ddd;
 }
 
