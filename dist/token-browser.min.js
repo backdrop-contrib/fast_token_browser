@@ -217,20 +217,4 @@
     }
   };
 
-  Drupal.behaviors.tokenBrowserInsert = {
-    attach: function (context, settings) {
-      $('textarea, input[type="text"]').once('token-browser-insert').click(function (event) {
-        var $target = $(event.target);
-
-        if (window.selectedToken) {
-          $target.val($target.val() + window.selectedToken.text());
-          window.selectedToken.removeClass('selected-token');
-          window.selectedToken.removeAttr('aria-selected');
-
-          window.selectedToken = null;
-        }
-      });
-    }
-  };
-
 })(jQuery, Drupal, this, this.document);
