@@ -145,7 +145,7 @@
     ancestors.push(token);
 
     parameters['ancestors'] = JSON.stringify(ancestors);
-    parameters['token'] = Drupal.settings.selectedToken;
+    parameters['token'] = Drupal.settings.tokenBrowser.token;
 
     $.get(url, parameters, function (data) {
       var buffer = document.createDocumentFragment();
