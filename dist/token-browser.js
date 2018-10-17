@@ -2,8 +2,6 @@
 
   'use strict';
 
-  var SETTINGS = {};
-
   function select(event) {
     var $this = $(event.target);
 
@@ -141,13 +139,13 @@
     var type = $cell.data('type');
     var token = $cell.data('token') ? $cell.data('token') : type;
     var ancestors = getAncestors($cell);
-    var url = SETTINGS.basePath + 'token/browser/token/' + type;
+    var url = Drupal.settings.basePath + 'token/browser/token/' + type;
     var parameters = {};
 
     ancestors.push(token);
 
     parameters['ancestors'] = JSON.stringify(ancestors);
-    parameters['token'] = SETTINGS.selectedToken;
+    parameters['token'] = Drupal.settings.selectedToken;
 
     $.get(url, parameters, function (data) {
       var buffer = document.createDocumentFragment();
@@ -214,8 +212,6 @@
     attach: function (context, settings) {
       var $treegrid = $('.tree-grid', context);
       var $buttons = $treegrid.find('button');
-
-      SETTINGS = settings;
 
       $buttons.bind('click', expand);
     }
