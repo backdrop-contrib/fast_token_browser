@@ -6,6 +6,26 @@
 
   var $SELECTED = null;
 
+  function select(event) {
+    var $this = $(event.target);
+
+    if ($SELECTED) {
+      $SELECTED.removeClass('selected-token');
+      $SELECTED.removeAttr('aira-selected');
+    }
+
+    if ($SELECTED && $this[0] === $SELECTED[0]) {
+      $SELECTED = null;
+    }
+    else {
+      $SELECTED = $this;
+      $SELECTED.addClass('selected-token');
+      $SELECTED.attr('aria-selected');
+    }
+
+    return false;
+  }
+
   function getLevel($row) {
     return Number($row.attr('aria-level'));
   }
@@ -65,6 +85,21 @@
       'aria-busy': 'false'
     });
 
+    var $button = $('<button>', {
+      'aria-label': 'Expand'
+    });
+
+    $button.text('Expand');
+    $button.bind('click', expand);
+
+    var $link = $('<a>', {
+      'href': 'javascript:void(0)',
+      'title': 'Insert the token ' + element.raw,
+      'class': 'token-key'
+    });
+
+    $link.click(select);
+
     var $name =  $('<td>', {
       'role': 'gridcell',
       'class': 'token-name'
@@ -80,39 +115,6 @@
       'class': 'token-description'
     });
 
-    var $button = $('<button>', {
-      'aria-label': 'Expand'
-    });
-
-    $button.text('Expand');
-    $button.bind('click', expand);
-
-    var $link = $('<a>', {
-      'href': 'javascript:void(0)',
-      'title': 'Insert the token ' + element.raw,
-      'class': 'token-key'
-    });
-
-    $link.click(function (event) {
-      var $this = $(event.target);
-
-      if ($SELECTED) {
-        $SELECTED.removeClass('selected-token');
-        $SELECTED.removeAttr('aira-selected');
-      }
-
-      if ($SELECTED && $this[0] === $SELECTED[0]) {
-        $SELECTED = null;
-      }
-      else {
-        $SELECTED = $this;
-        $SELECTED.addClass('selected-token');
-        $SELECTED.attr('aria-selected');
-      }
-
-      return false;
-    });
-
     $name.text(element.name);
     $link.text(element.raw);
     $raw.append($link);
@@ -125,8 +127,8 @@
     });
 
     if (element.type) {
-      $tr.addClass('tree-grid-parent');
       $name.prepend($button);
+      $tr.addClass('tree-grid-parent');
     }
     else {
       $tr.addClass('tree-grid-leaf');
@@ -141,33 +143,30 @@
     var type = $cell.data('type');
     var token = $cell.data('token') ? $cell.data('token') : type;
     var ancestors = getAncestors($cell);
+    var url = SETTINGS.basePath + 'token/browser/token/' + type;
+    var parameters = {};
 
     ancestors.push(token);
 
-    $.get(
-      SETTINGS.basePath + 'token/browser/token/' + type,
-      {
-        'ancestors': JSON.stringify(ancestors),
-        'token': SETTINGS.tokenBrowser.token
-      },
-      function (data) {
-        var buffer = document.createDocumentFragment();
-        var level = getLevel($row);
-        var size = getSize($cell);
-        var position = 1;
+    parameters['ancestors'] = JSON.stringify(ancestors);
+    parameters['token'] = SETTINGS.tokenBrowser.token;
 
-        $.each(data, function (index, element) {
-          buffer.appendChild(row(element, level + 1, position++));
-          size += 1;
-        });
+    $.get(url, parameters, function (data) {
+      var buffer = document.createDocumentFragment();
+      var level = getLevel($row);
+      var size = getSize($cell);
+      var position = 1;
 
-        $row.after(buffer);
-        $row.attr('aria-setsize', size);
-        $row.data('fetched', true);
-        callback();
-      },
-      'json'
-    );
+      $.each(data, function (index, element) {
+        buffer.appendChild(row(element, level + 1, position++));
+        size += 1;
+      });
+
+      $row.after(buffer);
+      $row.attr('aria-setsize', size);
+      $row.data('fetched', true);
+      callback();
+    }, 'json');
   }
 
   function expand(event) {
@@ -243,10 +242,11 @@
   Drupal.behaviors.tokenBrowser = {
     attach: function (context, settings) {
       var $window = $(window);
-      var data = {};
 
-      data['ajax_page_state[theme]'] = settings.ajaxPageState.theme;
-      data['ajax_page_state[theme_token]'] = settings.ajaxPageState.theme_token;
+      var data = {
+        'ajax_page_state[theme]': settings.ajaxPageState.theme,
+        'ajax_page_state[theme_token]': settings.ajaxPageState.theme_token
+      };
 
       $('a.token-browser').once('token-browser').click(function (event) {
         var $this = $(this);
