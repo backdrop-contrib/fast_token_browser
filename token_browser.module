@@ -18,6 +18,14 @@ function token_browser_library() {
     'js' => array(
       drupal_get_path('module', 'token_browser') . '/dist/token-browser.js' => array(),
     ),
+  );
+
+  $libraries['token-browser-link'] = array(
+    'title' => 'Token Browser Link',
+    'version' => '1.0.0',
+    'js' => array(
+      drupal_get_path('module', 'token_browser') . '/dist/token-browser-link.js' => array(),
+    ),
     'dependencies' => array(
       array('system', 'ui.dialog'),
     ),
