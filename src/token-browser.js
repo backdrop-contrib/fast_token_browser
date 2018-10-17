@@ -7,18 +7,18 @@
   function select(event) {
     var $this = $(event.target);
 
-    if (window.tokenBrowser.token) {
-      window.tokenBrowser.token.removeClass('selected-token');
-      window.tokenBrowser.token.removeAttr('aira-selected');
+    if (window.selectedToken) {
+      window.selectedToken.removeClass('selected-token');
+      window.selectedToken.removeAttr('aira-selected');
     }
 
-    if (window.tokenBrowser.token && $this[0] === window.tokenBrowser.token[0]) {
-      window.tokenBrowser.token = null;
+    if (window.selectedToken && $this[0] === window.selectedToken[0]) {
+      window.selectedToken = null;
     }
     else {
-      window.tokenBrowser.token = $this;
-      window.tokenBrowser.token.addClass('selected-token');
-      window.tokenBrowser.token.attr('aria-selected');
+      window.selectedToken = $this;
+      window.selectedToken.addClass('selected-token');
+      window.selectedToken.attr('aria-selected');
     }
 
     return false;
@@ -147,7 +147,7 @@
     ancestors.push(token);
 
     parameters['ancestors'] = JSON.stringify(ancestors);
-    parameters['token'] = SETTINGS.tokenBrowser.token;
+    parameters['token'] = SETTINGS.selectedToken;
 
     $.get(url, parameters, function (data) {
       var buffer = document.createDocumentFragment();
@@ -226,12 +226,12 @@
       $('textarea, input[type="text"]').once('token-browser-insert').click(function (event) {
         var $target = $(event.target);
 
-        if (window.tokenBrowser.token) {
-          $target.val($target.val() + window.tokenBrowser.token.text());
-          window.tokenBrowser.token.removeClass('selected-token');
-          window.tokenBrowser.token.removeAttr('aria-selected');
+        if (window.selectedToken) {
+          $target.val($target.val() + window.selectedToken.text());
+          window.selectedToken.removeClass('selected-token');
+          window.selectedToken.removeAttr('aria-selected');
 
-          window.tokenBrowser.token = null;
+          window.selectedToken = null;
         }
       });
     }
