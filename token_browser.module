@@ -17,6 +17,10 @@ function token_browser_library() {
     ),
     'js' => array(
       drupal_get_path('module', 'token_browser') . '/dist/token-browser.js' => array(),
+      array(
+        'type' => 'setting',
+        'data' => array('tokenBrowser' => array('token' => drupal_get_token('token-browser-endpoint'))),
+      ),
     ),
     'dependencies' => array(
       array('system', 'ui.dialog'),
@@ -242,12 +246,6 @@ function token_browser_tree_view(array $types = array(), $global_types = TRUE) {
     '#attached' => array(
       'library' => array(
         array('token_browser', 'token-browser'),
-      ),
-      'js' => array(
-        array(
-          'type' => 'setting',
-          'data' => array('tokenBrowser' => array('token' => drupal_get_token('token-browser-endpoint'))),
-        ),
       ),
     ),
     '#cache' => array(
