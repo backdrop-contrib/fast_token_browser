@@ -178,6 +178,8 @@
         $target.bind('click', collapse);
       });
     }
+
+    return false;
   }
 
   function collapse(event) {
@@ -192,6 +194,8 @@
       $target.attr('aria-label', 'Expand');
       $target.bind('click', expand);
     });
+
+    return false;
   }
 
   Drupal.behaviors.tokenBrowserTreegrid = {
