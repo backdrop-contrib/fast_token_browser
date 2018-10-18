@@ -1,5 +1,9 @@
 @charset 'UTF-8';
 
+.token-browser-dialog {
+  padding: 0;
+}
+
 .token-browser-dialog .ui-dialog-content {
   background: #aaa;
   padding: 0;
@@ -27,8 +31,7 @@
 }
 
 .tree-grid tr {
-  background: #aaa;
-  background-clip: padding-box;
+  background: padding-box #aaa;
   border: 0;
 }
 
@@ -37,11 +40,8 @@
 }
 
 .tree-grid td {
-  background: #fff;
-  background-clip: padding-box;
-  border: 0;
-  border-color: #aaa;
-  border-style: solid;
+  background: padding-box #fff;
+  border: #aaa solid 0;
   border-bottom-width: 1px;
   height: 2.4em;
   padding: 0 .5em;
@@ -123,21 +123,15 @@
 }
 
 .tree-grid button {
-  background-color: transparent;
-  background-image: url('chevron.svg');
-  background-origin: content-box;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: 50%;
+  background: transparent;
   border: 0;
   height: 2em;
   line-height: 0;
   margin: .2em;
   overflow: hidden;
   padding: 0;
+  position: relative;
   text-indent: -9999em;
-  transform: rotate(-90deg);
-  transition: .15s;
   white-space: nowrap;
   width: 2em;
 }
@@ -146,7 +140,21 @@
   background-color: #ddd;
 }
 
-[aria-expanded="true"] button {
+.tree-grid button:after {
+  background: content-box transparent url('chevron.svg') center / 50% no-repeat;
+  box-sizing: border-box;
+  content: '';
+  display: block;
+  left: 0;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  transform: rotate(-90deg);
+  transition: .15s;
+  width: 100%;
+}
+
+[aria-expanded="true"] button:after {
   transform: rotate(0deg);
 }
 
