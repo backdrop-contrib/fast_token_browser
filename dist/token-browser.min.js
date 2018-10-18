@@ -22,14 +22,6 @@
     return false;
   }
 
-  function getLevel($row) {
-    return Number($row.attr('aria-level'));
-  }
-
-  function isExpanded($row) {
-    return $row.attr('aria-expanded') === 'true';
-  }
-
   function getAncestors($cell) {
     var ancestors = $cell.data('ancestors');
 
@@ -42,32 +34,50 @@
     return size ? Number(size) : 0;
   }
 
-  function toggle($current, callback) {
+  function expandRow(current, callback) {
+    var next = current;
+    var level = Number(current.getAttribute('aria-level'));
     var expand = [];
-    var level = getLevel($current);
-    var expanded = isExpanded($current);
 
     expand[level + 1] = true;
 
-    $current.nextAll().each(function (index, next) {
-      var $next = $(next);
-      var next_level = getLevel($next);
+    while (next = next.nextElementSibling) {
+      var next_level = Number(next.getAttribute('aria-level'));
 
       if (next_level <= level) {
-        return false;
+        break;
       }
 
-      expand[next_level + 1] = expand[next_level] && isExpanded($next);
+      expand[next_level + 1] = expand[next_level] && next.getAttribute('aria-expanded') === 'true';
 
       if (expand[next_level]) {
-        if (expanded) {
-          next.style.display = 'none';
-        }
-        else {
-          next.style.display = 'table-row';
-        }
+        next.style.display = 'table-row';
       }
-    });
+    }
+
+    callback();
+  }
+
+  function collapseRow(current, callback) {
+    var next = current;
+    var level = Number(current.getAttribute('aria-level'));
+    var expand = [];
+
+    expand[level + 1] = true;
+
+    while (next = next.nextElementSibling) {
+      var next_level = Number(next.getAttribute('aria-level'));
+
+      if (next_level <= level) {
+        break;
+      }
+
+      expand[next_level + 1] = expand[next_level] && next.getAttribute('aria-expanded') === 'true';
+
+      if (expand[next_level]) {
+        next.style.display = 'none';
+      }
+    }
 
     callback();
   }
@@ -149,7 +159,7 @@
 
     $.get(url, parameters, function (data) {
       var buffer = document.createDocumentFragment();
-      var level = getLevel($row);
+      var level = Number($row.attr('aria-level'));
       var size = getSize($cell);
       var position = 1;
 
@@ -173,7 +183,7 @@
     $target.unbind('click', expand);
 
     if ($row.data('fetched')) {
-      toggle($row, function () {
+      expandRow($row[0], function () {
         $row.attr('aria-expanded', 'true');
         $target.text('Collapse');
         $target.attr('aria-label', 'Collapse');
@@ -200,7 +210,7 @@
     var $row = $cell.parent();
 
     $target.unbind('click', collapse);
-    toggle($row, function () {
+    collapseRow($row[0], function () {
       $row.attr('aria-expanded', 'false');
       $target.text('Expand');
       $target.attr('aria-label', 'Expand');
