@@ -34,7 +34,7 @@
     return size ? Number(size) : 0;
   }
 
-  function expandRow(current, callback) {
+  function display(current, display, callback) {
     var next = current;
     var level = Number(current.getAttribute('aria-level'));
     var expand = [];
@@ -51,31 +51,7 @@
       expand[next_level + 1] = expand[next_level] && next.getAttribute('aria-expanded') === 'true';
 
       if (expand[next_level]) {
-        next.style.display = 'table-row';
-      }
-    }
-
-    callback();
-  }
-
-  function collapseRow(current, callback) {
-    var next = current;
-    var level = Number(current.getAttribute('aria-level'));
-    var expand = [];
-
-    expand[level + 1] = true;
-
-    while (next = next.nextElementSibling) {
-      var next_level = Number(next.getAttribute('aria-level'));
-
-      if (next_level <= level) {
-        break;
-      }
-
-      expand[next_level + 1] = expand[next_level] && next.getAttribute('aria-expanded') === 'true';
-
-      if (expand[next_level]) {
-        next.style.display = 'none';
+        next.style.display = display;
       }
     }
 
@@ -183,7 +159,7 @@
     $target.unbind('click', expand);
 
     if ($row.data('fetched')) {
-      expandRow($row[0], function () {
+      display($row[0], 'table-row', function () {
         $row.attr('aria-expanded', 'true');
         $target.text('Collapse');
         $target.attr('aria-label', 'Collapse');
@@ -210,7 +186,7 @@
     var $row = $cell.parent();
 
     $target.unbind('click', collapse);
-    collapseRow($row[0], function () {
+    display($row[0], 'none', function () {
       $row.attr('aria-expanded', 'false');
       $target.text('Expand');
       $target.attr('aria-label', 'Expand');
