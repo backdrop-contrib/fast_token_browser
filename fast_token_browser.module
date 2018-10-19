@@ -136,7 +136,15 @@ function fast_token_browser_tree_output($page_callback_result) {
  *   The token type.
  */
 function fast_token_browser_endpoint($type) {
-  $ancestors = isset($_GET['ancestors']) ? drupal_json_decode($_GET['ancestors']) : array();
+  $definition = array(
+    'ancestors' => array(
+      'filter' => FILTER_CALLBACK,
+      'options' => 'filter_xss',
+    ),
+  );
+
+  $input = filter_input_array(INPUT_GET, $definition);
+  $ancestors = isset($input['ancestors']) ? drupal_json_decode($input['ancestors']) : array();
 
   return fast_token_browser_build_level($type, $ancestors);
 }
