@@ -46,7 +46,7 @@ function fast_token_browser_menu() {
   // AJAX endpoint for retrieving a token.
   $items['token-browser/token/%'] = array(
     'page callback' => 'fast_token_browser_endpoint',
-    'page arguments' => array(3),
+    'page arguments' => array(2),
     'delivery callback' => 'fast_token_browser_endpoint_output',
     'access callback' => 'fast_token_browser_endpoint_access',
     'type' => MENU_CALLBACK,
