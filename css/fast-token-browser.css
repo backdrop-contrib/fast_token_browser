@@ -44,7 +44,7 @@
   border: #aaa solid 0;
   border-bottom-width: 1px;
   height: 2.4em;
-  padding: 0 .5em;
+  padding: .2em .5em;
 }
 
 .tree-grid .token-name {
@@ -123,7 +123,7 @@
   border: 0;
   height: 2em;
   line-height: 0;
-  margin: .2em .2em .2em -2.2em;
+  margin: 0 .2em 0 -2.2em;
   overflow: hidden;
   padding: 0;
   position: relative;
