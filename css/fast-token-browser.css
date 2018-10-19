@@ -47,11 +47,7 @@
   padding: 0 .5em;
 }
 
-.tree-grid-parent .token-name {
-  padding-left: 0;
-}
-
-.tree-grid-leaf .token-name {
+.tree-grid .token-name {
   padding-left: 2.4em;
 }
 
@@ -127,7 +123,7 @@
   border: 0;
   height: 2em;
   line-height: 0;
-  margin: .2em;
+  margin: .2em .2em .2em -2.2em;
   overflow: hidden;
   padding: 0;
   position: relative;
