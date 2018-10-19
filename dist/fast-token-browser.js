@@ -76,7 +76,7 @@
 
     var $link = $('<a>', {
       'href': 'javascript:void(0)',
-      'title': 'Insert the token ' + element.raw,
+      'title': 'Select the token ' + element.raw + '. Click in a text field to insert it.',
       'class': 'token-key'
     });
 
