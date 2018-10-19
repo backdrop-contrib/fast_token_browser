@@ -125,13 +125,13 @@
     var type = $cell.data('type');
     var token = $cell.data('token') ? $cell.data('token') : type;
     var ancestors = getAncestors($cell);
-    var url = Drupal.settings.basePath + 'token/browser/token/' + type;
+    var url = Drupal.settings.basePath + 'token-browser/token/' + type;
     var parameters = {};
 
     ancestors.push(token);
 
-    parameters['ancestors'] = JSON.stringify(ancestors);
-    parameters['token'] = Drupal.settings.tokenBrowser.token;
+    parameters.ancestors = JSON.stringify(ancestors);
+    parameters.token = Drupal.settings.fastTokenBrowser.token;
 
     $.get(url, parameters, function (data) {
       var buffer = document.createDocumentFragment();

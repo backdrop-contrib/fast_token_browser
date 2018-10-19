@@ -8,18 +8,18 @@
 /**
  * Implements hook_library().
  */
-function token_browser_library() {
-  $libraries['token-browser'] = array(
-    'title' => 'Token Browser',
-    'version' => '1.0.0',
+function fast_token_browser_library() {
+  $libraries['fast-token-browser'] = array(
+    'title' => 'Fast Token Browser',
+    'version' => '1.0',
     'css' => array(
-      drupal_get_path('module', 'token_browser') . '/css/token-browser.css' => array(),
+      drupal_get_path('module', 'fast_token_browser') . '/css/fast-token-browser.css' => array(),
     ),
     'js' => array(
-      drupal_get_path('module', 'token_browser') . '/dist/token-browser.js' => array(),
+      drupal_get_path('module', 'fast_token_browser') . '/dist/fast-token-browser.js' => array(),
       array(
         'type' => 'setting',
-        'data' => array('tokenBrowser' => array('token' => drupal_get_token('token-browser-endpoint'))),
+        'data' => array('fastTokenBrowser' => array('token' => drupal_get_token('token-browser-endpoint'))),
       ),
     ),
     'dependencies' => array(
@@ -33,22 +33,22 @@ function token_browser_library() {
 /**
  * Implements hook_menu().
  */
-function token_browser_menu() {
+function fast_token_browser_menu() {
   // AJAX endpoint for the assembled tree.
-  $items['token/browser/tree'] = array(
-    'page callback' => 'token_browser_tree',
-    'delivery callback' => 'token_browser_tree_output',
-    'access callback' => 'token_browser_tree_access',
+  $items['token-browser/tree'] = array(
+    'page callback' => 'fast_token_browser_tree',
+    'delivery callback' => 'fast_token_browser_tree_output',
+    'access callback' => 'fast_token_browser_tree_access',
     'type' => MENU_CALLBACK,
     'theme callback' => 'ajax_base_page_theme',
   );
 
   // AJAX endpoint for retrieving a token.
-  $items['token/browser/token/%'] = array(
-    'page callback' => 'token_browser_endpoint',
+  $items['token-browser/token/%'] = array(
+    'page callback' => 'fast_token_browser_endpoint',
     'page arguments' => array(3),
-    'delivery callback' => 'token_browser_endpoint_output',
-    'access callback' => 'token_browser_endpoint_access',
+    'delivery callback' => 'fast_token_browser_endpoint_output',
+    'access callback' => 'fast_token_browser_endpoint_access',
     'type' => MENU_CALLBACK,
   );
 
@@ -58,15 +58,15 @@ function token_browser_menu() {
 /**
  * Implements hook_theme().
  */
-function token_browser_theme() {
-  $themes['token_browser_link'] = array(
+function fast_token_browser_theme() {
+  $themes['fast_token_browser_link'] = array(
     'variables' => array(
       'text' => t('Browse available tokens.'),
       'token_types' => array(),
       'global_types' => TRUE,
       'dialog' => FALSE,
     ),
-    'file' => 'includes/token_browser.theme.inc',
+    'file' => 'includes/fast_token_browser.theme.inc',
   );
 
   return $themes;
@@ -75,31 +75,31 @@ function token_browser_theme() {
 /**
  * Implements hook_menu_alter().
  */
-function token_browser_menu_alter(&$items) {
-  $items['token/tree'] = $items['token/browser/tree'];
+function fast_token_browser_menu_alter(&$items) {
+  $items['token/tree'] = $items['token-browser/tree'];
 }
 
 /**
  * Implements hook_theme_registory_alter().
  */
-function token_browser_theme_registry_alter(&$theme_registry) {
-  $theme_registry['token_tree_link'] = $theme_registry['token_tree'] = $theme_registry['token_browser_link'];
+function fast_token_browser_theme_registry_alter(&$theme_registry) {
+  $theme_registry['token_tree_link'] = $theme_registry['token_tree'] = $theme_registry['fast_token_browser_link'];
 }
 
 /**
  * Token browser tree page callback.
  */
-function token_browser_tree() {
+function fast_token_browser_tree() {
   $types = isset($_GET['token_types']) ? drupal_json_decode($_GET['token_types']) : array();
   $globals = isset($_GET['global_types']) ? drupal_json_decode($_GET['global_types']) : TRUE;
 
-  return token_browser_tree_view($types, $globals);
+  return fast_token_browser_tree_view($types, $globals);
 }
 
 /**
  * Token browser tree access callback.
  */
-function token_browser_tree_access() {
+function fast_token_browser_tree_access() {
   return isset($_GET['token']) && drupal_valid_token($_GET['token'], 'token-browser');
 }
 
@@ -109,7 +109,7 @@ function token_browser_tree_access() {
  * @param array $page_callback_result
  *   A Token Browser tree render array.
  */
-function token_browser_tree_output($page_callback_result) {
+function fast_token_browser_tree_output($page_callback_result) {
   if (is_int($page_callback_result)) {
     drupal_deliver_html_page($page_callback_result);
   }
@@ -135,23 +135,23 @@ function token_browser_tree_output($page_callback_result) {
  * @param string $type
  *   The token type.
  */
-function token_browser_endpoint($type) {
+function fast_token_browser_endpoint($type) {
   $ancestors = isset($_GET['ancestors']) ? drupal_json_decode($_GET['ancestors']) : array();
 
-  return token_browser_build_level($type, $ancestors);
+  return fast_token_browser_build_level($type, $ancestors);
 }
 
 /**
  * Token browser JSON endpoint access callback.
  */
-function token_browser_endpoint_access() {
+function fast_token_browser_endpoint_access() {
   return isset($_GET['token']) && drupal_valid_token($_GET['token'], 'token-browser-endpoint');
 }
 
 /**
  * Token browser JSON endpoint output callback.
  */
-function token_browser_endpoint_output($page_callback_result) {
+function fast_token_browser_endpoint_output($page_callback_result) {
   if (is_int($page_callback_result)) {
     drupal_deliver_html_page($page_callback_result);
   }
@@ -174,7 +174,7 @@ function token_browser_endpoint_output($page_callback_result) {
  * @return array
  *   The constructed array of types keyed by type.
  */
-function token_browser_tree_view(array $types = array(), $global_types = TRUE) {
+function fast_token_browser_tree_view(array $types = array(), $global_types = TRUE) {
   global $language;
 
   $info = token_get_info();
@@ -245,7 +245,7 @@ function token_browser_tree_view(array $types = array(), $global_types = TRUE) {
     ),
     '#attached' => array(
       'library' => array(
-        array('token_browser', 'token-browser'),
+        array('fast_token_browser', 'fast-token-browser'),
       ),
     ),
     '#cache' => array(
@@ -268,7 +268,7 @@ function token_browser_tree_view(array $types = array(), $global_types = TRUE) {
  * @return array
  *   The constructed level of tokens as an array keyed by token.
  */
-function token_browser_build_level($type, array $ancestors = array()) {
+function fast_token_browser_build_level($type, array $ancestors = array()) {
   global $language;
 
   $level = array();

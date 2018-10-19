@@ -8,7 +8,7 @@
 /**
  * Token Browser Link theme.
  */
-function theme_token_browser_link($variables) {
+function theme_fast_token_browser_link($variables) {
   $options = array(
     'attributes' => array(),
   );
@@ -22,7 +22,7 @@ function theme_token_browser_link($variables) {
   }
 
   if (!empty($variables['dialog'])) {
-    drupal_add_library('token_browser', 'token-browser');
+    drupal_add_library('fast_token_browser', 'fast-token-browser');
 
     $options['attributes']['class'][] = 'token-browser';
   }
@@ -30,5 +30,5 @@ function theme_token_browser_link($variables) {
     $options['attributes']['target'] = '_blank';
   }
 
-  return l($variables['text'], 'token/browser/tree', $options);
+  return l($variables['text'], 'token-browser/tree', $options);
 }

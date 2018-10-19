@@ -1,0 +1,4 @@
+name = Fast Token Browser
+description = A more efficient browser for the Token module.
+core = 7.x
+dependencies[] = token
