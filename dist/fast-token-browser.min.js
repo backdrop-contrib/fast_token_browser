@@ -131,16 +131,12 @@
       var size = getSize($cell);
       var position = 1;
 
-      console.time('buffer');
       $.each(data, function (index, element) {
         buffer.appendChild(row(element, level + 1, position++));
         size += 1;
       });
-      console.timeEnd('buffer');
 
-      console.time('insert');
       $row.after(buffer);
-      console.timeEnd('insert');
       $row.attr('aria-setsize', size);
       $row.data('fetched', true);
       callback();
