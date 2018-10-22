@@ -85,26 +85,26 @@
     name.setAttribute('data-token', element.token);
     name.setAttribute('data-type', element.type);
 
+    $(name).data('ancestors', element.ancestors);
+
     raw.setAttribute('role', 'gridcell');
     raw.setAttribute('class', 'token-raw');
+    raw.appendChild(link);
 
     description.setAttribute('role', 'gridcell');
     description.setAttribute('class', 'token-description');
 
+    name.innerHTML = element.name;
     link.innerHTML = element.raw;
-    raw.appendChild(link);
     description.innerHTML = element.description;
 
     if (element.type) {
-      name.appendChild(button);
+      name.insertBefore(button, name.firstChild);
       tr.classList.add('tree-grid-parent');
     }
     else {
       tr.classList.add('tree-grid-leaf');
     }
-
-    $(name).data('ancestors', element.ancestors);
-    name.appendChild(document.createTextNode(element.name));
 
     tr.appendChild(name);
     tr.appendChild(raw);
