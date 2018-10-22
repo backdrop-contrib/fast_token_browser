@@ -121,6 +121,8 @@
 .tree-grid button {
   background: transparent;
   border: 0;
+  display: inline;
+  float: left;
   height: 2em;
   line-height: 0;
   margin: 0 .2em 0 -2.2em;
