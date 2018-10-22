@@ -3,18 +3,18 @@
   'use strict';
 
   function select(event) {
-    var $this = $(event.target);
+    var $target = $(event.target);
 
     if (window.selectedToken) {
       window.selectedToken.removeClass('selected-token');
       window.selectedToken.removeAttr('aira-selected');
     }
 
-    if (window.selectedToken && $this[0] === window.selectedToken[0]) {
+    if (window.selectedToken && $target[0] === window.selectedToken[0]) {
       window.selectedToken = null;
     }
     else {
-      window.selectedToken = $this;
+      window.selectedToken = $target;
       window.selectedToken.addClass('selected-token');
       window.selectedToken.attr('aria-selected');
     }
@@ -59,66 +59,58 @@
   }
 
   function row(element, level, index) {
-    var $tr = $('<tr>', {
-      'role': 'row',
-      'aria-level': level,
-      'aria-posinset': index,
-      'aria-expanded': 'false',
-      'aria-busy': 'false'
-    });
+    var tr = document.createElement('tr');
+    var button = document.createElement('button');
+    var link = document.createElement('a');
+    var name = document.createElement('td');
+    var raw = document.createElement('td');
+    var description = document.createElement('td');
 
-    var $button = $('<button>', {
-      'aria-label': 'Expand'
-    });
+    tr.setAttribute('role', 'row');
+    tr.setAttribute('aria-level', level);
+    tr.setAttribute('aria-posinset', index);
+    tr.setAttribute('aria-expanded', 'false');
+    tr.setAttribute('aria-busy', 'false');
 
-    $button.text('Expand');
-    $button.bind('click', expand);
+    button.setAttribute('aria-label', 'Expand');
+    button.addEventListener('click', expand);
 
-    var $link = $('<a>', {
-      'href': 'javascript:void(0)',
-      'title': 'Select the token ' + element.raw + '. Click in a text field to insert it.',
-      'class': 'token-key'
-    });
+    link.setAttribute('href', 'javascript:void(0);');
+    link.setAttribute('title', 'Select the token ' + element.raw + '. Click in a text field to insert it.');
+    link.setAttribute('class', 'token-key');
+    link.addEventListener('click', select);
 
-    $link.click(select);
+    name.setAttribute('role', 'gridcell');
+    name.setAttribute('class', 'token-name');
+    name.setAttribute('data-token', element.token);
+    name.setAttribute('data-type', element.type);
 
-    var $name =  $('<td>', {
-      'role': 'gridcell',
-      'class': 'token-name'
-    });
+    raw.setAttribute('role', 'gridcell');
+    raw.setAttribute('class', 'token-raw');
 
-    var $raw = $('<td>', {
-      'role': 'gridcell',
-      'class': 'token-raw'
-    });
+    description.setAttribute('role', 'gridcell');
+    description.setAttribute('class', 'token-description');
 
-    var $description = $('<td>', {
-      'role': 'gridcell',
-      'class': 'token-description'
-    });
-
-    $name.text(element.name);
-    $link.text(element.raw);
-    $raw.append($link);
-    $description.html(element.description);
-
-    $name.data({
-      'token': element.token,
-      'type': element.type,
-      'ancestors': element.ancestors
-    });
+    link.innerHTML = element.raw;
+    raw.appendChild(link);
+    description.innerHTML = element.description;
 
     if (element.type) {
-      $name.prepend($button);
-      $tr.addClass('tree-grid-parent');
+      name.appendChild(button);
+      tr.classList.add('tree-grid-parent');
     }
     else {
-      $tr.addClass('tree-grid-leaf');
+      tr.classList.add('tree-grid-leaf');
     }
 
-    $tr.append($name, $raw, $description);
+    $(name).data('ancestors', element.ancestors);
+    name.appendChild(document.createTextNode(element.name));
 
-    return $tr[0];
+    tr.appendChild(name);
+    tr.appendChild(raw);
+    tr.appendChild(description);
+
+    return tr;
   }
 
   function fetch($row, $cell, callback) {
@@ -139,12 +131,16 @@
       var size = getSize($cell);
       var position = 1;
 
+      console.time('buffer');
       $.each(data, function (index, element) {
         buffer.appendChild(row(element, level + 1, position++));
         size += 1;
       });
+      console.timeEnd('buffer');
 
+      console.time('insert');
       $row.after(buffer);
+      console.timeEnd('insert');
       $row.attr('aria-setsize', size);
       $row.data('fetched', true);
       callback();
@@ -217,15 +213,15 @@
       };
 
       $('a.token-browser').once('token-browser').click(function (event) {
-        var $this = $(this);
+        var $target = $(event.target);
         var $dialog = $('<div>').hide();
-        var url = $this.attr('href');
+        var url = $target.attr('href');
 
-        if ($this.hasClass('token-browser-open')) {
+        if ($target.hasClass('token-browser-open')) {
           return false;
         }
         else {
-          $this.addClass('token-browser-open');
+          $target.addClass('token-browser-open');
         }
 
         $dialog.addClass('loading').appendTo('body');
@@ -237,7 +233,7 @@
           width: $window.width() * 0.8,
           close: function () {
             $dialog.remove();
-            $this.removeClass('token-browser-open');
+            $target.removeClass('token-browser-open');
           }
         });
 
