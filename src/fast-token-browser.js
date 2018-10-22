@@ -2,6 +2,8 @@
 
   'use strict';
 
+  var ANCESTORS = {};
+
   function select(event) {
     var $target = $(event.target);
 
@@ -23,7 +25,7 @@
   }
 
   function getAncestors($cell) {
-    var ancestors = $cell.data('ancestors');
+    var ancestors = ANCESTORS[$cell.data('raw')];
 
     return ancestors ? ancestors : [];
   }
@@ -85,7 +87,7 @@
     name.setAttribute('class', 'token-name');
     name.setAttribute('data-token', element.token);
     name.setAttribute('data-type', element.type);
-    $(name).data('ancestors', element.ancestors);
+    name.setAttribute('data-raw', element.raw);
 
     raw.setAttribute('role', 'gridcell');
     raw.setAttribute('class', 'token-raw');
@@ -105,6 +107,8 @@
     else {
       tr.classList.add('tree-grid-leaf');
     }
+
+    ANCESTORS[element.raw] = element.ancestors;
 
     tr.appendChild(name);
     tr.appendChild(raw);
