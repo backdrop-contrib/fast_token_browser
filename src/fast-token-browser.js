@@ -74,6 +74,7 @@
 
     button.setAttribute('aria-label', 'Expand');
     button.addEventListener('click', expand);
+    button.innerHTML = 'Expand';
 
     link.setAttribute('href', 'javascript:void(0);');
     link.setAttribute('title', 'Select the token ' + element.raw + '. Click in a text field to insert it.');
@@ -84,7 +85,6 @@
     name.setAttribute('class', 'token-name');
     name.setAttribute('data-token', element.token);
     name.setAttribute('data-type', element.type);
-
     $(name).data('ancestors', element.ancestors);
 
     raw.setAttribute('role', 'gridcell');
