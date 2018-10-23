@@ -5,18 +5,18 @@
   var ANCESTORS = {};
 
   function select(event) {
-    var $target = $(event.target);
+    var $token = $(event.target);
 
     if (window.selectedToken) {
       window.selectedToken.removeClass('selected-token');
       window.selectedToken.removeAttr('aira-selected');
     }
 
-    if (window.selectedToken && $target[0] === window.selectedToken[0]) {
+    if (window.selectedToken && $token[0] === window.selectedToken[0]) {
       window.selectedToken = null;
     }
     else {
-      window.selectedToken = $target;
+      window.selectedToken = $token;
       window.selectedToken.addClass('selected-token');
       window.selectedToken.attr('aria-selected');
     }
@@ -34,6 +34,12 @@
     var size = $cell.data('size');
 
     return size ? Number(size) : 0;
+  }
+
+  function getToken($cell, type) {
+    var token = $cell.data('token');
+
+    return token ? token : type;
   }
 
   function display(current, display, callback) {
@@ -119,7 +125,7 @@
 
   function fetch($row, $cell, callback) {
     var type = $cell.data('type');
-    var token = $cell.data('token') ? $cell.data('token') : type;
+    var token = getToken($cell, type);
     var ancestors = getAncestors($cell);
     var url = Drupal.settings.basePath + 'token-browser/token/' + type;
     var parameters = {};
@@ -148,30 +154,31 @@
   }
 
   function expand(event) {
-    var $target = $(event.target);
-    var $cell = $target.parent();
+    var $button = $(event.target);
+    var $cell = $button.parent();
     var $row = $cell.parent();
 
-    $target.unbind('click', expand);
+    $button.unbind('click', expand);
 
     if ($row.data('fetched')) {
       display($row[0], 'table-row', function () {
         $row.attr('aria-expanded', 'true');
-        $target.text('Collapse');
-        $target.attr('aria-label', 'Collapse');
-        $target.bind('click', collapse);
+        $button.text('Collapse');
+        $button.attr('aria-label', 'Collapse');
+        $button.bind('click', collapse);
       });
     }
     else {
-      $target.text('Loading...');
-      $target.attr('aria-label', 'Loading...');
+      $button.text('Loading...');
+      $button.attr('aria-label', 'Loading...');
       $row.attr('aria-busy', 'true');
+
       fetch($row, $cell, function () {
         $row.attr('aria-expanded', 'true');
         $row.attr('aria-busy', 'false');
-        $target.text('Collapse');
-        $target.attr('aria-label', 'Collapse');
-        $target.bind('click', collapse);
+        $button.text('Collapse');
+        $button.attr('aria-label', 'Collapse');
+        $button.bind('click', collapse);
       });
     }
 
@@ -179,16 +186,17 @@
   }
 
   function collapse(event) {
-    var $target = $(event.target);
-    var $cell = $target.parent();
+    var $button = $(event.target);
+    var $cell = $button.parent();
     var $row = $cell.parent();
 
-    $target.unbind('click', collapse);
+    $button.unbind('click', collapse);
+
     display($row[0], 'none', function () {
       $row.attr('aria-expanded', 'false');
-      $target.text('Expand');
-      $target.attr('aria-label', 'Expand');
-      $target.bind('click', expand);
+      $button.text('Expand');
+      $button.attr('aria-label', 'Expand');
+      $button.bind('click', expand);
     });
 
     return false;
@@ -205,23 +213,24 @@
 
   Drupal.behaviors.tokenBrowser = {
     attach: function (context, settings) {
-      var $window = $(window);
+      var $window = $(window, context);
+      var $links = $('a.token-browser').once('token-browser');
 
       var data = {
         'ajax_page_state[theme]': settings.ajaxPageState.theme,
         'ajax_page_state[theme_token]': settings.ajaxPageState.theme_token
       };
 
-      $('a.token-browser').once('token-browser').click(function (event) {
-        var $target = $(event.target);
+      $links.click(function (event) {
+        var $link = $(event.target);
         var $dialog = $('<div>').hide();
-        var url = $target.attr('href');
+        var url = $link.attr('href');
 
-        if ($target.hasClass('token-browser-open')) {
+        if ($links.hasClass('token-browser-open')) {
           return false;
         }
         else {
-          $target.addClass('token-browser-open');
+          $links.addClass('token-browser-open');
         }
 
         $dialog.addClass('loading').appendTo('body');
@@ -233,7 +242,7 @@
           width: $window.width() * 0.8,
           close: function () {
             $dialog.remove();
-            $target.removeClass('token-browser-open');
+            $link.removeClass('token-browser-open');
           }
         });
 
@@ -247,10 +256,10 @@
   Drupal.behaviors.tokenBrowserInsert = {
     attach: function (context, settings) {
       $('textarea, input[type="text"]').once('token-browser-insert').click(function (event) {
-        var $target = $(event.target);
+        var $input = $(event.target);
 
         if (window.selectedToken) {
-          $target.val($target.val() + window.selectedToken.text());
+          $input.val($input.val() + window.selectedToken.text());
           window.selectedToken.removeClass('selected-token');
           window.selectedToken.removeAttr('aria-selected');
 
