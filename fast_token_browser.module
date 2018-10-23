@@ -93,7 +93,7 @@ function fast_token_browser_tree() {
   $types = isset($_GET['token_types']) ? drupal_json_decode($_GET['token_types']) : array();
   $globals = isset($_GET['global_types']) ? drupal_json_decode($_GET['global_types']) : TRUE;
 
-  return fast_token_browser_tree_view($types, $globals);
+  return fast_token_browser_tree_build_content($types, $globals);
 }
 
 /**
@@ -114,7 +114,7 @@ function fast_token_browser_tree_output($page_callback_result) {
     drupal_deliver_html_page($page_callback_result);
   }
   elseif (isset($page_callback_result)) {
-    $content = drupal_render($page_callback_result);
+    $content = fast_token_browser_render($page_callback_result);
     $html = drupal_get_css() . drupal_get_js('header') . $content . drupal_get_js('footer');
 
     drupal_page_header();
@@ -182,7 +182,7 @@ function fast_token_browser_endpoint_output($page_callback_result) {
  * @return array
  *   The constructed array of types keyed by type.
  */
-function fast_token_browser_tree_view(array $types = array(), $global_types = TRUE) {
+function fast_token_browser_tree_build_content(array $types = array(), $global_types = TRUE) {
   global $language;
 
   $info = token_get_info();
@@ -194,6 +194,16 @@ function fast_token_browser_tree_view(array $types = array(), $global_types = TR
   }
   elseif ($global_types) {
     $types = array_merge($types, token_get_global_token_types());
+  }
+
+  $cid = 'token-browser:' . hash('sha256', serialize(array(
+    'token_types' => $types,
+    'global_types' => $global_types,
+    'language' => $language->language,
+  )));
+
+  if ($cache = cache_get($cid, 'cache_token')) {
+    return $cache->data;
   }
 
   foreach ($info['types'] as $type => $type_info) {
@@ -230,12 +240,6 @@ function fast_token_browser_tree_view(array $types = array(), $global_types = TR
     );
   }
 
-  $cid = 'token-browser:' . hash('sha256', serialize(array(
-    'token_types' => $types,
-    'global_types' => $global_types,
-    'language' => $language->language,
-  )));
-
   $build = array(
     '#theme' => 'table',
     '#header' => array(
@@ -261,6 +265,8 @@ function fast_token_browser_tree_view(array $types = array(), $global_types = TR
       'bin' => 'cache_token',
     ),
   );
+
+  cache_set($cid, $build, 'cache_token');
 
   return $build;
 }
@@ -329,4 +335,26 @@ function fast_token_browser_build_level($type, array $ancestors = array()) {
   cache_set($cid, $level, 'cache_token');
 
   return $level;
+}
+
+/**
+ * Sets the request method to GET before calling drupal_render().
+ *
+ * Fools drupal_render_cache_set() and drupal_render_cache_get() into working
+ * even when the request method is other than GET or HEAD. This is necessary
+ * because the jQuery.load() method requests data via POST, which would normally
+ * prevent render caching.
+ *
+ * @param array $elements
+ *   The structured array describing the data to be rendered.
+ * @return string
+ *   The result of drupal_render().
+ */
+function fast_token_browser_render(&$elements) {
+  $method = $_SERVER['REQUEST_METHOD'];
+  $_SERVER['REQUEST_METHOD'] = 'GET';
+  $output = drupal_render($elements);
+  $_SERVER['REQUEST_METHOD'] = $method;
+
+  return $output;
 }
