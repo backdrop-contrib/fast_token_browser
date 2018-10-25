@@ -196,13 +196,13 @@ function fast_token_browser_tree_build_content(array $types = array(), $global_t
     $types = array_merge($types, token_get_global_token_types());
   }
 
-  $cid = 'token-browser:' . hash('sha256', serialize(array(
+  $hash = hash('sha256', serialize(array(
     'token_types' => $types,
     'global_types' => $global_types,
     'language' => $language->language,
   )));
 
-  if ($cache = cache_get($cid, 'cache_token')) {
+  if ($cache = cache_get('token-browser-build:' . $hash, 'cache_token')) {
     return $cache->data;
   }
 
@@ -261,7 +261,7 @@ function fast_token_browser_tree_build_content(array $types = array(), $global_t
       ),
     ),
     '#cache' => array(
-      'cid' => $cid,
+      'cid' => 'token-browser-render:' . $hash,
       'bin' => 'cache_token',
     ),
   );
