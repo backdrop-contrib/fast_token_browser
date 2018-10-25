@@ -202,7 +202,9 @@ function fast_token_browser_tree_build_content(array $types = array(), $global_t
     'language' => $language->language,
   )));
 
-  if ($cache = cache_get('token-browser-build:' . $hash, 'cache_token')) {
+  $cid = 'token-browser-build:' . $hash;
+
+  if ($cache = cache_get($cid, 'cache_token')) {
     return $cache->data;
   }
 
