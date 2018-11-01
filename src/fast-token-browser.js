@@ -242,7 +242,7 @@
           width: $window.width() * 0.8,
           close: function () {
             $dialog.remove();
-            $link.removeClass('token-browser-open');
+            $links.removeClass('token-browser-open');
           }
         });
 
