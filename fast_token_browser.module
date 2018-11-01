@@ -39,8 +39,8 @@ function fast_token_browser_menu() {
     'page callback' => 'fast_token_browser_tree',
     'delivery callback' => 'fast_token_browser_tree_output',
     'access callback' => 'fast_token_browser_tree_access',
-    'type' => MENU_CALLBACK,
     'theme callback' => 'ajax_base_page_theme',
+    'type' => MENU_CALLBACK,
   );
 
   // AJAX endpoint for retrieving a token.
