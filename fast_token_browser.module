@@ -331,7 +331,7 @@ function fast_token_browser_build_level($type, array $ancestors = array()) {
     $level[$child]['description'] = $child_info['description'];
     $level[$child]['token'] = $child;
 
-    if (isset($info['types'][$child_info['type']])) {
+    if (isset($child_info['type']) && isset($info['types'][$child_info['type']])) {
       $level[$child]['type'] = $child_info['type'];
     }
 
