@@ -221,10 +221,15 @@
         'ajax_page_state[theme_token]': settings.ajaxPageState.theme_token
       };
 
+      $links.off('click');
+
       $links.click(function (event) {
         var $link = $(event.target);
         var $dialog = $('<div>').hide();
         var url = $link.attr('href');
+
+        event.stopPropagation();
+        event.preventDefault();
 
         if ($links.hasClass('token-browser-open')) {
           return false;
