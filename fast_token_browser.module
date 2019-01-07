@@ -34,6 +34,14 @@ function fast_token_browser_library() {
  * Implements hook_menu().
  */
 function fast_token_browser_menu() {
+  // Test page.
+  $items['token-browser/test'] = array(
+    'title' => 'Token Browser Test Page',
+    'page callback' => 'fast_token_browser_test',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+
   // AJAX endpoint for the assembled tree.
   $items['token-browser/tree'] = array(
     'page callback' => 'fast_token_browser_tree',
@@ -64,6 +72,15 @@ function fast_token_browser_theme() {
       'text' => t('Browse available tokens.'),
       'token_types' => array(),
       'global_types' => TRUE,
+      'dialog' => TRUE,
+    ),
+    'file' => 'includes/fast_token_browser.theme.inc',
+  );
+
+  $themes['fast_token_browser'] = array(
+    'variables' => array(
+      'token_types' => array(),
+      'global_types' => TRUE,
       'dialog' => FALSE,
     ),
     'file' => 'includes/fast_token_browser.theme.inc',
@@ -84,6 +101,28 @@ function fast_token_browser_menu_alter(&$items) {
  */
 function fast_token_browser_theme_registry_alter(&$theme_registry) {
   $theme_registry['token_tree_link'] = $theme_registry['token_tree'] = $theme_registry['fast_token_browser_link'];
+}
+
+function fast_token_browser_test() {
+  return drupal_get_form('fast_token_browser_test_form');
+}
+
+function fast_token_browser_test_form($form, &$form_state) {
+  $form['token'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Token'),
+  );
+
+  $form['token_browser'] = array(
+    '#theme' => 'fast_token_browser',
+  );
+
+
+  $form['token_browser_link'] = array(
+    '#theme' => 'fast_token_browser_link',
+  );
+
+  return $form;
 }
 
 /**

@@ -32,3 +32,16 @@ function theme_fast_token_browser_link($variables) {
 
   return l($variables['text'], 'token-browser/tree', $options);
 }
+
+/**
+ * Token Browser theme.
+ */
+function theme_fast_token_browser($variables) {
+  if (!empty($variables['dialog'])) {
+    return theme_fast_token_browser_link($variables);
+  }
+
+  $content = fast_token_browser_tree_build_content($variables['token_types'], $variables['global_types']);
+
+  return fast_token_browser_render($content);
+}

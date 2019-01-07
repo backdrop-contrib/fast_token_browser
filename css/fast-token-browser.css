@@ -12,7 +12,8 @@
 .tree-grid {
   background: #aaa;
   border: 0;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
   line-height: 1.5;
   margin: 0;
   table-layout: fixed;

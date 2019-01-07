@@ -135,7 +135,7 @@
     parameters.ancestors = JSON.stringify(ancestors);
     parameters.token = Drupal.settings.fastTokenBrowser.token;
 
-    $.get(url, parameters, function (data) {
+    var request = $.get(url, parameters, function (data) {
       var buffer = document.createDocumentFragment();
       var level = Number($row.attr('aria-level'));
       var size = getSize($cell);
@@ -158,6 +158,8 @@
     var $cell = $button.parent();
     var $row = $cell.parent();
 
+    event.preventDefault();
+    event.stopPropagation();
     $button.unbind('click', expand);
 
     if ($row.data('fetched')) {
@@ -181,8 +183,6 @@
         $button.bind('click', collapse);
       });
     }
-
-    return false;
   }
 
   function collapse(event) {
@@ -190,6 +190,8 @@
     var $cell = $button.parent();
     var $row = $cell.parent();
 
+    event.preventDefault();
+    event.stopPropagation();
     $button.unbind('click', collapse);
 
     display($row[0], 'none', function () {
@@ -198,8 +200,6 @@
       $button.attr('aria-label', 'Expand');
       $button.bind('click', expand);
     });
-
-    return false;
   }
 
   Drupal.behaviors.tokenBrowserTreegrid = {
@@ -220,8 +220,6 @@
         'ajax_page_state[theme]': settings.ajaxPageState.theme,
         'ajax_page_state[theme_token]': settings.ajaxPageState.theme_token
       };
-
-      $links.off('click');
 
       $links.click(function (event) {
         var $link = $(event.target);
