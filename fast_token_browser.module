@@ -71,6 +71,7 @@ function fast_token_browser_theme() {
 
   $themes['fast_token_browser'] = array(
     'variables' => array(
+      'text' => t('Browse available tokens.'),
       'token_types' => array(),
       'global_types' => TRUE,
       'dialog' => FALSE,
@@ -92,7 +93,8 @@ function fast_token_browser_menu_alter(&$items) {
  * Implements hook_theme_registory_alter().
  */
 function fast_token_browser_theme_registry_alter(&$theme_registry) {
-  $theme_registry['token_tree_link'] = $theme_registry['token_tree'] = $theme_registry['fast_token_browser_link'];
+  $theme_registry['token_tree_link'] = $theme_registry['fast_token_browser_link'];
+  $theme_registry['token_tree'] = $theme_registry['fast_token_browser'];
 }
 
 /**

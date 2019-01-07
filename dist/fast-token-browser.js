@@ -7,6 +7,9 @@
   function select(event) {
     var $token = $(event.target);
 
+    event.preventDefault();
+    event.stopPropagation();
+
     if (window.selectedToken) {
       window.selectedToken.removeClass('selected-token');
       window.selectedToken.removeAttr('aira-selected');
@@ -20,8 +23,6 @@
       window.selectedToken.addClass('selected-token');
       window.selectedToken.attr('aria-selected');
     }
-
-    return false;
   }
 
   function getAncestors($cell) {
