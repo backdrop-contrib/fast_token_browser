@@ -81,7 +81,6 @@
     tr.setAttribute('aria-expanded', 'false');
     tr.setAttribute('aria-busy', 'false');
 
-    button.setAttribute('aria-label', 'Expand');
     button.addEventListener('click', expand);
     button.innerHTML = 'Expand';
 
@@ -150,8 +149,12 @@
       $row.after(buffer);
       $row.attr('aria-setsize', size);
       $row.data('fetched', true);
-      callback();
+      callback(true);
     }, 'json');
+
+    request.error(function () {
+      callback(false);
+    });
   }
 
   function expand(event) {
@@ -167,21 +170,24 @@
       display($row[0], 'table-row', function () {
         $row.attr('aria-expanded', 'true');
         $button.text('Collapse');
-        $button.attr('aria-label', 'Collapse');
         $button.bind('click', collapse);
       });
     }
     else {
-      $button.text('Loading...');
-      $button.attr('aria-label', 'Loading...');
       $row.attr('aria-busy', 'true');
+      $button.text('Loading...');
 
-      fetch($row, $cell, function () {
-        $row.attr('aria-expanded', 'true');
-        $row.attr('aria-busy', 'false');
-        $button.text('Collapse');
-        $button.attr('aria-label', 'Collapse');
+      fetch($row, $cell, function (success) {
+        if (success) {
+          $row.attr('aria-expanded', 'true');
+          $button.text('Collapse');
+        }
+        else {
+          $button.text('Expand');
+        }
+
         $button.bind('click', collapse);
+        $row.attr('aria-busy', 'false');
       });
     }
   }
@@ -198,7 +204,6 @@
     display($row[0], 'none', function () {
       $row.attr('aria-expanded', 'false');
       $button.text('Expand');
-      $button.attr('aria-label', 'Expand');
       $button.bind('click', expand);
     });
   }
