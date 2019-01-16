@@ -181,12 +181,13 @@
         if (success) {
           $row.attr('aria-expanded', 'true');
           $button.text('Collapse');
+          $button.bind('click', collapse);
         }
         else {
           $button.text('Expand');
+          $button.bind('click', expand);
         }
 
-        $button.bind('click', collapse);
         $row.attr('aria-busy', 'false');
       });
     }
