@@ -135,25 +135,29 @@
     parameters.ancestors = JSON.stringify(ancestors);
     parameters.token = Drupal.settings.fastTokenBrowser.token;
 
-    var request = $.get(url, parameters, function (data) {
-      var buffer = document.createDocumentFragment();
-      var level = Number($row.attr('aria-level'));
-      var size = getSize($cell);
-      var position = 1;
+    $.ajax({
+      'url': url,
+      'data': parameters,
+      'success': function (data) {
+        var buffer = document.createDocumentFragment();
+        var level = Number($row.attr('aria-level'));
+        var size = getSize($cell);
+        var position = 1;
 
-      $.each(data, function (index, element) {
-        buffer.appendChild(row(element, level + 1, position++));
-        size += 1;
-      });
+        $.each(data, function (index, element) {
+          buffer.appendChild(row(element, level + 1, position++));
+          size += 1;
+        });
 
-      $row.after(buffer);
-      $row.attr('aria-setsize', size);
-      $row.data('fetched', true);
-      callback(true);
-    }, 'json');
-
-    request.error(function () {
-      callback(false);
+        $row.after(buffer);
+        $row.attr('aria-setsize', size);
+        $row.data('fetched', true);
+        callback(true);
+      },
+      'error': function (request) {
+        callback(false);
+      },
+      'dataType': 'json'
     });
   }
 
