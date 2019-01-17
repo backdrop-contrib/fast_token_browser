@@ -4,6 +4,13 @@
 
   var ANCESTORS = {};
 
+  var tr_template;
+  var button_template;
+  var link_template;
+  var name_template;
+  var raw_template;
+  var description_template;
+
   function select(event) {
     var $token = $(event.target);
 
@@ -67,40 +74,53 @@
     callback();
   }
 
-  function row(element, level, index) {
-    var tr = document.createElement('tr');
-    var button = document.createElement('button');
-    var link = document.createElement('a');
-    var name = document.createElement('td');
-    var raw = document.createElement('td');
-    var description = document.createElement('td');
+  function setup() {
+    tr_template = document.createElement('tr');
+    button_template = document.createElement('button');
+    link_template = document.createElement('a');
+    name_template = document.createElement('td');
+    raw_template = document.createElement('td');
+    description_template = document.createElement('td');
 
-    tr.setAttribute('role', 'row');
+    tr_template.setAttribute('role', 'row');
+    tr_template.setAttribute('aria-expanded', 'false');
+    tr_template.setAttribute('aria-busy', 'false');
+
+    link_template.setAttribute('href', 'javascript:void(0);');
+    link_template.setAttribute('class', 'token-key');
+
+    name_template.setAttribute('role', 'gridcell');
+    name_template.setAttribute('class', 'token-name');
+
+    raw_template.setAttribute('role', 'gridcell');
+    raw_template.setAttribute('class', 'token-raw');
+
+    description_template.setAttribute('role', 'gridcell');
+    description_template.setAttribute('class', 'token-description');
+  }
+
+  function row(element, level, index) {
+    var tr = tr_template.cloneNode(false);
+    var button = button_template.cloneNode(false);
+    var link = link_template.cloneNode(false);
+    var name = name_template.cloneNode(false);
+    var raw = raw_template.cloneNode(false);
+    var description = description_template.cloneNode(false);
+
     tr.setAttribute('aria-level', level);
     tr.setAttribute('aria-posinset', index);
-    tr.setAttribute('aria-expanded', 'false');
-    tr.setAttribute('aria-busy', 'false');
 
     button.addEventListener('click', expand);
     button.innerHTML = 'Expand';
 
-    link.setAttribute('href', 'javascript:void(0);');
     link.setAttribute('title', 'Select the token ' + element.raw + '. Click in a text field to insert it.');
-    link.setAttribute('class', 'token-key');
     link.addEventListener('click', select);
 
-    name.setAttribute('role', 'gridcell');
-    name.setAttribute('class', 'token-name');
     name.setAttribute('data-token', element.token);
     name.setAttribute('data-type', element.type);
     name.setAttribute('data-raw', element.raw);
 
-    raw.setAttribute('role', 'gridcell');
-    raw.setAttribute('class', 'token-raw');
     raw.appendChild(link);
-
-    description.setAttribute('role', 'gridcell');
-    description.setAttribute('class', 'token-description');
 
     name.innerHTML = element.name;
     link.innerHTML = element.raw;
@@ -218,6 +238,7 @@
       var $treegrid = $('.tree-grid', context);
       var $buttons = $treegrid.find('button');
 
+      setup();
       $buttons.bind('click', expand);
     }
   };
