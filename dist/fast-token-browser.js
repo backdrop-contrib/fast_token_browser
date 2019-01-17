@@ -43,7 +43,7 @@
     return token ? token : type;
   }
 
-  function display(current, display, callback) {
+  function display(current, value, callback) {
     var next = current;
     var level = Number(current.getAttribute('aria-level'));
     var expand = [];
@@ -60,7 +60,7 @@
       expand[next_level + 1] = expand[next_level] && next.getAttribute('aria-expanded') === 'true';
 
       if (expand[next_level]) {
-        next.style.display = display;
+        next.style.display = value;
       }
     }
 
