@@ -32,6 +32,17 @@
     }
   }
 
+  function insert(event) {
+    var $input = $(event.target);
+
+    if (window.selectedToken) {
+      $input.val($input.val() + window.selectedToken.text());
+      window.selectedToken.removeClass('selected-token');
+      window.selectedToken.removeAttr('aria-selected');
+      window.selectedToken = null;
+    }
+  }
+
   function getAncestors($cell) {
     var ancestors = ANCESTORS[$cell.data('raw')];
 
@@ -235,28 +246,21 @@
     });
   }
 
+  Drupal.behaviors.tokenBrowserSetup = {
+    attach: function (context, settings) {
+      setup();
+    }
+  };
+
   Drupal.behaviors.tokenBrowserTreegrid = {
     attach: function (context, settings) {
-      var $treegrid = $('.tree-grid', context);
-      var $buttons = $treegrid.find('button');
-
-      setup();
-      $buttons.bind('click', expand);
+      $('.tree-grid', context).find('button').bind('click', expand);
     }
   };
 
   Drupal.behaviors.tokenBrowserInsert = {
     attach: function (context, settings) {
-      $('textarea, input[type="text"]').once('token-browser-insert').click(function (event) {
-        var $input = $(event.target);
-
-        if (window.selectedToken) {
-          $input.val($input.val() + window.selectedToken.text());
-          window.selectedToken.removeClass('selected-token');
-          window.selectedToken.removeAttr('aria-selected');
-          window.selectedToken = null;
-        }
-      });
+      $('textarea, input[type="text"]').once('token-browser-insert').click(insert);
     }
   };
 
