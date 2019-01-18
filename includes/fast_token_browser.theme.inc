@@ -23,6 +23,7 @@ function theme_fast_token_browser_link($variables) {
 
   if (!empty($variables['dialog'])) {
     drupal_add_library('fast_token_browser', 'fast-token-browser');
+    drupal_add_library('fast_token_browser', 'fast-token-browser-dialog');
 
     $options['attributes']['class'][] = 'token-browser';
   }

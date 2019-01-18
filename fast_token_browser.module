@@ -22,6 +22,14 @@ function fast_token_browser_library() {
         'data' => array('fastTokenBrowser' => array('token' => drupal_get_token('token-browser-endpoint'))),
       ),
     ),
+  );
+
+  $libraries['fast-token-browser-dialog'] = array(
+    'Fast Token Browser Dialog',
+    'version' => '1.0',
+    'js' => array(
+      drupal_get_path('module', 'fast_token_browser') . '/dist/fast-token-browser-dialog.js' => array(),
+    ),
     'dependencies' => array(
       array('system', 'ui.dialog'),
     ),

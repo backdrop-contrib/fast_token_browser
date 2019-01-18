@@ -164,10 +164,10 @@
         var size = getSize($cell);
         var position = 1;
 
-        $.each(data, function (index, element) {
-          buffer.appendChild(row(element, level + 1, position++));
-          size += 1;
-        });
+       for (var key in data) {
+         buffer.appendChild(row(data[key], level + 1, position++));
+         size += 1;
+       }
 
         $row.after(buffer);
         $row.attr('aria-setsize', size);
@@ -188,6 +188,7 @@
 
     event.preventDefault();
     event.stopPropagation();
+
     $button.unbind('click', expand);
 
     if ($row.data('fetched')) {
@@ -224,6 +225,7 @@
 
     event.preventDefault();
     event.stopPropagation();
+
     $button.unbind('click', collapse);
 
     display($row[0], 'none', function () {
@@ -243,51 +245,6 @@
     }
   };
 
-  Drupal.behaviors.tokenBrowser = {
-    attach: function (context, settings) {
-      var $window = $(window, context);
-      var $links = $('a.token-browser').once('token-browser');
-
-      var data = {
-        'ajax_page_state[theme]': settings.ajaxPageState.theme,
-        'ajax_page_state[theme_token]': settings.ajaxPageState.theme_token
-      };
-
-      $links.click(function (event) {
-        var $link = $(event.target);
-        var $dialog = $('<div>').hide();
-        var url = $link.attr('href');
-
-        event.stopPropagation();
-        event.preventDefault();
-
-        if ($links.hasClass('token-browser-open')) {
-          return false;
-        }
-        else {
-          $links.addClass('token-browser-open');
-        }
-
-        $dialog.addClass('loading').appendTo('body');
-
-        $dialog.dialog({
-          title: Drupal.t('Token Browser'),
-          classes: { 'ui-dialog': 'token-browser-dialog' },
-          dialogClass: 'token-browser-dialog',
-          width: $window.width() * 0.8,
-          close: function () {
-            $dialog.remove();
-            $links.removeClass('token-browser-open');
-          }
-        });
-
-        $dialog.load(url, data, function () { $dialog.removeClass('loading'); });
-
-        return false;
-      });
-    }
-  };
-
   Drupal.behaviors.tokenBrowserInsert = {
     attach: function (context, settings) {
       $('textarea, input[type="text"]').once('token-browser-insert').click(function (event) {
@@ -297,7 +254,6 @@
           $input.val($input.val() + window.selectedToken.text());
           window.selectedToken.removeClass('selected-token');
           window.selectedToken.removeAttr('aria-selected');
-
           window.selectedToken = null;
         }
       });
