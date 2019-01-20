@@ -175,7 +175,6 @@
 
         $row.attr('aria-setsize', buffer.childElementCount);
         $row.after(buffer);
-        $row.data('fetched', true);
         callback(true);
       },
       'error': function (request) {
@@ -208,6 +207,7 @@
 
       fetch($row, $cell, function (success) {
         if (success) {
+          $row.data('fetched', true);
           $row.attr('aria-expanded', 'true');
           $button.text('Collapse');
           $button.bind('click', collapse);
