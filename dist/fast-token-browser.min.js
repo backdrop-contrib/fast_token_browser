@@ -49,12 +49,6 @@
     return ancestors ? ancestors : [];
   }
 
-  function getSize($cell) {
-    var size = $cell.data('size');
-
-    return size ? Number(size) : 0;
-  }
-
   function getToken($cell, type) {
     var token = $cell.data('token');
 
@@ -63,13 +57,13 @@
 
   function display(current, value, callback) {
     var next = current;
-    var level = Number(current.getAttribute('aria-level'));
+    var next_level, level = Number(current.getAttribute('aria-level'));
     var expand = [];
 
     expand[level + 1] = true;
 
     while (next = next.nextElementSibling) {
-      var next_level = Number(next.getAttribute('aria-level'));
+      next_level = Number(next.getAttribute('aria-level'));
 
       if (next_level <= level) {
         break;
@@ -172,16 +166,14 @@
       'success': function (data) {
         var buffer = document.createDocumentFragment();
         var level = Number($row.attr('aria-level'));
-        var size = getSize($cell);
         var position = 1;
 
        for (var key in data) {
          buffer.appendChild(row(data[key], level + 1, position++));
-         size += 1;
        }
 
+        $row.attr('aria-setsize', buffer.childElementCount);
         $row.after(buffer);
-        $row.attr('aria-setsize', size);
         $row.data('fetched', true);
         callback(true);
       },
