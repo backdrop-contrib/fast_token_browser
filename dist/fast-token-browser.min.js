@@ -4,6 +4,7 @@
 
   var ANCESTORS = {};
 
+  var buffer;
   var tr_template;
   var button_template;
   var link_template;
@@ -80,6 +81,7 @@
   }
 
   function setup() {
+    buffer = document.createDocumentFragment();
     tr_template = document.createElement('tr');
     button_template = document.createElement('button');
     link_template = document.createElement('a');
@@ -164,7 +166,6 @@
       'url': url,
       'data': parameters,
       'success': function (data) {
-        var buffer = document.createDocumentFragment();
         var level = Number($row.attr('aria-level'));
         var position = 1;
 
