@@ -169,9 +169,9 @@
         var level = Number($row.attr('aria-level'));
         var position = 1;
 
-       for (var key in data) {
-         buffer.appendChild(row(data[key], level + 1, position++));
-       }
+        for (var key in data) {
+          buffer.appendChild(row(data[key], level + 1, position++));
+        }
 
         $row.attr('aria-setsize', buffer.childElementCount);
         $row.after(buffer);
