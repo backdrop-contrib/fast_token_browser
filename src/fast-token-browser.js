@@ -56,24 +56,24 @@
     return token ? token : type;
   }
 
-  function display(current, value, callback) {
-    var next = current;
-    var next_level, level = Number(current.getAttribute('aria-level'));
+  function display(parent, value, callback) {
+    var current = parent;
+    var level, top = Number(parent.getAttribute('aria-level'));
     var expand = [];
 
-    expand[level + 1] = true;
+    expand[top + 1] = true;
 
-    while (next = next.nextElementSibling) {
-      next_level = Number(next.getAttribute('aria-level'));
+    while (current = current.nextElementSibling) {
+      level = Number(current.getAttribute('aria-level'));
 
-      if (next_level <= level) {
+      if (level <= top) {
         break;
       }
 
-      expand[next_level + 1] = expand[next_level] && next.getAttribute('aria-expanded') === 'true';
+      expand[level + 1] = expand[level] && current.getAttribute('aria-expanded') === 'true';
 
-      if (expand[next_level]) {
-        next.style.display = value;
+      if (expand[level]) {
+        current.style.display = value;
       }
     }
 
