@@ -20,7 +20,7 @@
 
     if (window.selectedToken) {
       window.selectedToken.removeClass('selected-token');
-      window.selectedToken.removeAttr('aira-selected');
+      window.selectedToken.removeAttr('aria-selected');
     }
 
     if (window.selectedToken && $token[0] === window.selectedToken[0]) {
