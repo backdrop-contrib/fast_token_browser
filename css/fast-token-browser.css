@@ -2,6 +2,7 @@
 
 .token-browser-dialog {
   padding: 0;
+  z-index: 10000;
 }
 
 .token-browser-dialog .ui-dialog-content {
