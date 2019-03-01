@@ -206,14 +206,14 @@ function fast_token_browser_endpoint_output($page_callback_result) {
  * @return array
  *   The constructed array of types keyed by type.
  */
-function fast_token_browser_tree_build_content(array $types = array(), $global_types = TRUE) {
+function fast_token_browser_tree_build_content($types = array(), $global_types = TRUE) {
   global $language;
 
   $info = token_get_info();
   $rows = array();
   $posinset = 1;
 
-  if (empty($types)) {
+  if (empty($types) || $types === 'all') {
     $types = array_keys($info['types']);
   }
   elseif ($global_types) {
