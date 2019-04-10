@@ -11,14 +11,14 @@
 function theme_fast_token_browser_link($variables) {
   $options = array(
     'attributes' => array(),
+    'query' => array(
+      'token' => drupal_get_token('token-browser'),
+    ),
   );
 
   if (!empty($variables['token_types'])) {
-    $options['query'] = array(
-      'token_types' => drupal_json_encode($variables['token_types']),
-      'global_types' => drupal_json_encode($variables['global_types']),
-      'token' => drupal_get_token('token-browser'),
-    );
+    $options['query']['token_types'] = drupal_json_encode($variables['token_types']);
+    $options['query']['global_types'] = drupal_json_encode($variables['global_types']);
   }
 
   if (!empty($variables['dialog'])) {
