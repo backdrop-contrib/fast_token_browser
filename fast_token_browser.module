@@ -213,7 +213,7 @@ function fast_token_browser_tree_build_content($types = array(), $global_types =
   $rows = array();
   $posinset = 1;
 
-  if (empty($types) || $types === 'all') {
+  if ($types === 'all') {
     $types = array_keys($info['types']);
   }
   elseif ($global_types) {
