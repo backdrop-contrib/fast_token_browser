@@ -253,7 +253,11 @@
 
   Drupal.behaviors.tokenBrowserInsert = {
     attach: function (context, settings) {
-      $('textarea, input[type="text"]').once('token-browser-insert').click(insert);
+      var $input = $('textarea, input[type="text"]', context);
+
+      if ($input.length) {
+        $input.once('token-browser-insert').click(insert);
+      }
     }
   };
 
