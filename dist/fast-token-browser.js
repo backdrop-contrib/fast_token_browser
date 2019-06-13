@@ -166,11 +166,11 @@
       'url': url,
       'data': parameters,
       'success': function (data) {
-        var level = Number($row.attr('aria-level'));
+        var level = Number($row.attr('aria-level')) + 1;
         var position = 1;
 
         for (var key in data) {
-          buffer.appendChild(row(data[key], level + 1, position++));
+          buffer.appendChild(row(data[key], level, position++));
         }
 
         $row.attr('aria-setsize', buffer.childElementCount);
