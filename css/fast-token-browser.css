@@ -140,7 +140,7 @@
 }
 
 .tree-grid button:after {
-  background: content-box transparent url('chevron.svg') center / 50% no-repeat;
+  background: content-box transparent url('../images/chevron.svg') center / 50% no-repeat;
   box-sizing: border-box;
   content: '';
   display: block;

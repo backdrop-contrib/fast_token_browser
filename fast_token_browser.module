@@ -16,7 +16,7 @@ function fast_token_browser_library_info() {
       backdrop_get_path('module', 'fast_token_browser') . '/css/fast-token-browser.css' => array(),
     ),
     'js' => array(
-      backdrop_get_path('module', 'fast_token_browser') . '/dist/fast-token-browser.js' => array(), array(
+      backdrop_get_path('module', 'fast_token_browser') . '/js/fast-token-browser.js' => array(), array(
         'type' => 'setting',
         'data' => array('fastTokenBrowser' => array('token' => backdrop_get_token('token-browser-endpoint'))),
       ),
@@ -27,7 +27,7 @@ function fast_token_browser_library_info() {
     'title' => 'Fast Token Browser Dialog',
     'version' => '1.0',
     'js' => array(
-      backdrop_get_path('module', 'fast_token_browser') . '/dist/fast-token-browser-dialog.js' => array(),
+      backdrop_get_path('module', 'fast_token_browser') . '/js/fast-token-browser-dialog.js' => array(),
     ),
     'dependencies' => array(
       array('system', 'ui.dialog'),
@@ -73,7 +73,7 @@ function fast_token_browser_theme() {
       'global_types' => TRUE,
       'dialog' => TRUE,
     ),
-    'file' => 'includes/fast_token_browser.theme.inc',
+    'file' => 'fast_token_browser.theme.inc',
   );
 
   $themes['fast_token_browser'] = array(
@@ -83,7 +83,7 @@ function fast_token_browser_theme() {
       'global_types' => TRUE,
       'dialog' => FALSE,
     ),
-    'file' => 'includes/fast_token_browser.theme.inc',
+    'file' => 'fast_token_browser.theme.inc',
   );
 
   return $themes;
