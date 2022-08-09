@@ -132,10 +132,10 @@ function fast_token_browser_tree_output($page_callback_result) {
     backdrop_deliver_html_page($page_callback_result);
   }
   elseif (isset($page_callback_result)) {
-    global $language;
+    global $langcode;
 
     backdrop_add_http_header('Content-Type', 'text/html; charset=utf-8');
-    backdrop_add_http_header('Content-Language', $language->language);
+    backdrop_add_http_header('Content-Language', $langcode);
 
     $content = fast_token_browser_render($page_callback_result);
     $html = backdrop_get_css() . backdrop_get_js('header') . $content . backdrop_get_js('footer');
@@ -206,7 +206,7 @@ function fast_token_browser_endpoint_output($page_callback_result) {
  *   The constructed array of types keyed by type.
  */
 function fast_token_browser_tree_build_content($types = array(), $global_types = TRUE) {
-  global $language;
+  global $langcode;
 
   $info = token_get_info();
   $rows = array();
@@ -222,7 +222,7 @@ function fast_token_browser_tree_build_content($types = array(), $global_types =
   $hash = hash('sha256', serialize(array(
     'token_types' => $types,
     'global_types' => $global_types,
-    'language' => $language->language,
+    'language' => $langcode,
   )));
 
   $cid = 'token-browser-build:' . $hash;
@@ -308,7 +308,7 @@ function fast_token_browser_tree_build_content($types = array(), $global_types =
  *   The constructed level of tokens as an array keyed by token.
  */
 function fast_token_browser_build_level($type, array $ancestors = array()) {
-  global $language;
+  global $langcode;
 
   $level = array();
   $info = token_get_info();
@@ -324,7 +324,7 @@ function fast_token_browser_build_level($type, array $ancestors = array()) {
   $cid = 'token-browser-level:' . hash('sha256', serialize(array(
     'type' => $type,
     'ancestors' => $ancestors,
-    'language' => $language->language,
+    'language' => $langcode,
   )));
 
   if ($cache = cache_get($cid, 'cache_token')) {
