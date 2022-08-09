@@ -317,7 +317,7 @@ function fast_token_browser_build_level($type, array $ancestors = array()) {
     return $level;
   }
 
-  if ($entity_token = token_get_entity_mapping('entity', $type)) {
+  if ($entity_token = entity_get_info($type)) {
     $type = $entity_token;
   }
 
