@@ -318,7 +318,7 @@ function fast_token_browser_build_level($type, array $ancestors = array()) {
   }
 
   if ($entity_token = entity_get_info($type)) {
-    $type = $entity_token;
+    $type = $entity_token['token type'];
   }
 
   $cid = 'token-browser-level:' . hash('sha256', serialize(array(
