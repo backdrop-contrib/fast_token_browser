@@ -56,7 +56,7 @@ module.exports = function(grunt) {
         unused: true,
         globals: {
           jQuery: true,
-          Drupal: true,
+          Backdrop: true,
           Western: true
         }
       },

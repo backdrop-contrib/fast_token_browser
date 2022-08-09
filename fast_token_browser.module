@@ -8,18 +8,17 @@
 /**
  * Implements hook_library().
  */
-function fast_token_browser_library() {
+function fast_token_browser_library_info() {
   $libraries['fast-token-browser'] = array(
     'title' => 'Fast Token Browser',
     'version' => '1.0',
     'css' => array(
-      drupal_get_path('module', 'fast_token_browser') . '/css/fast-token-browser.css' => array(),
+      backdrop_get_path('module', 'fast_token_browser') . '/css/fast-token-browser.css' => array(),
     ),
     'js' => array(
-      drupal_get_path('module', 'fast_token_browser') . '/dist/fast-token-browser.js' => array(),
-      array(
+      backdrop_get_path('module', 'fast_token_browser') . '/dist/fast-token-browser.js' => array(), array(
         'type' => 'setting',
-        'data' => array('fastTokenBrowser' => array('token' => drupal_get_token('token-browser-endpoint'))),
+        'data' => array('fastTokenBrowser' => array('token' => backdrop_get_token('token-browser-endpoint'))),
       ),
     ),
   );
@@ -28,7 +27,7 @@ function fast_token_browser_library() {
     'title' => 'Fast Token Browser Dialog',
     'version' => '1.0',
     'js' => array(
-      drupal_get_path('module', 'fast_token_browser') . '/dist/fast-token-browser-dialog.js' => array(),
+      backdrop_get_path('module', 'fast_token_browser') . '/dist/fast-token-browser-dialog.js' => array(),
     ),
     'dependencies' => array(
       array('system', 'ui.dialog'),
@@ -109,8 +108,8 @@ function fast_token_browser_theme_registry_alter(&$theme_registry) {
  * Token browser tree page callback.
  */
 function fast_token_browser_tree() {
-  $types = isset($_GET['token_types']) ? drupal_json_decode($_GET['token_types']) : array();
-  $globals = isset($_GET['global_types']) ? drupal_json_decode($_GET['global_types']) : TRUE;
+  $types = isset($_GET['token_types'])?backdrop_json_decode($_GET['token_types']) : array();
+  $globals = isset($_GET['global_types'])?backdrop_json_decode($_GET['global_types']) : TRUE;
 
   return fast_token_browser_tree_build_content($types, $globals);
 }
@@ -119,7 +118,7 @@ function fast_token_browser_tree() {
  * Token browser tree access callback.
  */
 function fast_token_browser_tree_access() {
-  return isset($_GET['token']) && drupal_valid_token($_GET['token'], 'token-browser');
+  return isset($_GET['token']) && backdrop_valid_token($_GET['token'], 'token-browser');
 }
 
 /**
@@ -130,26 +129,26 @@ function fast_token_browser_tree_access() {
  */
 function fast_token_browser_tree_output($page_callback_result) {
   if (is_int($page_callback_result)) {
-    drupal_deliver_html_page($page_callback_result);
+    backdrop_deliver_html_page($page_callback_result);
   }
   elseif (isset($page_callback_result)) {
     global $language;
 
-    drupal_add_http_header('Content-Type', 'text/html; charset=utf-8');
-    drupal_add_http_header('Content-Language', $language->language);
+    backdrop_add_http_header('Content-Type', 'text/html; charset=utf-8');
+    backdrop_add_http_header('Content-Language', $language->language);
 
     $content = fast_token_browser_render($page_callback_result);
-    $html = drupal_get_css() . drupal_get_js('header') . $content . drupal_get_js('footer');
+    $html = backdrop_get_css() . backdrop_get_js('header') . $content . backdrop_get_js('footer');
 
-    drupal_page_header();
+    backdrop_page_header();
 
     print $html;
 
-    drupal_page_footer();
+    backdrop_page_footer();
   }
   else {
-    drupal_page_header();
-    drupal_page_footer();
+    backdrop_page_header();
+    backdrop_page_footer();
   }
 }
 
@@ -168,7 +167,7 @@ function fast_token_browser_endpoint($type) {
   );
 
   $input = filter_input_array(INPUT_GET, $definition);
-  $ancestors = isset($input['ancestors']) ? drupal_json_decode($input['ancestors']) : array();
+  $ancestors = isset($input['ancestors'])?backdrop_json_decode($input['ancestors']) : array();
 
   return fast_token_browser_build_level($type, $ancestors);
 }
@@ -177,7 +176,7 @@ function fast_token_browser_endpoint($type) {
  * Token browser JSON endpoint access callback.
  */
 function fast_token_browser_endpoint_access() {
-  return isset($_GET['token']) && drupal_valid_token($_GET['token'], 'token-browser-endpoint');
+  return isset($_GET['token']) && backdrop_valid_token($_GET['token'], 'token-browser-endpoint');
 }
 
 /**
@@ -185,14 +184,14 @@ function fast_token_browser_endpoint_access() {
  */
 function fast_token_browser_endpoint_output($page_callback_result) {
   if (is_int($page_callback_result)) {
-    drupal_deliver_html_page($page_callback_result);
+    backdrop_deliver_html_page($page_callback_result);
   }
   elseif (isset($page_callback_result)) {
-    drupal_json_output($page_callback_result);
+    backdrop_json_output($page_callback_result);
   }
   else {
-    drupal_page_header();
-    drupal_page_footer();
+    backdrop_page_header();
+    backdrop_page_footer();
   }
 }
 
@@ -364,9 +363,9 @@ function fast_token_browser_build_level($type, array $ancestors = array()) {
 }
 
 /**
- * Sets the request method to GET before calling drupal_render().
+ * Sets the request method to GET before calling backdrop_render().
  *
- * Fools drupal_render_cache_set() and drupal_render_cache_get() into working
+ * Fools backdrop_render_cache_set() and backdrop_render_cache_get() into working
  * even when the request method is other than GET or HEAD. This is necessary
  * because the jQuery.load() method requests data via POST, which would normally
  * prevent render caching.
@@ -374,12 +373,12 @@ function fast_token_browser_build_level($type, array $ancestors = array()) {
  * @param array $elements
  *   The structured array describing the data to be rendered.
  * @return string
- *   The result of drupal_render().
+ *   The result of backdrop_render().
  */
 function fast_token_browser_render(&$elements) {
   $method = $_SERVER['REQUEST_METHOD'];
   $_SERVER['REQUEST_METHOD'] = 'GET';
-  $output = drupal_render($elements);
+  $output = backdrop_render($elements);
   $_SERVER['REQUEST_METHOD'] = $method;
 
   return $output;

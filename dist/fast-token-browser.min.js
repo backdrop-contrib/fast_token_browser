@@ -1,4 +1,4 @@
-(function ($, Drupal, window, document, undefined) {
+(function ($, Backdrop, window, document, undefined) {
 
   'use strict';
 
@@ -154,13 +154,13 @@
     var type = $cell.data('type');
     var token = getToken($cell, type);
     var ancestors = getAncestors($cell);
-    var url = Drupal.settings.basePath + 'token-browser/token/' + type;
+    var url = Backdrop.settings.basePath + 'token-browser/token/' + type;
     var parameters = {};
 
     ancestors.push(token);
 
     parameters.ancestors = JSON.stringify(ancestors);
-    parameters.token = Drupal.settings.fastTokenBrowser.token;
+    parameters.token = Backdrop.settings.fastTokenBrowser.token;
 
     $.ajax({
       'url': url,
@@ -239,19 +239,19 @@
     });
   }
 
-  Drupal.behaviors.tokenBrowserSetup = {
+  Backdrop.behaviors.tokenBrowserSetup = {
     attach: function (context, settings) {
       setup();
     }
   };
 
-  Drupal.behaviors.tokenBrowserTreegrid = {
+  Backdrop.behaviors.tokenBrowserTreegrid = {
     attach: function (context, settings) {
       $('.tree-grid', context).find('button').bind('click', expand);
     }
   };
 
-  Drupal.behaviors.tokenBrowserInsert = {
+  Backdrop.behaviors.tokenBrowserInsert = {
     attach: function (context, settings) {
       var $input = $('textarea, input[type="text"]', context);
 
@@ -261,4 +261,4 @@
     }
   };
 
-})(jQuery, Drupal, this, this.document);
+})(jQuery, Backdrop, this, this.document);

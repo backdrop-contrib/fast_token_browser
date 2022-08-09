@@ -1,8 +1,8 @@
-(function ($, Drupal, window, document, undefined) {
+(function ($, Backdrop, window, document, undefined) {
 
   'use strict';
 
-  Drupal.behaviors.tokenBrowserDialog = {
+  Backdrop.behaviors.tokenBrowserDialog = {
     attach: function (context, settings) {
       var $window = $(window, context);
       var $links = $('a.token-browser').once('token-browser');
@@ -13,7 +13,7 @@
       };
 
       var options = {
-        'title': Drupal.t('Token Browser'),
+        'title': Backdrop.t('Token Browser'),
         'classes': { 'ui-dialog': 'token-browser-dialog' },
         'dialogClass': 'token-browser-dialog',
         'width': Math.min(1500, $window.width() * 0.8),
@@ -42,4 +42,4 @@
     }
   };
 
-})(jQuery, Drupal, this, this.document);
+})(jQuery, Backdrop, this, this.document);
