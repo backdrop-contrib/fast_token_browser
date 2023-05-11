@@ -21,6 +21,9 @@ of clicking in a text field then clicking a token to insert, first click the
 token, then click in a text field where it will be inserted. This is designed to
 provide for better keyboard accessibility in a future release.
 
+The modal window can be resized and moved so you can keep the browser open
+while you insert the token. This helps if you want to insert multiple tokens.
+
 Fast Token Browser will also replace the token browser provided by [Token Help](https://backdropcms.org/project/token_help)
 at admin/reports/tokens.
 
@@ -32,14 +35,14 @@ Bugs and feature requests should be reported in [the issue queue](https://github
 Current Maintainers
 -------------------
 
-- [Martin Price](https://github.com/yorkshire-pudding) - [System Horizons](https://www.systemhorizons.co.uk)
+- [Martin Price](https://github.com/yorkshire-pudding) - [System Horizons Ltd](https://www.systemhorizons.co.uk)
 
 Credits
 -------
 
-- Ported to Backdrop CMS by [Martin Price](https://github.com/yorkshire-pudding).
+- Ported to Backdrop CMS by [Martin Price](https://github.com/yorkshire-pudding) - [System Horizons Ltd](https://www.systemhorizons.co.uk).
+- Port sponsored by [System Horizons Ltd](https://www.systemhorizons.co.uk).
 - Originally written for Drupal by [Nigel Packer](https://www.drupal.org/u/npacker).
-- Port sponsored by [System Horizons](https://www.systemhorizons.co.uk).
 
 License
 -------

@@ -1,8 +1,9 @@
 name = Fast Token Browser
 description = A more efficient browser for the Token module.
+backdrop = 1.x
+type = module
+
 package = User Interface
 tags[] = Tokens
 tags[] = Administration
 tags[] = Theme Enhancements
-backdrop = 1.x
-type = module

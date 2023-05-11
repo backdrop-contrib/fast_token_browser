@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @file
  * Token Browser Module
@@ -108,8 +107,8 @@ function fast_token_browser_theme_registry_alter(&$theme_registry) {
  * Token browser tree page callback.
  */
 function fast_token_browser_tree() {
-  $types = isset($_GET['token_types'])?backdrop_json_decode($_GET['token_types']) : array();
-  $globals = isset($_GET['global_types'])?backdrop_json_decode($_GET['global_types']) : TRUE;
+  $types = isset($_GET['token_types']) ? backdrop_json_decode($_GET['token_types']) : array();
+  $globals = isset($_GET['global_types']) ? backdrop_json_decode($_GET['global_types']) : TRUE;
 
   return fast_token_browser_tree_build_content($types, $globals);
 }
@@ -127,7 +126,7 @@ function fast_token_browser_tree_access() {
  * @param array $page_callback_result
  *   A Token Browser tree render array.
  */
-function fast_token_browser_tree_output($page_callback_result) {
+function fast_token_browser_tree_output(array $page_callback_result) {
   if (is_int($page_callback_result)) {
     backdrop_deliver_html_page($page_callback_result);
   }
@@ -167,7 +166,7 @@ function fast_token_browser_endpoint($type) {
   );
 
   $input = filter_input_array(INPUT_GET, $definition);
-  $ancestors = isset($input['ancestors'])?backdrop_json_decode($input['ancestors']) : array();
+  $ancestors = isset($input['ancestors']) ? backdrop_json_decode($input['ancestors']) : array();
 
   return fast_token_browser_build_level($type, $ancestors);
 }
@@ -205,7 +204,7 @@ function fast_token_browser_endpoint_output($page_callback_result) {
  * @return array
  *   The constructed array of types keyed by type.
  */
-function fast_token_browser_tree_build_content($types = array(), $global_types = TRUE) {
+function fast_token_browser_tree_build_content(array $types = array(), $global_types = TRUE) {
   global $language;
 
   $info = token_get_info();
@@ -365,17 +364,17 @@ function fast_token_browser_build_level($type, array $ancestors = array()) {
 /**
  * Sets the request method to GET before calling backdrop_render().
  *
- * Fools backdrop_render_cache_set() and backdrop_render_cache_get() into working
- * even when the request method is other than GET or HEAD. This is necessary
- * because the jQuery.load() method requests data via POST, which would normally
- * prevent render caching.
+ * Fools backdrop_render_cache_set() and backdrop_render_cache_get() into
+ * working even when the request method is other than GET or HEAD. This is
+ * necessary because the jQuery.load() method requests data via POST, which
+ * would normally prevent render caching.
  *
  * @param array $elements
  *   The structured array describing the data to be rendered.
  * @return string
  *   The result of backdrop_render().
  */
-function fast_token_browser_render(&$elements) {
+function fast_token_browser_render(array &$elements) {
   $method = $_SERVER['REQUEST_METHOD'];
   $_SERVER['REQUEST_METHOD'] = 'GET';
   $output = backdrop_render($elements);

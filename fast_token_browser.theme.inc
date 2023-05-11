@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @file
  * Token Browser theme functions.
