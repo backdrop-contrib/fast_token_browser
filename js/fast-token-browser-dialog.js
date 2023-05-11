@@ -16,7 +16,7 @@
         'title': Backdrop.t('Token Browser'),
         'classes': { 'ui-dialog': 'token-browser-dialog' },
         'dialogClass': 'token-browser-dialog',
-        'width': Math.min(1500, $window.width() * 0.8),
+        'width': Math.min(1280, $window.width() * 0.8),
         'close': function () {
           $(this).remove();
           $links.removeClass('token-browser-open');
