@@ -7,6 +7,32 @@
 /**
  * Token Browser Link theme.
  */
+// function theme_fast_token_browser_link($variables) {
+//   $options = array(
+//     'attributes' => array(),
+//     'query' => array(
+//       'token' => backdrop_get_token('token-browser'),
+//     ),
+//   );
+
+//   if (!empty($variables['token_types'])) {
+//     $options['query']['token_types'] = backdrop_json_encode($variables['token_types']);
+//     $options['query']['global_types'] = backdrop_json_encode($variables['global_types']);
+//   }
+
+//   if (!empty($variables['dialog'])) {
+//     backdrop_add_library('fast_token_browser', 'fast-token-browser');
+//     backdrop_add_library('fast_token_browser', 'fast-token-browser-dialog');
+
+//     $options['attributes']['class'][] = 'token-browser';
+//   }
+//   else {
+//     $options['attributes']['target'] = '_blank';
+//   }
+
+//   return l($variables['text'], 'token-browser/tree', $options);
+// }
+
 function theme_fast_token_browser_link($variables) {
   $options = array(
     'attributes' => array(),
@@ -23,8 +49,9 @@ function theme_fast_token_browser_link($variables) {
   if (!empty($variables['dialog'])) {
     backdrop_add_library('fast_token_browser', 'fast-token-browser');
     backdrop_add_library('fast_token_browser', 'fast-token-browser-dialog');
+    backdrop_add_library('system', 'backdrop.ajax');
 
-    $options['attributes']['class'][] = 'token-browser';
+    $options['attributes']['class'][] = 'use-ajax token-browser-link';
   }
   else {
     $options['attributes']['target'] = '_blank';

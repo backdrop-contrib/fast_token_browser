@@ -29,7 +29,7 @@ function fast_token_browser_library_info() {
       backdrop_get_path('module', 'fast_token_browser') . '/js/fast-token-browser-dialog.js' => array(),
     ),
     'dependencies' => array(
-      array('system', 'ui.dialog'),
+      array('system', 'backdrop.dialog'),
     ),
   );
 
@@ -43,7 +43,7 @@ function fast_token_browser_menu() {
   // AJAX endpoint for the assembled tree.
   $items['token-browser/tree'] = array(
     'page callback' => 'fast_token_browser_tree',
-    'delivery callback' => 'fast_token_browser_tree_output',
+    // 'delivery callback' => 'fast_token_browser_tree_output',
     'access callback' => 'fast_token_browser_tree_access',
     'theme callback' => 'ajax_base_page_theme',
     'type' => MENU_CALLBACK,
@@ -110,7 +110,30 @@ function fast_token_browser_tree() {
   $types = isset($_GET['token_types']) ? backdrop_json_decode($_GET['token_types']) : array();
   $globals = isset($_GET['global_types']) ? backdrop_json_decode($_GET['global_types']) : TRUE;
 
-  return fast_token_browser_tree_build_content($types, $globals);
+  $out = fast_token_browser_tree_build_content($types, $globals);
+  $out = fast_token_browser_render($out);
+
+  if (backdrop_is_ajax()) {
+    // Return as a renderable so the Backdrop dialog system can use the title.
+    $dialog_options = array(
+      'dialogClass' => 'token-dialog',
+      'modal' => FALSE,
+      'draggable' => TRUE,
+      'resizable' => TRUE,
+      'autoResize' => FALSE,
+      'width' => '800',
+      'height' => '600',
+    );
+    $commands = array(ajax_command_open_dialog('#token-dialog', t('Available tokens'), $out, $dialog_options));
+    $return = array(
+      '#type' => 'ajax',
+      '#commands' => $commands,
+    );
+    return $return;
+  }
+  else {
+    return $out;
+  }
 }
 
 /**
