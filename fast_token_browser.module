@@ -111,7 +111,9 @@ function fast_token_browser_tree() {
       'resizable' => TRUE,
       'autoResize' => FALSE,
     );
-    $commands = array(ajax_command_open_dialog('#token-dialog', t('Token Browser'), $out, $dialog_options));
+    $commands = array(
+      ajax_command_open_dialog('#token-dialog', t('Token Browser'), $out, $dialog_options),
+    );
     $return = array(
       '#type' => 'ajax',
       '#commands' => $commands,
