@@ -15,21 +15,11 @@ function fast_token_browser_library_info() {
       backdrop_get_path('module', 'fast_token_browser') . '/css/fast-token-browser.css' => array(),
     ),
     'js' => array(
-      backdrop_get_path('module', 'fast_token_browser') . '/js/fast-token-browser.js' => array(), array(
+      backdrop_get_path('module', 'fast_token_browser') . '/js/fast-token-browser.js' => array(),
+      array(
         'type' => 'setting',
         'data' => array('fastTokenBrowser' => array('token' => backdrop_get_token('token-browser-endpoint'))),
       ),
-    ),
-  );
-
-  $libraries['fast-token-browser-dialog'] = array(
-    'title' => 'Fast Token Browser Dialog',
-    'version' => '1.0',
-    'js' => array(
-      backdrop_get_path('module', 'fast_token_browser') . '/js/fast-token-browser-dialog.js' => array(),
-    ),
-    'dependencies' => array(
-      array('system', 'backdrop.dialog'),
     ),
   );
 
@@ -43,7 +33,6 @@ function fast_token_browser_menu() {
   // AJAX endpoint for the assembled tree.
   $items['token-browser/tree'] = array(
     'page callback' => 'fast_token_browser_tree',
-    // 'delivery callback' => 'fast_token_browser_tree_output',
     'access callback' => 'fast_token_browser_tree_access',
     'theme callback' => 'ajax_base_page_theme',
     'type' => MENU_CALLBACK,
@@ -110,21 +99,21 @@ function fast_token_browser_tree() {
   $types = isset($_GET['token_types']) ? backdrop_json_decode($_GET['token_types']) : array();
   $globals = isset($_GET['global_types']) ? backdrop_json_decode($_GET['global_types']) : TRUE;
 
+  // backdrop_add_library('fast_token_browser', 'fast-token-browser');
+
   $out = fast_token_browser_tree_build_content($types, $globals);
   $out = fast_token_browser_render($out);
 
   if (backdrop_is_ajax()) {
-    // Return as a renderable so the Backdrop dialog system can use the title.
     $dialog_options = array(
-      'dialogClass' => 'token-dialog',
+      'dialogClass' => 'token-browser-dialog',
+      'width'=> 900,
       'modal' => FALSE,
       'draggable' => TRUE,
       'resizable' => TRUE,
       'autoResize' => FALSE,
-      'width' => '800',
-      'height' => '600',
     );
-    $commands = array(ajax_command_open_dialog('#token-dialog', t('Available tokens'), $out, $dialog_options));
+    $commands = array(ajax_command_open_dialog('#token-dialog', t('Token Browser'), $out, $dialog_options));
     $return = array(
       '#type' => 'ajax',
       '#commands' => $commands,
@@ -141,37 +130,6 @@ function fast_token_browser_tree() {
  */
 function fast_token_browser_tree_access() {
   return isset($_GET['token']) && backdrop_valid_token($_GET['token'], 'token-browser');
-}
-
-/**
- * Token browser output delivery callback.
- *
- * @param array $page_callback_result
- *   A Token Browser tree render array.
- */
-function fast_token_browser_tree_output(array $page_callback_result) {
-  if (is_int($page_callback_result)) {
-    backdrop_deliver_html_page($page_callback_result);
-  }
-  elseif (isset($page_callback_result)) {
-    global $language;
-
-    backdrop_add_http_header('Content-Type', 'text/html; charset=utf-8');
-    backdrop_add_http_header('Content-Language', $language->langcode);
-
-    $content = fast_token_browser_render($page_callback_result);
-    $html = backdrop_get_css() . backdrop_get_js('header') . $content . backdrop_get_js('footer');
-
-    backdrop_page_header();
-
-    print $html;
-
-    backdrop_page_footer();
-  }
-  else {
-    backdrop_page_header();
-    backdrop_page_footer();
-  }
 }
 
 /**
@@ -319,7 +277,7 @@ function fast_token_browser_tree_build_content($types = array(), $global_types =
 }
 
 /**
- * Build a level of the token heirarchy.
+ * Build a level of the token hierarchy.
  *
  * @param string $type
  *   The type to build a level for.

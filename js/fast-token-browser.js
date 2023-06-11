@@ -247,7 +247,7 @@
 
   Backdrop.behaviors.tokenBrowserTreegrid = {
     attach: function (context, settings) {
-      $('.tree-grid', context).find('button').bind('click', expand);
+      $(context).find('button').on('click', expand);
     }
   };
 
