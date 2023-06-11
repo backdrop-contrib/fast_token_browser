@@ -99,8 +99,6 @@ function fast_token_browser_tree() {
   $types = isset($_GET['token_types']) ? backdrop_json_decode($_GET['token_types']) : array();
   $globals = isset($_GET['global_types']) ? backdrop_json_decode($_GET['global_types']) : TRUE;
 
-  // backdrop_add_library('fast_token_browser', 'fast-token-browser');
-
   $out = fast_token_browser_tree_build_content($types, $globals);
   $out = fast_token_browser_render($out);
 
