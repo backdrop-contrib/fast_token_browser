@@ -4,6 +4,9 @@
  * Token Browser theme functions.
  */
 
+ /**
+  * Token Browser link theme. 
+  */
 function theme_fast_token_browser_link($variables) {
   $options = array(
     'attributes' => array(),

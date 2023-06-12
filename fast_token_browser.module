@@ -105,7 +105,7 @@ function fast_token_browser_tree() {
   if (backdrop_is_ajax()) {
     $dialog_options = array(
       'dialogClass' => 'token-browser-dialog',
-      'width'=> 900,
+      'width' => 900,
       'modal' => FALSE,
       'draggable' => TRUE,
       'resizable' => TRUE,
