@@ -4,9 +4,6 @@
  * Token Browser theme functions.
  */
 
-/**
- * Token Browser Link theme.
- */
 function theme_fast_token_browser_link($variables) {
   $options = array(
     'attributes' => array(),
@@ -22,9 +19,9 @@ function theme_fast_token_browser_link($variables) {
 
   if (!empty($variables['dialog'])) {
     backdrop_add_library('fast_token_browser', 'fast-token-browser');
-    backdrop_add_library('fast_token_browser', 'fast-token-browser-dialog');
+    backdrop_add_library('system', 'backdrop.ajax');
 
-    $options['attributes']['class'][] = 'token-browser';
+    $options['attributes']['class'][] = 'use-ajax token-browser-link';
   }
   else {
     $options['attributes']['target'] = '_blank';
