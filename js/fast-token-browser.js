@@ -192,13 +192,13 @@
     event.preventDefault();
     event.stopPropagation();
 
-    $button.unbind('click', expand);
+    $button.off('click', expand);
 
     if ($row.data('fetched')) {
       display($row[0], 'table-row', function () {
         $row.attr('aria-expanded', 'true');
         $button.text('Collapse');
-        $button.bind('click', collapse);
+        $button.on('click', collapse);
       });
     }
     else {
@@ -210,11 +210,11 @@
           $row.data('fetched', true);
           $row.attr('aria-expanded', 'true');
           $button.text('Collapse');
-          $button.bind('click', collapse);
+          $button.on('click', collapse);
         }
         else {
           $button.text('Expand');
-          $button.bind('click', expand);
+          $button.on('click', expand);
         }
 
         $row.attr('aria-busy', 'false');
@@ -230,12 +230,12 @@
     event.preventDefault();
     event.stopPropagation();
 
-    $button.unbind('click', collapse);
+    $button.off('click', collapse);
 
     display($row[0], 'none', function () {
       $row.attr('aria-expanded', 'false');
       $button.text('Expand');
-      $button.bind('click', expand);
+      $button.on('click', expand);
     });
   }
 
