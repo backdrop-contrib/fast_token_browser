@@ -256,7 +256,7 @@
       var $input = $('textarea, input[type="text"]', context);
 
       if ($input.length) {
-        $input.once('token-browser-insert').click(insert);
+        $input.once('token-browser-insert').on("click", insert);
       }
     }
   };
