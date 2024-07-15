@@ -36,6 +36,8 @@ Current Maintainers
 -------------------
 
 - [Martin Price](https://github.com/yorkshire-pudding) - [System Horizons Ltd](https://www.systemhorizons.co.uk)
+- Seeking additional maintainer(s). Specifically, this module needs a
+maintainer who understands the Javascript and jQuery that powers this module.
 
 Credits
 -------
