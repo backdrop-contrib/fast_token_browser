@@ -31,13 +31,22 @@
       window.selectedToken.addClass('selected-token');
       window.selectedToken.attr('aria-selected');
     }
+    // If we have a focused field, insert the selected token.
+    if (typeof Backdrop.settings.tokenBrowserFocusedField !== 'undefined' && window.selectedToken) {
+      insert(Backdrop.settings.tokenBrowserFocusedField);
+    }
   }
 
-  function insert(event) {
-    var $input = $(event.target);
-
+  function insert(myField) {
     if (window.selectedToken) {
-      $input.val($input.val() + window.selectedToken.text());
+      var startPos = myField.selectionStart;
+      var endPos = myField.selectionEnd;
+      var myValue  = window.selectedToken.text();
+      myField.value = 
+        myField.value.substring(0, startPos)
+        + myValue
+        + myField.value.substring(endPos, myField.value.length)
+      ;
       window.selectedToken.removeClass('selected-token');
       window.selectedToken.removeAttr('aria-selected');
       window.selectedToken = null;
@@ -251,12 +260,23 @@
     }
   };
 
+  Backdrop.behaviors.tokenBrowserFocusedField = {
+    attach: function (context, settings) {
+      // Keep track of which textfield was last selected/focused.
+      $(context).find('textarea, input[type="text"]').once('token-browser-field-focus').on('focus', function() {
+        Backdrop.settings.tokenBrowserFocusedField = this;
+      });
+    }
+  };
+
   Backdrop.behaviors.tokenBrowserInsert = {
     attach: function (context, settings) {
       var $input = $('textarea, input[type="text"]', context);
 
       if ($input.length) {
-        $input.once('token-browser-insert').on("click", insert);
+        $input.once('token-browser-insert').on('click', function (event) {
+          insert(event.target);
+        });
       }
     }
   };
