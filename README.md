@@ -16,10 +16,9 @@ Usage
 Fast Token Browser is a drop-in replacement to the default browser provided by
 Backdrop.
 
-However, the mechanics of inserting a token work a little differently. Instead
-of clicking in a text field then clicking a token to insert, first click the
-token, then click in a text field where it will be inserted. This is designed to
-provide for better keyboard accessibility in a future release.
+You can either select the field first and click on a token to insert at the
+cursor, or you can select the token first and then click in a field to insert
+at the cursor.
 
 The modal window can be resized and moved so you can keep the browser open
 while you insert the token. This helps if you want to insert multiple tokens.
