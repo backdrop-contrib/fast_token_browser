@@ -263,7 +263,7 @@
   Backdrop.behaviors.tokenBrowserFocusedField = {
     attach: function (context, settings) {
       // Keep track of which textfield was last selected/focused.
-      $(context).find('textarea, input[type="text"]').once('token-browser-field-focus').on('focus', function() {
+      $(context).find('textarea, input[type="text"]').once('fast-token-browser-field-focus').on('focus', function() {
         Backdrop.settings.tokenBrowserFocusedField = this;
       });
     }
