@@ -3,6 +3,9 @@ description = A more efficient browser for the Token module.
 backdrop = 1.x
 type = module
 
+maintainers[yorkshire-pudding] = Martin Price
+maintainers_wanted = TRUE
+
 package = User Interface
 tags[] = Tokens
 tags[] = Administration
