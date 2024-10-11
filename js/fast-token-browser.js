@@ -2,17 +2,17 @@
 
   'use strict';
 
-  var ANCESTORS = {};
+  Backdrop.ANCESTORS = {};
 
-  var buffer;
-  var tr_template;
-  var button_template;
-  var link_template;
-  var name_template;
-  var raw_template;
-  var description_template;
+  Backdrop.buffer;
+  Backdrop.tr_template;
+  Backdrop.button_template;
+  Backdrop.link_template;
+  Backdrop.name_template;
+  Backdrop.raw_template;
+  Backdrop.description_template;
 
-  function select(event) {
+  Backdrop.select = function (event) {
     var $token = $(event.target);
 
     event.preventDefault();
@@ -33,16 +33,16 @@
     }
     // If we have a focused field, insert the selected token.
     if (typeof Backdrop.settings.tokenBrowserFocusedField !== 'undefined' && window.selectedToken) {
-      insert(Backdrop.settings.tokenBrowserFocusedField);
+      Backdrop.insert(Backdrop.settings.tokenBrowserFocusedField);
     }
   }
 
-  function insert(myField) {
+  Backdrop.insert = function (myField) {
     if (window.selectedToken) {
       var startPos = myField.selectionStart;
       var endPos = myField.selectionEnd;
       var myValue  = window.selectedToken.text();
-      myField.value = 
+      myField.value =
         myField.value.substring(0, startPos)
         + myValue
         + myField.value.substring(endPos, myField.value.length)
@@ -53,19 +53,19 @@
     }
   }
 
-  function getAncestors($cell) {
-    var ancestors = ANCESTORS[$cell.data('raw')];
+  Backdrop.getAncestors = function ($cell) {
+    var ancestors = Backdrop.ANCESTORS[$cell.data('raw')];
 
     return ancestors ? ancestors : [];
   }
 
-  function getToken($cell, type) {
+  Backdrop.getToken = function ($cell, type) {
     var token = $cell.data('token');
 
     return token ? token : type;
   }
 
-  function display(parent, value, callback) {
+  Backdrop.display = function (parent, value, callback) {
     var current = parent;
     var level, top = Number(parent.getAttribute('aria-level'));
     var expand = [];
@@ -89,48 +89,48 @@
     callback();
   }
 
-  function setup() {
-    buffer = document.createDocumentFragment();
-    tr_template = document.createElement('tr');
-    button_template = document.createElement('button');
-    link_template = document.createElement('a');
-    name_template = document.createElement('td');
-    raw_template = document.createElement('td');
-    description_template = document.createElement('td');
+  Backdrop.setup = function () {
+    Backdrop.buffer = document.createDocumentFragment();
+    Backdrop.tr_template = document.createElement('tr');
+    Backdrop.button_template = document.createElement('button');
+    Backdrop.link_template = document.createElement('a');
+    Backdrop.name_template = document.createElement('td');
+    Backdrop.raw_template = document.createElement('td');
+    Backdrop.description_template = document.createElement('td');
 
-    tr_template.setAttribute('role', 'row');
-    tr_template.setAttribute('aria-expanded', 'false');
-    tr_template.setAttribute('aria-busy', 'false');
+    Backdrop.tr_template.setAttribute('role', 'row');
+    Backdrop.tr_template.setAttribute('aria-expanded', 'false');
+    Backdrop.tr_template.setAttribute('aria-busy', 'false');
 
-    link_template.setAttribute('href', 'javascript:void(0);');
-    link_template.setAttribute('class', 'token-key');
+    Backdrop.link_template.setAttribute('href', 'javascript:void(0);');
+    Backdrop.link_template.setAttribute('class', 'token-key');
 
-    name_template.setAttribute('role', 'gridcell');
-    name_template.setAttribute('class', 'token-name');
+    Backdrop.name_template.setAttribute('role', 'gridcell');
+    Backdrop.name_template.setAttribute('class', 'token-name');
 
-    raw_template.setAttribute('role', 'gridcell');
-    raw_template.setAttribute('class', 'token-raw');
+    Backdrop.raw_template.setAttribute('role', 'gridcell');
+    Backdrop.raw_template.setAttribute('class', 'token-raw');
 
-    description_template.setAttribute('role', 'gridcell');
-    description_template.setAttribute('class', 'token-description');
+    Backdrop.description_template.setAttribute('role', 'gridcell');
+    Backdrop.description_template.setAttribute('class', 'token-description');
   }
 
-  function row(element, level, index) {
-    var tr = tr_template.cloneNode(false);
-    var button = button_template.cloneNode(false);
-    var link = link_template.cloneNode(false);
-    var name = name_template.cloneNode(false);
-    var raw = raw_template.cloneNode(false);
-    var description = description_template.cloneNode(false);
+  Backdrop.row = function (element, level, index) {
+    var tr = Backdrop.tr_template.cloneNode(false);
+    var button = Backdrop.button_template.cloneNode(false);
+    var link = Backdrop.link_template.cloneNode(false);
+    var name = Backdrop.name_template.cloneNode(false);
+    var raw = Backdrop.raw_template.cloneNode(false);
+    var description = Backdrop.description_template.cloneNode(false);
 
     tr.setAttribute('aria-level', level);
     tr.setAttribute('aria-posinset', index);
 
-    button.addEventListener('click', expand);
+    button.addEventListener('click', Backdrop.expand);
     button.innerHTML = 'Expand';
 
     link.setAttribute('title', 'Select the token ' + element.raw + '. Click in a text field to insert it.');
-    link.addEventListener('click', select);
+    link.addEventListener('click', Backdrop.select);
 
     name.setAttribute('data-token', element.token);
     name.setAttribute('data-type', element.type);
@@ -150,7 +150,7 @@
       tr.classList.add('tree-grid-leaf');
     }
 
-    ANCESTORS[element.raw] = element.ancestors;
+    Backdrop.ANCESTORS[element.raw] = element.ancestors;
 
     tr.appendChild(name);
     tr.appendChild(raw);
@@ -159,10 +159,10 @@
     return tr;
   }
 
-  function fetch($row, $cell, callback) {
+  Backdrop.fetch = function ($row, $cell, callback) {
     var type = $cell.data('type');
-    var token = getToken($cell, type);
-    var ancestors = getAncestors($cell);
+    var token = Backdrop.getToken($cell, type);
+    var ancestors = Backdrop.getAncestors($cell);
     var url = Backdrop.settings.basePath + 'token-browser/token/' + type;
     var parameters = {};
 
@@ -179,11 +179,11 @@
         var position = 1;
 
         for (var key in data) {
-          buffer.appendChild(row(data[key], level, position++));
+          Backdrop.buffer.appendChild(Backdrop.row(data[key], level, position++));
         }
 
-        $row.attr('aria-setsize', buffer.childElementCount);
-        $row.after(buffer);
+        $row.attr('aria-setsize', Backdrop.buffer.childElementCount);
+        $row.after(Backdrop.buffer);
         callback(true);
       },
       'error': function (request) {
@@ -193,7 +193,7 @@
     });
   }
 
-  function expand(event) {
+  Backdrop.expand = function (event) {
     var $button = $(event.target);
     var $cell = $button.parent();
     var $row = $cell.parent();
@@ -201,29 +201,29 @@
     event.preventDefault();
     event.stopPropagation();
 
-    $button.off('click', expand);
+    $button.off('click', Backdrop.expand);
 
     if ($row.data('fetched')) {
-      display($row[0], 'table-row', function () {
+      Backdrop.display($row[0], 'table-row', function () {
         $row.attr('aria-expanded', 'true');
         $button.text('Collapse');
-        $button.on('click', collapse);
+        $button.on('click', Backdrop.collapse);
       });
     }
     else {
       $row.attr('aria-busy', 'true');
       $button.text('Loading...');
 
-      fetch($row, $cell, function (success) {
+      Backdrop.fetch($row, $cell, function (success) {
         if (success) {
           $row.data('fetched', true);
           $row.attr('aria-expanded', 'true');
           $button.text('Collapse');
-          $button.on('click', collapse);
+          $button.on('click', Backdrop.collapse);
         }
         else {
           $button.text('Expand');
-          $button.on('click', expand);
+          $button.on('click', Backdrop.expand);
         }
 
         $row.attr('aria-busy', 'false');
@@ -231,7 +231,7 @@
     }
   }
 
-  function collapse(event) {
+  Backdrop.collapse = function (event) {
     var $button = $(event.target);
     var $cell = $button.parent();
     var $row = $cell.parent();
@@ -239,24 +239,24 @@
     event.preventDefault();
     event.stopPropagation();
 
-    $button.off('click', collapse);
+    $button.off('click', Backdrop.collapse);
 
-    display($row[0], 'none', function () {
+    Backdrop.display($row[0], 'none', function () {
       $row.attr('aria-expanded', 'false');
       $button.text('Expand');
-      $button.on('click', expand);
+      $button.on('click', Backdrop.expand);
     });
   }
 
   Backdrop.behaviors.tokenBrowserSetup = {
     attach: function (context, settings) {
-      setup();
+      Backdrop.setup();
     }
   };
 
   Backdrop.behaviors.tokenBrowserTreegrid = {
     attach: function (context, settings) {
-      $(context).find('button').on('click', expand);
+      $(context).find('button').on('click', Backdrop.expand);
     }
   };
 
@@ -275,7 +275,7 @@
 
       if ($input.length) {
         $input.once('token-browser-insert').on('click', function (event) {
-          insert(event.target);
+          Backdrop.insert(event.target);
         });
       }
     }
