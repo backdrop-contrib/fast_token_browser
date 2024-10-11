@@ -18,38 +18,38 @@
     event.preventDefault();
     event.stopPropagation();
 
-    if (window.selectedToken) {
-      window.selectedToken.removeClass('selected-token');
-      window.selectedToken.removeAttr('aria-selected');
+    if (window.Backdrop.selectedToken) {
+      window.Backdrop.selectedToken.removeClass('selected-token');
+      window.Backdrop.selectedToken.removeAttr('aria-selected');
     }
 
-    if (window.selectedToken && $token[0] === window.selectedToken[0]) {
-      window.selectedToken = null;
+    if (window.Backdrop.selectedToken && $token[0] === window.Backdrop.selectedToken[0]) {
+      window.Backdrop.selectedToken = null;
     }
     else {
-      window.selectedToken = $token;
-      window.selectedToken.addClass('selected-token');
-      window.selectedToken.attr('aria-selected');
+      window.Backdrop.selectedToken = $token;
+      window.Backdrop.selectedToken.addClass('selected-token');
+      window.Backdrop.selectedToken.attr('aria-selected');
     }
     // If we have a focused field, insert the selected token.
-    if (typeof Backdrop.settings.tokenBrowserFocusedField !== 'undefined' && window.selectedToken) {
+    if (typeof Backdrop.settings.tokenBrowserFocusedField !== 'undefined' && window.Backdrop.selectedToken) {
       Backdrop.insert(Backdrop.settings.tokenBrowserFocusedField);
     }
   }
 
   Backdrop.insert = function (myField) {
-    if (window.selectedToken) {
+    if (window.Backdrop.selectedToken) {
       var startPos = myField.selectionStart;
       var endPos = myField.selectionEnd;
-      var myValue  = window.selectedToken.text();
+      var myValue  = window.Backdrop.selectedToken.text();
       myField.value =
         myField.value.substring(0, startPos)
         + myValue
         + myField.value.substring(endPos, myField.value.length)
       ;
-      window.selectedToken.removeClass('selected-token');
-      window.selectedToken.removeAttr('aria-selected');
-      window.selectedToken = null;
+      window.Backdrop.selectedToken.removeClass('selected-token');
+      window.Backdrop.selectedToken.removeAttr('aria-selected');
+      window.Backdrop.selectedToken = null;
     }
   }
 
