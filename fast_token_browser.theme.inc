@@ -12,6 +12,7 @@ function theme_fast_token_browser_link($variables) {
     'attributes' => array(),
     'query' => array(
       'token' => backdrop_get_token('token-browser'),
+      'show_restricted' => $variables['show_restricted'] ? 1 : 0,
     ),
   );
 
@@ -48,7 +49,7 @@ function theme_fast_token_browser($variables) {
     return theme_fast_token_browser_link($variables);
   }
 
-  $content = fast_token_browser_tree_build_content($variables['token_types'], $variables['global_types']);
+  $content = fast_token_browser_tree_build_content($variables['token_types'], $variables['global_types'], $variables['show_restricted']);
 
   // Pass show_restircted and click_insert flags.
   $settings['tokenBrowser'] = array(
