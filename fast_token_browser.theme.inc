@@ -31,7 +31,7 @@ function theme_fast_token_browser_link($variables) {
     $options['attributes']['target'] = '_blank';
   }
 
-  // Pass show_restircted and click_insert flags.
+  // Pass show_restricted and click_insert flags.
   $settings['tokenBrowser'] = array(
     'restricted' => $variables['show_restricted'],
     'click_insert' => $variables['click_insert'],
@@ -51,7 +51,7 @@ function theme_fast_token_browser($variables) {
 
   $content = fast_token_browser_tree_build_content($variables['token_types'], $variables['global_types'], $variables['show_restricted']);
 
-  // Pass show_restircted and click_insert flags.
+  // Pass show_restricted and click_insert flags.
   $settings['tokenBrowser'] = array(
     'restricted' => $variables['show_restricted'],
     'click_insert' => $variables['click_insert'],
