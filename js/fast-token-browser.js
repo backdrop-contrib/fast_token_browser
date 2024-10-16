@@ -161,7 +161,6 @@
         else {
           var link = no_link_template.cloneNode(false);
         }
-        var link = link_template.cloneNode(false);
         var name = name_template.cloneNode(false);
         var raw = raw_template.cloneNode(false);
         var description = description_template.cloneNode(false);
