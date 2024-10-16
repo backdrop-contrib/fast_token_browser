@@ -12,6 +12,7 @@ function theme_fast_token_browser_link($variables) {
     'attributes' => array(),
     'query' => array(
       'token' => backdrop_get_token('token-browser'),
+      'show_restricted' => $variables['show_restricted'] ? 1 : 0,
     ),
   );
 
@@ -30,6 +31,13 @@ function theme_fast_token_browser_link($variables) {
     $options['attributes']['target'] = '_blank';
   }
 
+  // Pass show_restricted and click_insert flags.
+  $settings['tokenBrowser'] = array(
+    'restricted' => $variables['show_restricted'],
+    'click_insert' => $variables['click_insert'],
+  );
+  backdrop_add_js($settings, 'setting');
+
   return l($variables['text'], 'token-browser/tree', $options);
 }
 
@@ -41,7 +49,14 @@ function theme_fast_token_browser($variables) {
     return theme_fast_token_browser_link($variables);
   }
 
-  $content = fast_token_browser_tree_build_content($variables['token_types'], $variables['global_types']);
+  $content = fast_token_browser_tree_build_content($variables['token_types'], $variables['global_types'], $variables['show_restricted']);
+
+  // Pass show_restricted and click_insert flags.
+  $settings['tokenBrowser'] = array(
+    'restricted' => $variables['show_restricted'],
+    'click_insert' => $variables['click_insert'],
+  );
+  backdrop_add_js($settings, 'setting');
 
   return fast_token_browser_render($content);
 }
