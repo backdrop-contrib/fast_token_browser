@@ -30,6 +30,13 @@ function theme_fast_token_browser_link($variables) {
     $options['attributes']['target'] = '_blank';
   }
 
+  // Pass show_restircted and click_insert flags.
+  $settings['tokenBrowser'] = array(
+    'restricted' => $variables['show_restricted'],
+    'click_insert' => $variables['click_insert'],
+  );
+  backdrop_add_js($settings, 'setting');
+
   return l($variables['text'], 'token-browser/tree', $options);
 }
 
@@ -42,6 +49,13 @@ function theme_fast_token_browser($variables) {
   }
 
   $content = fast_token_browser_tree_build_content($variables['token_types'], $variables['global_types']);
+
+  // Pass show_restircted and click_insert flags.
+  $settings['tokenBrowser'] = array(
+    'restricted' => $variables['show_restricted'],
+    'click_insert' => $variables['click_insert'],
+  );
+  backdrop_add_js($settings, 'setting');
 
   return fast_token_browser_render($content);
 }
