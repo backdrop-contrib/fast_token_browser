@@ -218,7 +218,7 @@
   
         parameters.ancestors = JSON.stringify(ancestors);
         parameters.token = Backdrop.settings.fastTokenBrowser.token;
-        parameters.show_restricted = Backdrop.settings.fastTokenBrowser.restricted;
+        parameters.show_restricted = Backdrop.settings.tokenBrowser.restricted;
   
         $.ajax({
           'url': url,
