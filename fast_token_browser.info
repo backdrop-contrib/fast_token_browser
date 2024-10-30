@@ -4,7 +4,6 @@ backdrop = 1.x
 type = module
 
 maintainers[yorkshire-pudding] = Martin Price
-maintainers_wanted = TRUE
 
 package = User Interface
 tags[] = Tokens

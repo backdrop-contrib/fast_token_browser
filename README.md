@@ -5,6 +5,8 @@ Tokens. It resolves excessive memory usage and an unresponsive interface when
 using the token browser on a site with a large number of tokens, for example,
 when using [Entity Tokens](https://backdropcms.org/project/entity_token).
 
+This module will be included in Backdrop core from 1.30.0.
+
 Installation
 ------------
 
@@ -35,8 +37,6 @@ Current Maintainers
 -------------------
 
 - [Martin Price](https://github.com/yorkshire-pudding) - [System Horizons Ltd](https://www.systemhorizons.co.uk)
-- Seeking additional maintainer(s). Specifically, this module needs a
-maintainer who understands the Javascript and jQuery that powers this module.
 
 Credits
 -------
