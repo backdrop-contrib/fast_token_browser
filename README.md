@@ -1,11 +1,16 @@
 Fast Token Browser
 ========
+Important note: Fast Token Browser module was moved into Backdrop core,
+replacing the previous token browser in version 1.30.0. Use of this module is
+no longer necessary and no further changes will be made here. If you would like
+to report a bug or feature request regarding the Backdrop token browser, file
+an issue in the main Backdrop CMS core repository at
+https://github.com/backdrop/backdrop-issues.
+
 Fast Token Browser provides an improved interface for browsing and inserting
 Tokens. It resolves excessive memory usage and an unresponsive interface when
 using the token browser on a site with a large number of tokens, for example,
 when using [Entity Tokens](https://backdropcms.org/project/entity_token).
-
-This module will be included in Backdrop core from 1.30.0.
 
 Installation
 ------------
